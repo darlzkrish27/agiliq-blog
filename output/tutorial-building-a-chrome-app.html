@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Tutorial: Building a Chrome app</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/tutorial-building-a-chrome-app.html" rel="bookmark"
+           title="Permalink to Tutorial: Building a Chrome app">Tutorial: Building a Chrome app </a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-01-16T12:46:01+05:30">
+                Published: Wed 16 January 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-01-16T12:16:01+05:30">
+                Updated: Wed 16 January 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/bhaskar.html">bhaskar</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/chrome-extension.html">chrome-extension</a> </p>
+</footer><!-- /.post-info -->      Tutorial: Building a Chrome app 
+
+This is a hands on tutorial about How to build chrome apps, with examples of two Chrome apps we published recently. Lets get started.
+
+Chrome apps are of two types:
+
+
+
+    Extensions : They extend the functionality of Google chrome and the websites. They have little or no UI. Ex:Password Generator . Source code : Github 
+    Apps: These are separate apps and appear just like any other website. Ex: To Do List. Source Code : Github
+
+
+Depending on our requirement, we need to decide what kind of app we need to build.
+
+
+Extension: Password Generator
+    Installation : 
+    
+        Visit the link Password Generator using google-chrome browser and
+         click 'Add To Chrome' button on the top-right corner. Then an extra icon will appear right to the address bar of the browser.
+          If you cant see any icons, try clicking the 'down arrow' that is visible between the address bar and the settings icon.
+          Or just drag and decrease the size of the address bar to see the icons. (see screenshot from the app). Click the icon and a small popup will be opened which is the required app !
+    
+
+    What it does :
+    
+        It gets the domain of the currently opened webpage and generates a unique password for that domain by combining the master password that one can set and the domain.
+        The combined string is encrypted using SHA2 and first 8 letters of the generated string is used as the password.
+    Its Manifest File 
+    
+        
+        {
+        "name": "Password Generator",
+        "version": "1.2",
+        "manifest_version": 2,
+        "description": "Generates domain specific passwords ",
+        "browser_action": {
+            "default_icon": "images/icon.png",
+            "default_title":"Password generator",
+            "default_popup": "popup.html"
+        },
+        "icons" : {"16" : "images/icon16.png","48" : "images/icon48.png","128" : "images/icon128.png"},
+        "permissions": ["tabs"]
+        }
+        
+
+    Understanding the Manifest file
+    The above code is the content of manifest.json of the app you just installed(Password Generator).
+    If you observe the value of the key 'browser_action', it has 3 keys default_icon, default_title, default_popup.
+    
+        default_icon : It is the icon that is visible to the right side of the address bar. 
+        default_title : The 'name' that appears when you hover on the icon.
+        default_popup : It is the html file that will be shown as popup when we click the icon.
+    
+    Permissions 
+    Chrome API lets your app  access various things like the bookmarks, about the other tabs etc.. To use these features, you need to take appropriate permission from the user by
+        mentioning them in the 'permissions' key of the manifest file. In the password generator app, I have used chrome api to get the current tab details.
+        So, I have added the permission 'tabs'.
+        Here is the full list of permissions : http://developer.chrome.com/extensions/permissions.html
+     Ajax call
+     When you are doing any ajax call, you may need to take permission depending on whether the 'url' used is local (bundled with app) or from the internet.
+         If it is a local one, you need not take any permissions. But, if the url is from internet(not bundled with app), then you need to mention that url in the permissions.
+         There is an option '&lt;all_urls&gt;' that you can give in the permissions if you want any url to be accessible. 
+
+    
+
+    Manifest file for chrome app To Do List
+    
+        {
+        "name": "To Do List",
+        "version": "1.2",
+        "manifest_version": 2,
+        "description": "Simple and best way to organise work and increase productivity. ",
+        "app" : {
+            "launch" : {
+            "local_path" : "index.html"
+            }
+        },
+        "icons" : {"16" : "to-do-list.png","48" : "to-do-list.png","128" : "to-do-list.png"},
+        "permissions": []
+        }
+        
+
+    If you observe the difference between the manifest files of an app and an extension, an app uses the 'launch' parameter which tells Google chrome what to show when an app is opened.
+    Where as the manifest file of an extension contains 'browser_action' which tells what icon to be used to recognise the extension(icon will be shown to the right side of addressbar). Rest of the things are the same.
+
+    Building
+    
+        Package the whole files(html/css/js/images/manifest.json) in 'zip' format and distribute it by uploading the zipped app in the Chrome developer dashboard .
+
+
+    
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

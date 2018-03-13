@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - agiliq</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-request-response-processing.html" rel="bookmark"
+                           title="Permalink to Django Request Response processing">Django Request Response processing</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-24T23:29:56+05:30">
+                Published: Wed 24 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-25T09:59:56+05:30">
+                Updated: Thu 25 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>Have you wondered the steps a users request goes through before being responded to by Django? The answer lies in reading <code>django.core.handlers.base</code> and <code>django.core.handlers.wsgi</code>. Here is a diagram explaining what happens. (<a href="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle.png">Click to enlarge</a>.) <a href="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle.png"><img src="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle-300x207.png" alt="" title="django_request_response_lifecycle" width="300" height="207" class="alignnone size-medium wp-image-587" /></a> The steps are. (With Apache/Mod_wsgi, similar steps for other setup.) 1. User's request comes to Apache etc. 2. Apache sends request to <code>django.core.handlers.wsgi</code> via <code>mod_wsgi</code>. 3. A list of request and response middleware callables is created. 4. Request middleware is applied. If it sends a response, it is returned to the user. 5. <code>urlresolvers.resolve</code> finds</p>
+                <a class="readmore" href="/django-request-response-processing.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/better-python-package-management-using-source-and-.html" rel="bookmark"
+                           title="Permalink to Better Python package management using source and version control systems">Better Python package management using source and version control systems</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-24T11:46:13+05:30">
+                Published: Wed 24 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-24T22:16:13+05:30">
+                Updated: Wed 24 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>Thanks to awesome <a href="http://www.djangoproject.com/community/">django community</a>, there is plenty of open source <a href="http://code.google.com/hosting/search?q=django&amp;projectsearch=Search+projects">django</a> <a href="http://bitbucket.org/repo/all/?name=django">code</a> <a href="http://github.com/search?q=django&amp;type=Everything&amp;repo=&amp;langOverride=&amp;start_value=1">around</a>. These packages get updated quite often and if you use it often like we do, you'd have possibly realized the need to manage these packages better. Thankfully, all python ever needs is the source, and all you need to do is to place the source in the python path. Most projects use Distributed Version Control Systems like Mercurial and Git, and they come locally with the entire history of the source which provides a lot of control to use any version of the code. For code</p>
+                <a class="readmore" href="/better-python-package-management-using-source-and-.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/understanding-decorators.html" rel="bookmark"
+                           title="Permalink to Understanding decorators">Understanding decorators</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-23T09:04:57+05:30">
+                Published: Tue 23 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-23T19:34:57+05:30">
+                Updated: Tue 23 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>If you used Django for any length of time, you would have come across the <code>login_required</code> decorator. You write <code>@login_required</code> before a view, and it magically becomes accessible only to authenticated users. Decorators were introduced in python 2.4. <a href="http://www.python.org/dev/peps/pep-0318/">PEP 318</a> is the <a href="http://www.python.org/dev/peps/">PEP</a> describing it. At the simplest decorators are nothing but callables returning other callables, and the decorator syntax <code>@decorator</code> is nothing but <code>foo = bar(foo)</code>, where both <code>bar</code> and <code>foo</code> are callables. Let us see some decorators in action. In [1]: def good_function(): ...: print 'I am a good function' ...: ...: In [2]: def decorator(orig_func): ...: def</p>
+                <a class="readmore" href="/understanding-decorators.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/generating-pseudo-random-text-with-markov-chains-u.html" rel="bookmark"
+                           title="Permalink to Generating pseudo random text with Markov chains using Python">Generating pseudo random text with Markov chains using Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-16T00:07:16+05:30">
+                Published: Tue 16 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-16T11:54:11+05:30">
+                Updated: Tue 16 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>First the definition from <a href="http://mathworld.wolfram.com/MarkovChain.html">Wolfram</a> <blockquote> A Markov chain is collection of random variables {X_t} (where the index t runs through 0, 1, ...) having the property that, given the present, the future is conditionally independent of the past. </blockquote> <a href="http://en.wikipedia.org/wiki/Transition_probabilities">Wikipedia</a> is a little clearer <blockquote> ...Markov chain is a stochastic process with markov property ... [Which means] state changes are probabilistic, and future state depend on current state only. </blockquote> Markov chains have various uses, but now let's see how it can be used to generate gibberish, which might look legit. The algorithm is, 0. Have a text which</p>
+                <a class="readmore" href="/generating-pseudo-random-text-with-markov-chains-u.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/yahoo-boss-python-api.html" rel="bookmark"
+                           title="Permalink to Yahoo BOSS python api">Yahoo BOSS python api</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-14T11:17:51+05:30">
+                Published: Sun 14 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-14T21:47:51+05:30">
+                Updated: Sun 14 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>Yahoo has a search api with generous limits, <a href="http://developer.yahoo.com/search/boss/">BOSS</a>. There are a few <a href="http://www.google.co.in/search?q=boss+python+api">python</a> <a href="http://pysearch.sourceforge.net/">apis</a> around it. But we wanted a lighter api, and one which has the same interface as out Bing Python api. So here is the updated <a href="http://pypi.python.org/pypi/bingapi/0.02">bingapi</a>.(Now with bossapi.py as well). Or svn it from <a href="https://svn.uswaretech.com/bingapi/">here</a> ------------- ### Usage Usage is mostly compatible with bingapi In [2]: from bingapi import bossapi In [3]: api = bossapi.Boss('<appid>') In [4]: api.do_web_search('Uswaretech') Out[4]: .... In [5]: api.do_news_search('salsa') Out[5]: ... In [6]: api.do_siteexplorer_search('http://uswaretech.com') Out[6]: .....</p>
+                <a class="readmore" href="/yahoo-boss-python-api.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/python-wrapper-on-bing-api.html" rel="bookmark"
+                           title="Permalink to Python Wrapper on Bing API">Python Wrapper on Bing API</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-10T01:39:33+05:30">
+                Published: Wed 10 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-10T12:09:33+05:30">
+                Updated: Wed 10 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>The newly launched search engine <a href="http://www.bing.com/">Bing</a> has a simple restful API. We have created a thin Python wrapper over this API, which allows to query the Bing servers in a very pythonic way. Installing this is as easy as <code>easy_install bingapi</code>. [Or get it <a href="https://svn.uswaretech.com/bingapi/">here</a> or <a href="http://pypi.python.org/pypi/bingapi/0.01">here</a> ] Using from bingapi import bingapi bing = bingapi.Bing(<appid>) bing.do_web_search('Usware Technologies') ---------------------------------- The README from the project is posted below, which provides more details on using this. bingapi.py is a very thin python wrapper over the Bing API. Bing provides a very simple Restful interface to their search engine and provides results in</p>
+                <a class="readmore" href="/python-wrapper-on-bing-api.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/develop-twitter-api-application-in-django-and-depl.html" rel="bookmark"
+                           title="Permalink to Develop Twitter API application in django and deploy on Google App Engine">Develop Twitter API application in django and deploy on Google App Engine</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-04-28T16:44:01+05:30">
+                Published: Tue 28 April 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-04-29T03:14:01+05:30">
+                Updated: Wed 29 April 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>Twitter's robust <a href="http://apiwiki.twitter.com/Twitter-API-Documentation">REST API</a> enables building of good applications that leverage its increasingly large and real-time data. <img class="alignright" title="Google App Engine" src="http://code.google.com/appengine/images/appengine_lowres.gif" alt="" width="142" height="109" /> Google's cloud system <a href="http://code.google.com/appengine/">App Engine</a> not only provides a scalable platform for deploying applications, but also proves to be economically viable because of its pay per resource usage model and a large free quota. Little wonder then, there are increasingly large number of twitter apps being deployed on App Engine. In this post, I am going to examine how to create a simple application based on twitter's REST API and deploy</p>
+                <a class="readmore" href="/develop-twitter-api-application-in-django-and-depl.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/exploring-authorizenet-payment-gateway-options-and.html" rel="bookmark"
+                           title="Permalink to Exploring Authorize.net Payment Gateway Options and integrating it with django">Exploring Authorize.net Payment Gateway Options and integrating it with django</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-31T09:24:33+05:30">
+                Published: Tue 31 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-31T19:54:33+05:30">
+                Updated: Tue 31 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p><a href="http://authorize.net/" target="_blank">Authorize.net</a> has a user base of over 200k merchants making it the largest <a class="zem_slink" title="Payment gateway" rel="wikipedia" href="http://en.wikipedia.org/wiki/Payment_gateway">payment gateway</a> service provider. Most e-commerce solutions already integrate with Authorize.net, including our favorite e-commerce store <a href="http://www.satchmoproject.com/" target="_blank">Satchmo</a>, developed in django, that <a href="http://uswaretech.com/blog/2009/03/create-your-own-online-store-in-few-hours-using-satchmo-django/">we have covered earlier.</a> However, many shopping portals still require custom development. The robust <a href="http://en.wikipedia.org/wiki/Representational_State_Transfer">REST API</a> Authorize.net offers (AIM and SIM) allows for integration with e-commerce merchants' websites. The AIM API allows for the check out of the customer within the merchant's site, it requires <a class="zem_slink" title="Transport Layer Security" rel="wikipedia" href="http://en.wikipedia.org/wiki/Transport_Layer_Security">SSL certificate</a> for the</p>
+                <a class="readmore" href="/exploring-authorizenet-payment-gateway-options-and.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/create-your-own-online-store-in-few-hours-using-sa.html" rel="bookmark"
+                           title="Permalink to Create your own online store in few hours using satchmo (django)">Create your own online store in few hours using satchmo (django)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-25T23:28:11+05:30">
+                Published: Wed 25 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-26T09:58:11+05:30">
+                Updated: Thu 26 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <h2>What is satcmo? Satchmo is a django based framework which allows you to create an online store very quickly. Satchmo also offers powerful customizations which allows you to tune a store to your specific business needs. Sample Demo Store : <a href="http://www.xfgw.info/store">http://www.xfgw.info/store</a> #### Login details 1. Use below mail and password to login into the site: <br /> Email : test@test.com password : welcome 2. Use dummy credit card number like 4222-2222-2222-2222 (VISA) to make any purchases. Above is the sample demo store which is being provided by satchmo outofbox just after installing it. In this blog post we will</h2>
+                <a class="readmore" href="/create-your-own-online-store-in-few-hours-using-sa.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/create-a-new-social-networking-site-in-few-hours-u.html" rel="bookmark"
+                           title="Permalink to Create a new social networking site in few hours using pinax platform (django).">Create a new social networking site in few hours using pinax platform (django).</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-18T06:33:20+05:30">
+                Published: Wed 18 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-18T17:03:20+05:30">
+                Updated: Wed 18 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>if you are excited to see how such a social networking site would like.Just follow the below link <a href="http://www.xfgx.info/">http://www.xfgx.info/</a> We made the above site on pinax platform (Please note pinax has done most of things we have done very little).A platform for rapidly developing websites. In this blogpost we will try to understand what pinax is? How it helps a developer to do things quickly? How to install &amp; deploy? and various other things related to pinax. ## What is Pinax? In the present day world every website require components like regisration,openid support,some kind groups/ tribes,user profiles etc.....Almost every site</p>
+                <a class="readmore" href="/create-a-new-social-networking-site-in-few-hours-u.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="/author/agiliq18.html">&laquo;</a>
+    Page 19 / 24
+        <a href="/author/agiliq20.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

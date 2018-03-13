@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Writing jQuery plugins using Coffeescript</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/writing-jquery-plugins-using-coffeescript.html" rel="bookmark"
+           title="Permalink to Writing jQuery plugins using Coffeescript">Writing jQuery plugins using Coffeescript</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-01-06T00:24:11+05:30">
+                Published: Fri 06 January 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-01-06T11:54:11+05:30">
+                Updated: Fri 06 January 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/coffeescript.html">coffeescript</a> </p>
+</footer><!-- /.post-info -->      <p>So you want to write a Jquery plugin. If you know jQuery and Coffeescript, this would be amazingly easy.</p>
+<p>I will walk you through writing a jQuery plugin which will allow us to add alternating colors to alternating rows.</p>
+<p>Here is the plugin in its entirety.</p>
+<div class="highlight"><pre><span></span>$ <span class="o">=</span> jQuery
+$.fn.zebraTable <span class="o">=</span> <span class="o">(</span>options<span class="o">)</span> -&gt;
+    <span class="nv">defaults</span> <span class="o">=</span> 
+        evenColor: <span class="s1">&#39;#ccc&#39;</span>
+        oddColor : <span class="s1">&#39;#eee&#39;</span>
+
+    <span class="nv">options</span> <span class="o">=</span> $.extend<span class="o">(</span>defaults, options<span class="o">)</span>
+    @each -&gt;
+        <span class="k">$(</span><span class="s2">&quot;tr:even&quot;</span>, this<span class="k">)</span>.css<span class="o">(</span><span class="s1">&#39;background-color&#39;</span>, options.evenColor<span class="o">)</span>
+        <span class="k">$(</span><span class="s2">&quot;tr:odd&quot;</span> , this<span class="k">)</span>.css<span class="o">(</span><span class="s1">&#39;background-color&#39;</span>, options.oddColor<span class="o">)</span>
+</pre></div>
+
+
+<p>Lets look at what we did.</p>
+<ol>
+<li>We bound $ to jQuery object.</li>
+<li>We created an anonymous functions and added this to jQuery, by assigning it to <code>$.fn.zebraTable</code></li>
+<li>After this we will be able to do <code>$("selector").zebraTable()</code> or `$(selector).zerbraTable(optionsDict)</li>
+<li>This function will set background-color on alternating rows.</li>
+</ol>
+<p>Lets look at the compiled Javascript output</p>
+<div class="highlight"><pre><span></span><span class="o">(</span><span class="nt">function</span><span class="o">()</span> <span class="p">{</span>
+  <span class="err">var</span> <span class="err">$</span><span class="p">;</span>
+
+  <span class="err">$</span> <span class="err">=</span> <span class="err">jQuery</span><span class="p">;</span>
+
+  <span class="err">$.fn.zebraTable</span> <span class="err">=</span> <span class="err">function(options)</span> <span class="err">{</span>
+    <span class="err">var</span> <span class="err">defaults</span><span class="p">;</span>
+    <span class="err">defaults</span> <span class="err">=</span> <span class="err">{</span>
+      <span class="n">evenColor</span><span class="p">:</span> <span class="s1">&#39;#ccc&#39;</span><span class="p">,</span>
+      <span class="n">oddColor</span><span class="o">:</span> <span class="s1">&#39;#eee&#39;</span>
+    <span class="p">}</span><span class="o">;</span>
+    <span class="nt">options</span> <span class="o">=</span> <span class="o">$</span><span class="p">.</span><span class="nc">extend</span><span class="o">(</span><span class="nt">defaults</span><span class="o">,</span> <span class="nt">options</span><span class="o">);</span>
+    <span class="nt">return</span> <span class="nt">this</span><span class="p">.</span><span class="nc">each</span><span class="o">(</span><span class="nt">function</span><span class="o">()</span> <span class="p">{</span>
+      <span class="err">$(&quot;</span><span class="n">tr</span><span class="p">:</span><span class="n">even</span><span class="s2">&quot;, this).css(&#39;background-color&#39;, options.evenColor);</span>
+<span class="s2">      return $(&quot;</span><span class="n">tr</span><span class="o">:</span><span class="n">odd</span><span class="err">&quot;</span><span class="p">,</span> <span class="n">this</span><span class="p">)</span><span class="o">.</span><span class="nf">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="n">options</span><span class="err">.</span><span class="n">oddColor</span><span class="p">);</span>
+    <span class="p">}</span><span class="o">);</span>
+  <span class="err">}</span><span class="o">;</span>
+
+<span class="err">}</span><span class="o">)</span><span class="p">.</span><span class="nc">call</span><span class="o">(</span><span class="nt">this</span><span class="o">);</span>
+</pre></div>
+
+
+<p>And you can call it like this.</p>
+<div class="highlight"><pre><span></span>$(function() {
+  $(&quot;table&quot;).zebraTable(  {
+      evenColor: &#39;red&#39;,
+      oddColor: &#39;yellow&#39;
+    });
+});
+</pre></div>
+
+
+<p>Salient features.</p>
+<ol>
+<li>Since Coffeescript will enclose the code in a function <code>$ = jQuery</code> doesn't overwrite everything, and there is no need to enclose the plugin in its own closure.</li>
+<li>Inside the plugin <code>this</code> refers to the selected jQuery object, so there is no need to do <code>$(this)</code>.</li>
+</ol>
+<hr>
+<p>You can see the whole code on <a href="https://github.com/shabda/coffeescript-jquery-plugin-example">github here</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

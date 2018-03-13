@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Testing webhooks in development platforms</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/testing-webhooks-in-development-platforms.html" rel="bookmark"
+           title="Permalink to Testing webhooks in development platforms">Testing webhooks in development platforms</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-09-23T08:57:56+05:30">
+                Published: Thu 23 September 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-09-23T19:27:56+05:30">
+                Updated: Thu 23 September 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+
+</footer><!-- /.post-info -->      Testing webhooks in development platforms
+
+
+
+Webhooks were popularized by PayPal and have become commonplace now a days. A typical webhook service fires a POST to a URL of your choice whenever something interesting happens. You handle this request and respond accordingly.
+
+But you need to test webhooks regularly during development and it is a bit of a problem if your development server is inaccessible from the rest of the Internet.
+I have tried to solve this using ssh and nginx.
+
+For this method to work you need:
+
+
+Development server (which can hopefully process the webhook at /webhook) lets call it (D)
+SSH accessible server (S)
+nginx to be installed on the (S)
+
+
+
+We will ssh into the server with a 'backdoor' that will forward connections from (S) to (D). This is also called reverse port forward.
+On (D)
+
+ssh -R 8888:localhost:80 user@(S)
+
+
+See man ssh for details
+
+Here we are telling ssh to create an incoming port (8888) on (S) and forward them to (D):80. So if you access localhost:8888 on (S), ssh will call (D):80 and return the response from (D). Note that you can only call localhost:8888 from (S) right now, because the port 8888 SSH creates does not listen on the public address. This means that calling (S):8888 from the internet will fail. Now, we need to forward webhook calls to localhost:8888 (on (S)). Yo Dawg!
+
+Enter ngnix:
+
+nginx is a reverse proxy that can listen to calls from public address and forward them to local ports. Now we can listen to the webhook on (S) and forward the request to localhost:8888. Here's how:
+On (S)
+
+location /webhook {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://localhost:8888/webhook;
+}
+
+
+this part lets nginx know that webhook requests should be forwarded to localhost:8888. What is localhost:8888? Oh yes, its the backdoor to (D):80 that SSH created.
+
+The result:
+
+
+Webhook provider calls (S)/webhook.
+nginx receives /webhook and forwards to localhost:8888/webhook
+ssh receives localhost:8888/webhook and forwards to (D):80/webhook
+Inception!
+
+
+
+tl;dr
+
+http://public_server/webhook ==nginx=&gt; http://localhost:8888/webhook =ssh==&gt; http://dev_server:80/webhook
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

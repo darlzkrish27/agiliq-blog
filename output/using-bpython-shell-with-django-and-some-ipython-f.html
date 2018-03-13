@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Using bpython shell with django (and some Ipython features you should know)</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/using-bpython-shell-with-django-and-some-ipython-f.html" rel="bookmark"
+           title="Permalink to Using bpython shell with django (and some Ipython features you should know)">Using bpython shell with django (and some Ipython features you should know)</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-12-12T11:17:37+05:30">
+                Published: Sat 12 December 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-12-12T22:47:37+05:30">
+                Updated: Sat 12 December 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> </p>
+</footer><!-- /.post-info -->      <h3>What is bpython?</h3>
+<blockquote>
+<p>bpython is a fancy interface to the Python interpreter for Unix-like operating system.</p>
+</blockquote>
+<p>says the <a href="http://bpython-interpreter.org/">bpython</a> home page. It provides syntax highlighting, auto completion, auto-indentation and such stuff.</p>
+<p>Unlike <a href="http://ipython.scipy.org/moin/">iPython</a>, which implements then entire shell functions and emulates the standard python shell, and adds enhancements, bpython just adds features on top of the existing python shell functionality, using the curses module. </p>
+<p><img src="http://i.imgur.com/cqky1.png" alt="bpython" /></p>
+<p>The "killer feature" of bpython is, as you can see from the image above, the IDE like prompting of the function parameters and the doc string of the function dynamically. I have always thought, what <a href="http://www.jetbrains.com/idea/">IntellijIDEA</a> is to Java, IPython is to Python*. But bpython makes it more so, in terms of the code completion, which adds a lot of value to a <em>ramping up developer</em>.</p>
+<p>The only Python IDE that provides Source Assistant and Go-To-Source functionality conveniently, is the commercial one, <a href="http://www.wingide.com/wingide">Wing IDE Professional</a>. Even with that, since all the defined models are replaced (by using meta-classes) in the runtime, that source assistant is not perfect. Newer versions of Wing seems to claim to obtain data dynamically at the runtime, but its not always comfortable to write code, keeping the IDE in a breakpoint. But hey, bpython provides all these for free!</p>
+<h3>But I already use Ipython</h3>
+<p>You do? So do I. In fact, I am a Power Ipython user, I use all kinds of <a href="http://ipython.scipy.org/doc/stable/html/interactive/reference.html#magic-command-system">%magic</a> functions: %whos, <a href="http://ipython.scipy.org/doc/stable/html/interactive/reference.html#session-logging-and-restoring">%logstart</a>, %bookmark, %ed  and sometimes use Ipython as an alternative even to bash: %cd, %ls, %ll. And even for doc testing: <a href="http://ipython.scipy.org/doc/stable/html/interactive/reference.html#pasting-of-code-starting-with-or">%doctest_mode</a>, copy-pasting %hist -n or running some code module in the interpreter namespace: %run -i and searching code %psearch. You can also give any arbitrary bash(or your default shell) command by escaping it with !. Oh, ?, ?? and / are of course the starters.</p>
+<p>In fact did you know, you could get to ipython shell within any arbitrary place within your django code? Just use the following:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.Shell</span> <span class="kn">import</span> <span class="n">IPShellEmbed</span>
+<span class="n">ipython</span> <span class="o">=</span> <span class="n">IPShellEmbed</span><span class="p">()</span>
+</pre></div>
+
+
+<p>and then call ipython() anywhere within your view, model, forms and you will be dropped to the shell. Its <a href="http://aymanh.com/python-debugging-techniques">like ipdb.set_trace()</a> only better (unless you want to step through, that is).</p>
+<h3>The Python readline bug</h3>
+<p>The Python version 2.6.4 (the version that is shipped with Ubuntu 9.10), introduced a <a href="http://bugs.python.org/issue5833">readline bug</a> that adds spaces after tab completion. This bug also affects the Ipython, as it uses the same readline module. If you spend a lot of time on the shell (if you use python, you must, right?), it is very annoying to backspace after each tab, all the time.</p>
+<p>Although the bug got fixed pretty soon, it hasn't yet made it to any release that ubuntu updates to. There are ways to workaround this problem, by fixing it at the python level and at the Ipython level, many of them are discussed on the corresponding <a href="https://bugs.launchpad.net/ipython/+bug/470824">Ipython bug</a> </p>
+<h3>Using bpython with django</h3>
+<p>Now that you want to use bpython with django, either because you like the auto completion, or because you find the read line bug annoying (and don't want/care-enough to patch your python locally), or you just want to try it, how to do it?</p>
+<p><code>django manage.py shell</code> unfortunately, drops only into the ipython shell (if you have ipython installed), and there is no straight forward way to get it to drop to bpython.</p>
+<p>But there is still a way to use bpython with django. Just modify your ~/.bashrc to define a python startup environment variable</p>
+<div class="highlight"><pre><span></span>export PYTHONSTARTUP=~/.pythonrc
+</pre></div>
+
+
+<p>And within it, setup the django environment, that is, do it here manually the thing that <code>python manage.py shell</code> would do for you:</p>
+<div class="highlight"><pre><span></span><span class="c1">#.pythonrc</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">django.core.management</span> <span class="kn">import</span> <span class="n">setup_environ</span>
+    <span class="kn">import</span> <span class="nn">settings</span>
+    <span class="n">setup_environ</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s1">&#39;imported django settings&#39;</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+
+<p>This way, <code>bpython</code> or even just <code>python</code> on the command line, should import the django environment for you.</p>
+<h3>Importing all models automatically into the shell</h3>
+<p>But then, if you are possibly already used to <code>python manage.py shell_plus</code> (If you are not, you should be.) that is defined by <a href="http://wiki.github.com/django-extensions/django-extensions/current-command-extensions">django_command_extensions</a>.</p>
+<p>So while we are at setting up the django environment, lets just also import all the models into the shell namespace, so that it is convenient to work. Following is some ugly quick hack to get it done.</p>
+<script src="http://gist.github.com/231878.js?file=.pythonrc.py"></script>
+
+<p>This can of course be improved upon. If you do it, just leave it in the comments! In fact it would be good if it also includes <code>from startup.py import *</code> in a try catch, so that, you can put some extra code into startup.py. Saving into startup.py from within a bpython shell is just a <code>Ctrl+s</code> anyway. That way each time you get to the shell, you can have the same expected environment; and it is quite easy to change that file.</p>
+<p>*I know, I know, IPython doesn't refactor code, nor build, nor does a million things that Intellij does, but <a href="http://dirtsimple.org/2004/12/python-is-not-java.html">Python is not Java</a> and basically both intend to enhance developer productivity. And I spend a lot of time on the IPython shell and find it to be a tool just like Intellij is a tool, for Java.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

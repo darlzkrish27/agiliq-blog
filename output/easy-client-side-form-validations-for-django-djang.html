@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Easy client side form validations for Django: Django Parsley</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/easy-client-side-form-validations-for-django-djang.html" rel="bookmark"
+           title="Permalink to Easy client side form validations for Django: Django Parsley">Easy client side form validations for Django: Django Parsley</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-02-07T00:00:00+05:30">
+                Published: Thu 07 February 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-02-07T11:30:00+05:30">
+                Updated: Thu 07 February 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p><a href="http://parsleyjs.org/">Parsleyjs</a> is a JavaScript library to do client side data validations.
+It does this in a non-intrusive way via adding a <code>data-*</code> attributes to form fields. Check it out, it's really slick.</p>
+<p>Django forms do a great job of server side data validations. By integrating Parsley with Django form, you get good client side data validations as well. Get the <a href="https://github.com/agiliq/django-parsley">app here</a>.</p>
+<h3>Some design considerations</h3>
+<p>When I started writing this app I wanted to make it really easy to use. My first thought was to make this a filter or a template tag which would have allowed you to do:</p>
+<div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">form</span><span class="o">|</span><span class="nf">parsleyfy</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+
+
+<p>However, I use Django-crispy-forms in all my projects. If parsley was a filter, it would have made piping to <code>|crispy</code> impossible as the render step would already have been completed. Hence <code>parsleyfy</code> is class decorator. Django-crispy-forms and family will play well with <code>parsleyfy</code>.</p>
+<p>Here is the readme.</p>
+<p><a href="https://travis-ci.org/agiliq/Django-parsley"><img alt="Build Status" src="https://travis-ci.org/agiliq/Django-parsley.png?branch=master"></a></p>
+<h3>What is it?</h3>
+<p><a href="http://parsleyjs.org/">Parsleyjs</a> is a JavaScript library to do client side data validations.
+It does this in a non-intrusive way via adding a <code>data-*</code> attributes to form fields.</p>
+<p>When you define a Django form, you get server side validations for free using
+the form field attributes. Django-parsley adds these validations to client side, by tagging your form with <code>data-*</code> attributes.</p>
+<h3>Installation</h3>
+<p>Add <code>parsley</code> to your <code>INSTALLED_APPS</code>.</p>
+<h3>Usage</h3>
+<p><code>parsley</code> provides a single class decorator called <code>parsleyfy</code>. Decorate your <code>Form</code> with <code>parsleyfy</code> to get the validations.</p>
+<p>Eg.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">parsley.decorators</span> <span class="kn">import</span> <span class="n">parsleyfy</span>
+
+
+<span class="nd">@parsleyfy</span>
+<span class="k">class</span> <span class="nc">FieldTypeForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">URLField</span><span class="p">()</span>
+    <span class="n">url2</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">()</span>
+    <span class="n">email2</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">income</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Your rendered form's HTML will look like this</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;p&gt;&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_name&quot;</span><span class="nt">&gt;</span>Name:<span class="nt">&lt;/label&gt;</span> <span class="nt">&lt;input</span> <span class="na">data-required=</span><span class="s">&quot;true&quot;</span> <span class="na">data-minlength=</span><span class="s">&quot;3&quot;</span> <span class="na">maxlength=</span><span class="s">&quot;30&quot;</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">data-maxlength=</span><span class="s">&quot;30&quot;</span> <span class="na">id=</span><span class="s">&quot;id_name&quot;</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_url&quot;</span><span class="nt">&gt;</span>Url:<span class="nt">&lt;/label&gt;</span> <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">data-required=</span><span class="s">&quot;true&quot;</span> <span class="na">data-type=</span><span class="s">&quot;url&quot;</span> <span class="na">name=</span><span class="s">&quot;url&quot;</span> <span class="na">id=</span><span class="s">&quot;id_url&quot;</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_url2&quot;</span><span class="nt">&gt;</span>Url2:<span class="nt">&lt;/label&gt;</span> <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">data-type=</span><span class="s">&quot;url&quot;</span> <span class="na">name=</span><span class="s">&quot;url2&quot;</span> <span class="na">id=</span><span class="s">&quot;id_url2&quot;</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_email&quot;</span><span class="nt">&gt;</span>Email:<span class="nt">&lt;/label&gt;</span> <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">data-required=</span><span class="s">&quot;true&quot;</span> <span class="na">data-type=</span><span class="s">&quot;email&quot;</span> <span class="na">name=</span><span class="s">&quot;email&quot;</span> <span class="na">id=</span><span class="s">&quot;id_email&quot;</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_email2&quot;</span><span class="nt">&gt;</span>Email2:<span class="nt">&lt;/label&gt;</span> <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">data-type=</span><span class="s">&quot;email&quot;</span> <span class="na">name=</span><span class="s">&quot;email2&quot;</span> <span class="na">id=</span><span class="s">&quot;id_email2&quot;</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_age&quot;</span><span class="nt">&gt;</span>Age:<span class="nt">&lt;/label&gt;</span> <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">data-required=</span><span class="s">&quot;true&quot;</span> <span class="na">data-type=</span><span class="s">&quot;digits&quot;</span> <span class="na">name=</span><span class="s">&quot;age&quot;</span> <span class="na">id=</span><span class="s">&quot;id_age&quot;</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_income&quot;</span><span class="nt">&gt;</span>Income:<span class="nt">&lt;/label&gt;</span> <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">data-required=</span><span class="s">&quot;true&quot;</span> <span class="na">data-type=</span><span class="s">&quot;number&quot;</span> <span class="na">name=</span><span class="s">&quot;income&quot;</span> <span class="na">id=</span><span class="s">&quot;id_income&quot;</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+</pre></div>
+
+
+<p>Note the <code>data-*</code> attributes.</p>
+<p>You could also do</p>
+<p>FieldTypeForm = parsleyfy(FieldTypeForm)</p>
+<p>Which is the same thing.</p>
+<p>Put this form inside a</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;form</span> <span class="na">data-validate=</span><span class="s">&quot;parsley&quot;</span><span class="nt">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.as_p</span> <span class="cp">}}</span>
+<span class="nt">&lt;/form&gt;</span>
+</pre></div>
+
+
+<p>Include the parsleyjs and you are good to go.</p>
+<h3>License</h3>
+<p>3 Clause BSD.</p>
+<h3>Bug report and Help</h3>
+<p>For bug reports open a github ticket. Patches gratefully accepted. Need help? <a href="http://agiliq.com/contactus">Contact us here</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

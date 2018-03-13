@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - models</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/doing-things-with-django-models-aka-django-models-.html">Doing things with Django models - aka - Django models tutorial</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2010-01-18T00:00:17+05:30">
+                Published: Mon 18 January 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-01-18T11:30:17+05:30">
+                Updated: Mon 18 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/models.html">models</a> </p>
+</footer><!-- /.post-info --><p>Django abstracts most of the actions you would be doing with the Database.
+What it doesn't abstracts, and doesn't try to abstract is the Database modelling part. This is a quick tutorial
+describing to how model your data in Django models.py, and how to access and modify them.</p>
+<p>Consider a hypothetical HR department, which wants you to build an application to track and manage their processes.
+They have employees who work for a department, contractors who work for multiple department. Let's see how you
+you would do that in Django.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">department</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;Department&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Department</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">EmployeeHistory</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">employee</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">Employee</span><span class="p">)</span>
+    <span class="n">date_joined</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+    <span class="n">marital_status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Contactor</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">departments</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Department</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Let's see the type of relationship we created here.</p>
+<p>An <code>Employee</code> has a Many-to-one relationship with <code>Department</code>, (i.e. One department will have many
+<code>Employee</code>, but one employee will have a single departments.)</p>
+<p>So <code>Employee</code> has a field <code>department = models.ForeignKey("Department")</code>. See that the <code>ForeignKey</code> field
+was added on the class which has in <em>many</em>. In database, this creates a FK from in <code>Employee</code> table which refernces
+<code>Departments</code>.</p>
+<p>A <code>Contractor</code> has many-to-many relationships with <code>Department</code>, so it has a <code>ManyToMany</code> field. This field can be created
+on either classes. At a database level this creates a new table which has a FK to both the tables.</p>
+<p>A <code>Employee</code> has one-to-one relationship with <code>EmployeeHistory</code>. The thing to note here is that whatever we could do with
+OneToOneField, we can do by including the fields in the Other Class directly. However when there are fields which are only rarely
+needed with a given model, it is useful to separate them via a one-to-one field. The one to one field can be on either class.</p>
+<h4>Accessing objects.</h4>
+<h5>Getting a specific employee.</h5>
+<div class="highlight"><pre><span></span>Employee.objects.get(pk = someval)
+Employee.objects.get(name= someval)
+</pre></div>
+
+
+<h5>Given an department get all employees.</h5>
+<div class="highlight"><pre><span></span>department.employee_set.all()
+</pre></div>
+
+
+<p>The <code>department</code> gets an attribute name <code>&lt;FKClass&gt;_set</code>.</p>
+<p>Given an employee, get all colleagues.</p>
+<div class="highlight"><pre><span></span>employee.department.employee_set.objects.all()
+</pre></div>
+
+
+<p>To get siblings, get parents, and get all children.</p>
+<p>Given an department, get number of employees.</p>
+<div class="highlight"><pre><span></span>department.employee_set.all().count()
+</pre></div>
+
+
+<p>Ok so the HR department bosses are happy with what they see, and ask you to track this data,
+who is the manager of each employee, who is the HOD of each department and when did each employee took leave.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">null</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">department</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;Department&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Department</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">hod</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;Employee&quot;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">EmployeeHistory</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">employee</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">Employee</span><span class="p">)</span>
+    <span class="n">date_joined</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+    <span class="n">marital_status</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Contactors</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">departments</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Department</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">EmployeeLeave</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">leave_taken</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+    <span class="n">employee</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Employee</span><span class="p">)</span>
+</pre></div>
+
+
+<p>So we now have new fields <code>hod = models.OneToOneField("Employee")</code> in department and
+<code>manager = models.ForeignKey("self", blank = True, null = True)</code> and a new model <code>EmployeeLeave</code>. Let su see
+the new realtions,</p>
+<p>As one <code>Department</code> will have one <code>Employee</code> as hod, and <code>Employee</code> can head at max one <code>Department</code>, we have a one to one relationship<br>
+As many <code>Employee</code> will report to another <code>Employee</code>, so we have a FK on <code>Employee</code>, referencing <code>self</code>.
+As <code>Employee</code> will take many <code>EmployeeLeave</code>, <code>EmployeeLeave</code> has a FK to <code>Epployee</code></p>
+<p>Let us see some queries.</p>
+<p>Get all leaves taken by an employee this year</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="n">start_of_year</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">leaves_taken</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="n">employeeleave_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">leave_taken__gt</span><span class="o">=</span><span class="n">start_of_year</span><span class="p">,</span> <span class="n">leave_taken__lt</span> <span class="o">=</span> <span class="n">today</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Get a list of all HODs.</p>
+<div class="highlight"><pre><span></span>#As there are going to be as many Employees as departments
+departments = Department.objects.all()
+employees = [department.hod for department in departments]
+</pre></div>
+
+
+<p>Get a list of all departments a contractor works for.</p>
+<div class="highlight"><pre><span></span>contractor.department_set.all()
+</pre></div>
+
+
+<p>Get a list of all contractor who work for a department.</p>
+<div class="highlight"><pre><span></span>department.contractor_set.all()
+</pre></div>
+
+
+<p>Note that each side of a many to many relationship get a Manager.</p>
+<p>List of all managers in a given department.</p>
+<div class="highlight"><pre><span></span>Todo#(Can&#39;t think of any one query way to do this. If you know, let me know :) )
+</pre></div>
+
+
+<p>List of all leaves taken in a given department.</p>
+<div class="highlight"><pre><span></span>EmployeeLeave.objects.filter(employee__department = department)
+</pre></div>
+
+
+<p>None that we used double underscores <code>__</code> to do a filtering on a field across Entities.</p>
+<p>List of all employees which joined a given department this year.</p>
+<div class="highlight"><pre><span></span>Employee.objects.filter(department = department, employment_history__date_joined__gte=start_of_year, )
+</pre></div>
+
+
+<p>Note that we used a double underscore <code>__</code> twice, first to go across entities, and then to define the type of filter(<code>__gte</code>).
+Also we specified two filter conditions, so they were <code>ANDed</code> together.</p>
+<p>List all employees which either report too a given employee, or joined before him.</p>
+<div class="highlight"><pre><span></span>Employee.objects.filter(Q(manager = employee)|Q(employee_history__date_joined__lt = employee.employee_history.date_joined))
+</pre></div>
+
+
+<p>Note the new construct <code>Q</code>, they are used to specify complex boolean operations. Here we used the <code>|</code> (or operator) to specify or condition.</p>
+<hr>
+<p><a href="http://feeds.feedburner.com/uswarearticles">Do you subscribe to our rss feed</a>? The new feed has full text feed and many other goodness. So make sure you are subscribed to the new feed with extra fortified vitamins. <a href="http://feeds.feedburner.com/uswarearticles">Subscribe now</a>.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

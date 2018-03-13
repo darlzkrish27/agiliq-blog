@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Google diff match patch library</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/google-diff-match-patch-library.html" rel="bookmark"
+           title="Permalink to Google diff match patch library">Google diff match patch library</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-05-09T05:59:34+05:30">
+                Published: Fri 09 May 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-05-09T16:29:34+05:30">
+                Updated: Fri 09 May 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/manjunath.html">manjunath</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/google.html">google</a> </p>
+</footer><!-- /.post-info -->      <p>Diff match patch library is useful to compare the differences between the two texts.It compares the texts and displays what is added, removed or unchanged.</p>
+<p>We use <code>Python</code> in our example below.</p>
+<h4>Let us see a quick example</h4>
+<p>Firstly, we will install diff match patch</p>
+<div class="highlight"><pre><span></span>pip install diff-match-patch
+</pre></div>
+
+
+<p>Moving forward we will import diff_match_patch</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">diff_match_patch</span>
+</pre></div>
+
+
+<p>Let us consider using two strings, we will name it as <code>old_string</code> and <code>new_string</code></p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">diff_match_patch</span>
+
+<span class="n">old_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;I&#39;m selfish, impatient and a little insecure. I make mistakes,</span>
+<span class="s2">I am out of control and at times hard to handle. But if you can&#39;t handle me at my worst,</span>
+<span class="s2">then you sure as hell don&#39;t deserve me at my best.&quot;&quot;&quot;</span>
+
+<span class="n">new_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;I&#39;m selfish, impatient and a little secure. I don&#39;t make mistakes,</span>
+<span class="s2">I am out of control and at times hard to handle difficult things. But if you can&#39;t handle me at my worst,</span>
+<span class="s2">then you sure as hell don&#39;t deserve me at my best.&quot;&quot;&quot;</span>
+</pre></div>
+
+
+<p>Now, we will create an object of <code>diff_match_patch</code> and call <code>diff_main(old_string, new_string)</code></p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">diff_match_patch</span>
+
+<span class="n">old_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;I&#39;m selfish, impatient and a little insecure. I make mistakes,</span>
+<span class="s2">I am out of control and at times hard to handle. But if you can&#39;t handle me at my worst,</span>
+<span class="s2">then you sure as hell don&#39;t deserve me at my best.&quot;&quot;&quot;</span>
+
+<span class="n">new_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;I&#39;m selfish, impatient and a little secure. I don&#39;t make mistakes,</span>
+<span class="s2">I am out of control and at times hard to handle difficult things. But if you can&#39;t handle me at my worst,</span>
+<span class="s2">then you sure as hell don&#39;t deserve me at my best.&quot;&quot;&quot;</span>
+
+<span class="n">diff_obj</span> <span class="o">=</span> <span class="n">diff_match_patch</span><span class="o">.</span><span class="n">diff_match_patch</span><span class="p">()</span>
+<span class="n">diffs</span> <span class="o">=</span> <span class="n">diff_obj</span><span class="o">.</span><span class="n">diff_main</span><span class="p">(</span><span class="n">old_string</span><span class="p">,</span> <span class="n">new_string</span><span class="p">)</span>
+</pre></div>
+
+
+<h4>What <code>diff_main(text1, text2)</code> does?</h4>
+<p>It computes an array of differences to describe the transformation of text1 into text2.
+For Example in the above code <code>diffs</code> contains an array of tuples.</p>
+<p>We will see what this tuple contains, before that let us make this array Human readable.</p>
+<p><code>diff_match_patch</code> has a method <code>diff_cleanupSemantic(diffs)</code> which does the job for us.</p>
+<div class="highlight"><pre><span></span>diff_obj.diff_cleanupSemantic(diffs)
+</pre></div>
+
+
+<p>Now variable <code>diffs</code> contains</p>
+<p><code>[(0, "I'm selfish, impatient and a little "),
+ (-1, 'in'),
+ (0, 'secure. I '),
+ (1, "don't "),
+ (0, 'make mistakes,\nI am out of control and at times hard to handle'),
+ (1, ' difficult things'),
+ (0, ". But if you can't handle me at my worst,\nthen you sure as hell don't deserve me at my best.")]</code></p>
+<p>Now it looks better, let us see what these tuples contains:</p>
+<ul>
+<li>The first element specifies if it is an insertion (1), a deletion (-1) or an equality (0).</li>
+<li>The second element specifies the affected text. </li>
+</ul>
+<p>To convert these array of tuples to HTML.We use <code>diff_prettyHtml(diffs)</code>.</p>
+<div class="highlight"><pre><span></span>html = diff_obj.diff_prettyHtml(diffs)
+</pre></div>
+
+
+<p>There you are, we can now see the differences in old and new text.</p>
+<p><strong> <span>I\'m selfish, impatient and a little </span><del style="background:#ffe6e6;">in</del><span>secure. I </span><ins style="background:#e6ffe6;">don\'t </ins> <br>
+<span>make mistakes,&para;<br>I am out of control and at times hard to handle</span><ins style="background:#e6ffe6;"> difficult things</ins><span>. But if you can\'t
+handle me at my worst,&para;<br>then you sure as hell don\'t deserve me at my best.</span> </strong></p>
+<p>But the above html is not so clear to understand what is added and removed right?</p>
+<p>We will write a method to see these changes side by side.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">diff_match_patch</span>
+
+<span class="n">old_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;I&#39;m selfish, impatient and a little insecure. I make mistakes,</span>
+<span class="s2">I am out of control and at times hard to handle. But if you can&#39;t handle me at my worst,</span>
+<span class="s2">then you sure as hell don&#39;t deserve me at my best.&quot;&quot;&quot;</span>
+
+<span class="n">new_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;I&#39;m selfish, impatient and a little secure. I don&#39;t make mistakes,</span>
+<span class="s2">I am out of control and at times hard to handle difficult things. But if you can&#39;t handle me at my worst,</span>
+<span class="s2">then you sure as hell don&#39;t deserve me at my best.&quot;&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">SideBySideDiff</span><span class="p">(</span><span class="n">diff_match_patch</span><span class="o">.</span><span class="n">diff_match_patch</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">old_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns HTML representation of &#39;deletions&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="ow">in</span> <span class="n">diffs</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;amp;&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;lt;&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIFF_DELETE</span><span class="p">:</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;&lt;del style=</span><span class="se">\&quot;</span><span class="s2">background:#ffe6e6;</span>
+<span class="s2">                    </span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="si">%s</span><span class="s2">&lt;/del&gt;&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">text</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">flag</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIFF_EQUAL</span><span class="p">:</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;span&gt;</span><span class="si">%s</span><span class="s2">&lt;/span&gt;&quot;</span> <span class="o">%</span> <span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">new_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns HTML representation of &#39;insertions&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="ow">in</span> <span class="n">diffs</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;amp;&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;lt;&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIFF_INSERT</span><span class="p">:</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;&lt;ins style=</span><span class="se">\&quot;</span><span class="s2">background:#e6ffe6;</span>
+<span class="s2">                    </span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="si">%s</span><span class="s2">&lt;/ins&gt;&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">text</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">flag</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIFF_EQUAL</span><span class="p">:</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&lt;span&gt;</span><span class="si">%s</span><span class="s2">&lt;/span&gt;&quot;</span> <span class="o">%</span> <span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+
+
+<span class="n">diff_obj</span> <span class="o">=</span> <span class="n">SideBySideDiff</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">diff_obj</span><span class="o">.</span><span class="n">diff_main</span><span class="p">(</span><span class="n">old_string</span><span class="p">,</span> <span class="n">new_string</span><span class="p">)</span>
+<span class="n">diff_obj</span><span class="o">.</span><span class="n">diff_cleanupSemantic</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="n">old_record</span> <span class="o">=</span> <span class="n">diff_obj</span><span class="o">.</span><span class="n">old_content</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> 
+<span class="n">new_record</span> <span class="o">=</span> <span class="n">diff_obj</span><span class="o">.</span><span class="n">new_content</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Here is the output for the above code:</p>
+<div style="margin-left: 5%; float: left; width: 45%; overflow: auto; display: block; background-color: #fff;<br />}">
+<p>
+<h2>Old record</h2>
+
+<span>I'm selfish, impatient and a little </span><del style="background:#ffe6e6;">in</del><span>secure. I </span><span>make mistakes,<br>I am out of control and at times hard to handle</span><span>. But if you can't handle me at my worst,<br>then you sure as hell don't deserve me at my best.</span>
+
+</p>
+
+</div>
+
+<div style="margin-left: 5%; float: left; width: 45%; overflow: auto; display: block; background-color: #fff;<br />}">
+<p>
+<h2>New record</h2>
+<span>I'm selfish, impatient and a little </span><span>secure. I </span><ins style="background:#e6ffe6;">don't </ins><span>make mistakes,<br>I am out of control and at times hard to handle</span><ins style="background:#e6ffe6;"> difficult things</ins><span>. But if you can't handle me at my worst,<br>then you sure as hell don't deserve me at my best.</span>
+
+</p>
+</div>
+
+<p>For reference and some more methods see <a href="http://code.google.com/p/google-diff-match-patch/wiki/API">API</a></p>
+<p>Feedbacks and suggestions are welcome :)</p>
+<p>e :)</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

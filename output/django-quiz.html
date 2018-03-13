@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Django quiz</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/django-quiz.html" rel="bookmark"
+           title="Permalink to Django quiz">Django quiz</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-12-03T10:26:31+05:30">
+                Published: Thu 03 December 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-12-03T21:56:31+05:30">
+                Updated: Thu 03 December 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>A quick django quiz. Answers available tomorrow. Get it as a text file <a href='http://dl.dropbox.com/u/271935/django-quiz.txt'>(django-quiz)</a> or on <a href="http://docs.google.com/Doc?docid=0AYLjHVQq0A8aZGZ0NTRxOXBfMGhxY2g2ZDhk&amp;hl=en">google docs</a> or read below.</p>
+<div class="highlight"><pre><span></span><span class="err">###</span> <span class="nx">Easy</span>
+
+<span class="mi">1</span><span class="p">.</span> <span class="nx">You</span> <span class="nx">have</span> <span class="nx">a</span> <span class="kr">class</span> <span class="nx">defined</span> <span class="kr">as</span>
+
+    <span class="kr">class</span> <span class="nx">Post</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="nx">is_active</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">BooleanField</span><span class="p">(</span><span class="k">default</span><span class="o">=</span><span class="nx">False</span><span class="p">)</span>
+
+<span class="nx">You</span> <span class="nx">create</span> <span class="nx">multiple</span> <span class="nx">objects</span> <span class="nx">of</span> <span class="k">this</span> <span class="nx">type</span><span class="p">.</span> <span class="nx">If</span> <span class="nx">you</span> <span class="k">do</span>
+<span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">is_active</span><span class="o">=</span><span class="nx">False</span><span class="p">),</span>
+
+<span class="nx">what</span> <span class="nx">exceptions</span> <span class="nx">is</span> <span class="nx">raised</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">MultipleObjectsReturned</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">ManyObjectsReturned</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">SyntaxError</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">MultipleModelReturned</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">ManyModelReturned</span>
+
+<span class="mi">2</span><span class="p">.</span> <span class="nx">Where</span> <span class="nx">is</span> <span class="nx">the</span> <span class="kd">function</span> <span class="nx">render_to_response</span> <span class="nx">defined</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">views</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">shortcuts</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">templates</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">contrib</span><span class="p">.</span><span class="nx">templates</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">contrib</span><span class="p">.</span><span class="nx">shortcuts</span>
+
+<span class="mi">3</span><span class="p">.</span> <span class="nx">What</span> <span class="nx">is</span> <span class="nx">the</span> <span class="k">default</span> <span class="nx">name</span> <span class="k">for</span> <span class="nx">the</span> <span class="nx">table</span> <span class="nx">created</span> <span class="k">for</span> <span class="nx">model</span> <span class="nx">named</span> <span class="nx">Post</span>
+<span class="k">in</span> <span class="nx">application</span> <span class="nx">blog</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">post_blog</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">blog_post</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">postblog</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">blogpost</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">Postblog</span>
+
+<span class="mi">4</span><span class="p">.</span> <span class="nx">How</span> <span class="k">do</span> <span class="nx">you</span> <span class="nx">send</span> <span class="nx">a</span> <span class="mi">302</span> <span class="nx">redirect</span> <span class="nx">using</span> <span class="nx">django</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="k">return</span> <span class="nx">HttpRedirectResponse</span><span class="p">()</span>
+<span class="nx">b</span><span class="p">.</span> <span class="k">return</span> <span class="nx">HttpResponseRedirect</span><span class="p">()</span>
+<span class="nx">c</span><span class="p">.</span> <span class="k">return</span> <span class="nx">HttpRedirectResponse</span><span class="p">(</span><span class="nx">permanent</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+<span class="nx">d</span><span class="p">.</span> <span class="k">return</span> <span class="nx">HttpResponseRedirect</span><span class="p">(</span><span class="nx">permanent</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+<span class="nx">e</span><span class="p">.</span> <span class="k">return</span> <span class="nx">HttpRedirectResponse</span>
+
+<span class="mi">5</span><span class="p">.</span> <span class="nx">In</span> <span class="nx">django</span><span class="p">.</span><span class="nx">contrib</span><span class="p">.</span><span class="nx">auth</span><span class="p">,</span> <span class="nx">Users</span> <span class="nx">passwords</span> <span class="nx">are</span> <span class="nx">kept</span> <span class="k">in</span> <span class="nx">what</span> <span class="nx">form</span><span class="o">?</span>
+<span class="nx">a</span><span class="p">.</span> <span class="nx">Plain</span> <span class="nx">text</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">Hashed</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">Encrypted</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">Hashed</span> <span class="nx">then</span> <span class="nx">encrypted</span>
+<span class="mi">3</span><span class="p">.</span> <span class="nx">Encrypted</span> <span class="nx">then</span> <span class="nx">hashed</span>
+
+<span class="mi">6</span><span class="p">.</span> <span class="nx">Which</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">is</span> <span class="nx">correct</span> <span class="nx">way</span> <span class="nx">to</span> <span class="nx">find</span> <span class="nx">out</span> <span class="k">if</span> <span class="nx">a</span> <span class="nx">request</span> <span class="nx">uses</span>
+<span class="nx">HTTP</span> <span class="nx">POST</span> <span class="nx">method</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">request</span><span class="p">.</span><span class="nx">is_post</span><span class="p">()</span> <span class="o">==</span> <span class="nx">True</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">request</span><span class="p">.</span><span class="nx">METHOD</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">request</span><span class="p">.</span><span class="nx">METHOD</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span>
+
+<span class="mi">7</span><span class="p">.</span> <span class="nx">Generic</span> <span class="nx">views</span> <span class="nx">have</span> <span class="nx">access</span> <span class="nx">to</span> <span class="nx">request</span> <span class="nx">context</span><span class="p">.</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">True</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">False</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">Default</span> <span class="nx">is</span> <span class="nx">True</span> <span class="nx">but</span> <span class="nx">can</span> <span class="nx">be</span> <span class="nx">set</span> <span class="nx">to</span> <span class="nx">False</span> <span class="nx">by</span> <span class="nx">GENERIC_REQUEST_CONTEXT</span> <span class="k">in</span> <span class="nx">settings</span><span class="p">.</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">Default</span> <span class="nx">is</span> <span class="nx">False</span> <span class="nx">but</span> <span class="nx">can</span> <span class="nx">be</span> <span class="nx">set</span> <span class="nx">to</span> <span class="nx">True</span> <span class="nx">by</span> <span class="nx">GENERIC_REQUEST_CONTEXT</span> <span class="k">in</span> <span class="nx">settings</span><span class="p">.</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">Can</span> <span class="nx">not</span> <span class="nx">be</span> <span class="nx">determined</span> <span class="nx">without</span> <span class="nx">extra</span> <span class="nx">information</span><span class="p">.</span>
+
+<span class="mi">8</span><span class="p">.</span> <span class="nx">The</span> <span class="nx">current</span> <span class="nx">released</span> <span class="nx">version</span> <span class="nx">of</span> <span class="nx">Django</span> <span class="nx">is</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="mf">0.96</span>
+<span class="nx">b</span><span class="p">.</span> <span class="mf">1.0</span>
+<span class="nx">c</span><span class="p">.</span> <span class="mf">1.1</span>
+<span class="nx">d</span><span class="p">.</span> <span class="mf">1.2</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">Vyper</span> <span class="nx">logix</span> <span class="mf">2.0</span>
+
+<span class="mi">9</span><span class="p">.</span> <span class="nx">Which</span> <span class="nx">of</span> <span class="nx">these</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">correct</span> <span class="nx">context_processor</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">featured_posts</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">is_featured</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+
+<span class="nx">b</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">featured_posts</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;featured_posts&#39;</span><span class="o">:</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">is_featured</span><span class="o">=</span><span class="nx">True</span><span class="p">)}</span>
+
+<span class="nx">c</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">featured_posts</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">is_featured</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+
+<span class="nx">d</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">featured_posts</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;featured_posts&#39;</span><span class="o">:</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">is_featured</span><span class="o">=</span><span class="nx">True</span><span class="p">)}</span>
+
+<span class="nx">e</span><span class="p">.</span>     
+<span class="nx">def</span> <span class="nx">featured_posts</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;featured_posts&#39;</span><span class="o">=</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">is_featured</span><span class="o">=</span><span class="nx">True</span><span class="p">))</span>
+
+<span class="mi">10</span><span class="p">.</span> <span class="nx">Which</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">valid</span> <span class="nx">Middleware</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">LatestPostMiddleware</span>:
+    <span class="kt">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">latest_post</span> <span class="o">=</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">latest</span><span class="p">()</span>
+
+<span class="nx">b</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">LatestPostMiddleware</span><span class="p">(</span><span class="nx">django</span><span class="p">.</span><span class="nx">middlewares</span><span class="p">.</span><span class="nx">BaseMiddleWare</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">latest_post</span> <span class="o">=</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">latest</span><span class="p">()</span>
+
+<span class="nx">c</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">LatestPostMiddleware</span><span class="p">(</span><span class="nx">django</span><span class="p">.</span><span class="nx">middlewares</span><span class="p">.</span><span class="nx">BaseMiddleWare</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;latest_post&#39;</span><span class="o">:</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">latest</span><span class="p">()}</span>
+
+<span class="nx">d</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">LatestPostMiddleware</span><span class="p">()</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;latest_post&#39;</span><span class="o">:</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">latest</span><span class="p">()}</span>
+
+<span class="nx">e</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">LatestPostMiddleware</span><span class="p">()</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;latest_post&#39;</span><span class="o">=</span> <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">latest</span><span class="p">())</span>
+
+
+<span class="err">#</span><span class="nx">Moderate</span>
+
+<span class="mi">11</span><span class="p">.</span> <span class="nx">In</span> <span class="nx">the</span> <span class="nx">model</span> <span class="nx">below</span> <span class="nx">which</span> <span class="nx">line</span> <span class="nx">can</span> <span class="nx">be</span> <span class="nx">removed</span> <span class="k">for</span> <span class="nx">the</span> <span class="kr">class</span> <span class="nx">to</span> <span class="nx">work</span>
+
+<span class="kr">class</span> <span class="nx">Post</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span><span class="err">#</span><span class="nx">Line</span> <span class="mi">1</span>
+    <span class="nx">desc</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">()</span><span class="err">#</span><span class="nx">Line</span> <span class="mi">2</span>
+    <span class="nx">post</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">Blog</span><span class="p">)</span><span class="err">#</span><span class="nx">Line</span> <span class="mi">3</span>
+    <span class="nx">blog</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">Blog</span><span class="p">)</span><span class="err">#</span><span class="nx">Line</span> <span class="mi">4</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">Line</span> <span class="mi">1</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">Line</span> <span class="mi">2</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">Line</span> <span class="mi">3</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">Line</span> <span class="mi">4</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">Either</span> <span class="nx">of</span> <span class="nx">line</span> <span class="mi">3</span> <span class="nx">or</span> <span class="mi">4</span>
+
+<span class="mi">12</span><span class="p">.</span> <span class="nx">Who</span> <span class="nx">can</span> <span class="nx">access</span> <span class="nx">the</span> <span class="nx">admin</span> <span class="nx">site</span> <span class="k">in</span> <span class="nx">Django</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">user</span> <span class="kd">with</span> <span class="nx">is_super_user</span> <span class="nx">True</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">user</span> <span class="kd">with</span> <span class="nx">is_staff</span> <span class="nx">True</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">user</span> <span class="kd">with</span> <span class="nx">is_admin</span> <span class="nx">True</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">Either</span> <span class="nx">of</span> <span class="nx">a</span> <span class="nx">or</span> <span class="nx">b</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">Either</span> <span class="nx">of</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span>
+
+<span class="mi">13</span><span class="p">.</span> <span class="nx">Which</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">code</span> <span class="nx">is</span> <span class="nx">closest</span> <span class="nx">to</span> <span class="nx">login_required</span> <span class="nx">decorator</span> <span class="k">in</span> <span class="nx">Django</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">login_required2</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">is_authenticated</span><span class="p">()</span><span class="o">:</span>
+        <span class="k">return</span> <span class="nx">True</span>
+    <span class="k">else</span><span class="o">:</span>
+        <span class="k">return</span> <span class="nx">False</span>
+
+<span class="nx">b</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">login_required2</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">view_func</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">check_login</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">is_authenticated</span><span class="p">()</span> <span class="nx">and</span> <span class="nx">request</span><span class="p">.</span><span class="nx">has_permissions</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">REQUIRED_PERMISSIONS</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">view_function</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+        <span class="k">else</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">HttpResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login/&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">check_login</span><span class="p">(</span><span class="nx">view_func</span><span class="p">)</span>
+
+<span class="nx">c</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">login_required2</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">view_func</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">check_login</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">is_authenticated</span><span class="p">()</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">view_function</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+        <span class="k">else</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">HttpResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login/&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">check_login</span><span class="p">(</span><span class="nx">view_func</span><span class="p">)</span>
+
+<span class="nx">d</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">login_required2</span><span class="p">(</span><span class="nx">view_func</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">new_func</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">is_authenticated</span><span class="p">()</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">view_func</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+        <span class="k">else</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">HttpResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login/&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">new_func</span>
+
+
+<span class="nx">e</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">login_required2</span><span class="p">(</span><span class="nx">view_func</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">new_func</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">is_authenticated</span><span class="p">()</span> <span class="nx">and</span> <span class="nx">request</span><span class="p">.</span><span class="nx">has_permissions</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">REQUIRED_PERMISSIONS</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">view_func</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+        <span class="k">else</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">HttpResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login/&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">new_func</span>
+
+
+<span class="mi">14</span><span class="p">.</span> <span class="nx">Which</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">valid</span> <span class="nx">method</span> <span class="nx">to</span> <span class="nx">model</span> <span class="nx">Many</span> <span class="nx">to</span> <span class="nx">many</span> <span class="nx">relation</span> <span class="nx">ship</span> <span class="k">in</span> <span class="nx">Django</span><span class="o">?</span>
+
+<span class="nx">a</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">Foo</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">bar</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ManyToManyField</span><span class="p">(</span><span class="nx">Bar</span><span class="p">)</span>
+
+<span class="kr">class</span> <span class="nx">Bar</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">foo</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ManyToManyField</span><span class="p">(</span><span class="nx">Foo</span><span class="p">)</span>
+
+<span class="nx">b</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">Foo</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">bar</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">Bar</span><span class="p">)</span>
+
+<span class="kr">class</span> <span class="nx">Bar</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">foo</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">Foo</span><span class="p">)</span>
+
+<span class="nx">c</span><span class="p">.</span>
+
+<span class="kr">class</span> <span class="nx">Foo</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">bar</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ManyToManyField</span><span class="p">(</span><span class="nx">Bar</span><span class="p">)</span>
+
+<span class="kr">class</span> <span class="nx">Bar</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">pass</span>
+
+<span class="nx">d</span><span class="p">.</span> <span class="nx">both</span> <span class="nx">B</span> <span class="nx">and</span> <span class="nx">C</span>
+
+<span class="nx">e</span><span class="p">.</span> <span class="nx">All</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span>
+
+<span class="mi">15</span><span class="p">.</span> <span class="nx">Which</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">included</span> <span class="nx">by</span> <span class="k">default</span> <span class="k">in</span> <span class="nx">TEMPLATE_CONTEXT_PROCESSORS</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">context_processors</span><span class="p">.</span><span class="nx">auth</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">context_processors</span><span class="p">.</span><span class="nx">debug</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">context_processors</span><span class="p">.</span><span class="nx">i18n</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">context_processors</span><span class="p">.</span><span class="nx">media</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">django</span><span class="p">.</span><span class="nx">core</span><span class="p">.</span><span class="nx">context_processors</span><span class="p">.</span><span class="nx">request</span>
+
+<span class="mi">16</span><span class="p">.</span> <span class="nx">Which</span> <span class="nx">of</span> <span class="nx">these</span> <span class="nx">is</span> <span class="nx">the</span> <span class="nx">currect</span> <span class="nx">way</span> <span class="nx">to</span> <span class="nx">validate</span> <span class="nx">uniqueness</span> <span class="nx">of</span> <span class="nx">a</span> <span class="nx">field</span> <span class="nx">named</span> <span class="s2">&quot;slug&quot;</span> <span class="k">in</span> <span class="nx">a</span> <span class="nx">form</span>
+<span class="nx">subclassing</span> <span class="nx">django</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">Forms</span><span class="p">.</span>
+
+<span class="nx">a</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">clean</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">try</span><span class="o">:</span>
+        <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">slug</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span><span class="p">[</span><span class="s1">&#39;slug&#39;</span><span class="p">])</span>
+        <span class="nx">raise</span> <span class="nx">forms</span><span class="p">.</span><span class="nb">Error</span><span class="p">(</span><span class="nx">ValidationError</span><span class="p">,</span> <span class="s1">&#39;This slug already exists&#39;</span><span class="p">)</span>
+    <span class="nx">except</span> <span class="nx">Post.DoesNotExist</span>:
+        <span class="kt">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span>
+
+
+<span class="nx">b</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">clean</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">try</span><span class="o">:</span>
+        <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">slug</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span><span class="p">[</span><span class="s1">&#39;slug&#39;</span><span class="p">])</span>
+        <span class="nx">raise</span> <span class="nx">ValidationError</span><span class="p">(</span><span class="s1">&#39;This slug already exists&#39;</span><span class="p">)</span>
+    <span class="nx">except</span> <span class="nx">Post.DoesNotExist</span>:
+        <span class="kt">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span>
+
+<span class="nx">c</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">clean_slug</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">try</span><span class="o">:</span>
+        <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">slug</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span><span class="p">[</span><span class="s1">&#39;slug&#39;</span><span class="p">])</span>
+        <span class="nx">raise</span> <span class="nx">forms</span><span class="p">.</span><span class="nb">Error</span><span class="p">(</span><span class="nx">ValidationError</span><span class="p">,</span> <span class="s1">&#39;This slug already exists&#39;</span><span class="p">)</span>
+    <span class="nx">except</span> <span class="nx">Post.DoesNotExist</span>:
+        <span class="kt">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span>
+
+
+<span class="nx">d</span><span class="p">.</span>
+
+<span class="nx">def</span> <span class="nx">clean_slug</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">try</span><span class="o">:</span>
+        <span class="nx">Post</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">slug</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span><span class="p">[</span><span class="s1">&#39;slug&#39;</span><span class="p">])</span>
+        <span class="nx">raise</span> <span class="nx">ValidationError</span><span class="p">(</span><span class="s1">&#39;This slug already exists&#39;</span><span class="p">)</span>
+    <span class="nx">except</span> <span class="nx">Post.DoesNotExist</span>:
+        <span class="kt">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">cleaned_data</span>
+
+<span class="nx">e</span><span class="p">.</span>
+
+<span class="mi">17</span><span class="p">.</span> <span class="nx">To</span> <span class="nx">add</span> <span class="nx">custom</span> <span class="nx">commands</span> <span class="nx">to</span> <span class="nx">your</span> <span class="nx">project</span> <span class="nx">setup</span><span class="p">,</span> <span class="nx">you</span> <span class="nx">need</span> <span class="nx">to</span><span class="p">,</span>
+
+<span class="mi">1</span><span class="p">.</span> <span class="nx">Add</span> <span class="nx">management</span><span class="o">/</span><span class="nx">command</span><span class="o">/</span><span class="nx">commandname</span><span class="p">.</span><span class="nx">py</span> <span class="nx">to</span> <span class="nx">your</span> <span class="nx">django</span> <span class="nx">app</span><span class="p">.</span>
+<span class="mi">2</span><span class="p">.</span> <span class="nx">Add</span> <span class="nx">management</span><span class="o">/</span><span class="nx">command</span><span class="o">/</span><span class="nx">commandname</span><span class="p">.</span><span class="nx">py</span> <span class="nx">to</span> <span class="nx">your</span> <span class="nx">django</span> <span class="nx">project</span><span class="p">.</span>
+<span class="mi">3</span><span class="p">.</span> <span class="nx">Add</span> <span class="nx">command</span><span class="o">/</span><span class="nx">commandname</span><span class="p">.</span><span class="nx">py</span> <span class="nx">to</span> <span class="nx">your</span> <span class="nx">django</span> <span class="nx">app</span><span class="p">.</span>
+<span class="mi">4</span><span class="p">.</span> <span class="nx">Add</span> <span class="nx">command</span><span class="o">/</span><span class="nx">commandname</span><span class="p">.</span><span class="nx">py</span> <span class="nx">to</span> <span class="nx">your</span> <span class="nx">django</span> <span class="nx">project</span><span class="p">.</span>
+<span class="mi">5</span><span class="p">.</span> <span class="nx">Add</span> <span class="nx">management</span><span class="o">/</span><span class="nx">command</span><span class="o">/</span><span class="nx">manage</span><span class="p">.</span><span class="nx">py</span> <span class="nx">to</span> <span class="nx">yout</span> <span class="nx">django</span> <span class="nx">project</span><span class="p">.</span>
+
+<span class="mi">18</span><span class="p">.</span> <span class="nx">You</span> <span class="nx">want</span> <span class="nx">to</span> <span class="nx">enable</span> <span class="nx">caching</span> <span class="k">for</span> <span class="nx">Django</span> <span class="nx">pages</span> <span class="k">for</span> <span class="nx">AnonymousUser</span><span class="p">,</span> <span class="nx">which</span> <span class="nx">of</span> <span class="nx">these</span>
+<span class="nx">is</span> <span class="nx">a</span> <span class="nx">valid</span> <span class="nx">way</span> <span class="nx">to</span> <span class="k">do</span> <span class="k">this</span><span class="p">.</span>
+
+<span class="nx">a</span><span class="p">.</span>
+
+
+<span class="nx">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.cache.CacheMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nx">b</span><span class="p">.</span>
+
+<span class="nx">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.cache.CacheMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nx">c</span><span class="p">.</span>
+
+<span class="nx">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.cache.CacheMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nx">d</span><span class="p">.</span>
+
+<span class="nx">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;django.middleware.cache.CacheMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nx">e</span><span class="p">.</span>
+
+<span class="nx">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;django.middleware.cache.CacheMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="mi">19</span><span class="p">.</span>
+
+<span class="nx">Consider</span> <span class="nx">the</span> <span class="nx">urlconf</span> <span class="nx">given</span> <span class="nx">below</span>
+
+    <span class="nx">from</span> <span class="nx">django</span><span class="p">.</span><span class="nx">conf</span><span class="p">.</span><span class="nx">urls</span><span class="p">.</span><span class="nx">defaults</span> <span class="kr">import</span> <span class="o">*</span>
+
+    <span class="nx">urlpatterns</span> <span class="o">=</span> <span class="nx">patterns</span><span class="p">(</span><span class="s1">&#39;news.views&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="nx">r</span><span class="s1">&#39;^articles/2003/$&#39;</span><span class="p">,</span> <span class="s1">&#39;year_archive_2003&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="nx">r</span><span class="s1">&#39;^articles/(\d{4})/&#39;</span><span class="p">,</span> <span class="s1">&#39;year_archive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="nx">r</span><span class="s1">&#39;^articles/2003/(\d{2})/$&#39;</span><span class="p">,</span> <span class="s1">&#39;month_archive_2003&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="nx">r</span><span class="s1">&#39;^articles/(\d{4})/(\d{2})/&#39;</span><span class="p">,</span> <span class="s1">&#39;month_archive&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="nx">r</span><span class="s1">&#39;^articles/(\d{4})/10/&#39;</span><span class="p">,</span> <span class="s1">&#39;month_archive_october&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="nx">What</span> <span class="nx">view</span> <span class="nx">is</span> <span class="nx">called</span> <span class="nx">when</span> <span class="nx">accessing</span> <span class="o">/</span><span class="nx">articles</span><span class="o">/</span><span class="mi">2003</span><span class="o">/</span><span class="mi">10</span><span class="o">/</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">year_archive_2003</span>
+<span class="nx">b</span><span class="p">.</span> <span class="nx">year_archive</span>
+<span class="nx">c</span><span class="p">.</span> <span class="nx">month_archive_2003</span>
+<span class="nx">d</span><span class="p">.</span> <span class="nx">month_archive</span>
+<span class="nx">e</span><span class="p">.</span> <span class="nx">month_archive_october</span>
+
+<span class="mi">20</span><span class="p">.</span>
+
+<span class="nx">Consider</span> <span class="nx">the</span> <span class="nx">urlpatterns</span><span class="p">.</span>
+
+    <span class="nx">urlpatterns</span> <span class="o">=</span> <span class="nx">patterns</span><span class="p">(</span><span class="s1">&#39;blogapp.views&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="nx">r</span><span class="s1">&#39;^list/(?P&lt;year&gt;\d{4})/(?P&lt;month&gt;[a-z]{3})/$&#39;</span><span class="p">,</span><span class="s1">&#39;archive_month&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="nx">Which</span> <span class="k">if</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">valid</span> <span class="nx">view</span> <span class="kd">function</span> <span class="nx">which</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">called</span> <span class="nx">on</span> <span class="nx">accesing</span>
+<span class="err">/list/2009/jun/</span>
+
+<span class="nx">a</span><span class="p">.</span> <span class="nx">def</span> <span class="nx">archive_month</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="p">...</span>
+
+<span class="nx">b</span><span class="p">.</span> <span class="nx">def</span> <span class="nx">archive_month</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">)</span><span class="o">:</span>
+
+<span class="nx">c</span><span class="p">.</span> <span class="nx">def</span> <span class="nx">archive_month</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+
+<span class="nx">d</span><span class="p">.</span> <span class="nx">def</span>  <span class="nx">archive_month</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="p">,)</span><span class="o">:</span>
+
+<span class="nx">e</span><span class="p">.</span> <span class="nx">Both</span> <span class="nx">c</span> <span class="nx">and</span> <span class="nx">d</span>
+
+
+<span class="err">#</span> <span class="nx">Hard</span>
+
+<span class="nx">None</span> <span class="nx">yet</span>
+</pre></div>
+
+
+<hr>
+<p><a href="http://twitter.com/uswaretech">Follow us on twitter</a> or <a href="http://feeds.feedburner.com/uswarearticles">subscribe to our blog</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

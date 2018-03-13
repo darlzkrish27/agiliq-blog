@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Understanding DateTime, tzinfo, timedelta & TimeZone Conversions in python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/understanding-datetime-tzinfo-timedelta-timezone-conversions-in-python.html" rel="bookmark"
+           title="Permalink to Understanding DateTime, tzinfo, timedelta & TimeZone Conversions in python">Understanding DateTime, tzinfo, timedelta &amp; TimeZone Conversions in python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-02-18T22:24:06+05:30">
+                Published: Wed 18 February 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-02-19T09:54:06+05:30">
+                Updated: Thu 19 February 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/datetime.html">datetime</a> </p>
+</footer><!-- /.post-info -->      Understanding DateTime, tzinfo, timedelta &amp; TimeZone Conversions in python
+  In this post we will look at the common operations that are being performed on dates &amp; time ,&#160; converting&#160; a datetime from one timzone to another timezone. Common Operations:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; How to get the present datetime?  In [189]: cdatetime = datetime.now() In [190]: cdatetime Out[190]: datetime.datetime(2009, 2, 17, 17,"/>
+   In this post we will look at the common operations that are being performed on dates &amp; time ,&#160; converting&#160; a datetime from one timzone to another timezone.  Common Operations:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; How to get the present datetime?   In [189]: cdatetime = datetime.now()      In [190]: cdatetime       Out[190]: datetime.datetime(2009, 2, 17, 17, 34, 58, 407806)       It returns the current localdate and time.When i print cdatetime it&#160; printed as a tuple of nine elements     (2009=year, 2=month, 17=day, 17=hour, 34=minutes, 58=seconds, 407806=microseconds, tzinfo is None and is not printed)     what each element in tuple represents is mentioned adjacent to that number.9-tuple is the basic&#160; notation in python using which we create datetime objects as     dt = datetime(2009, 2, 17, 17, 34, 58, 407806).MOre details     http://docs.python.org/library/datetime.html#datetime.datetime  How to convert datetime into a well formatted string?   In [194]:&#160; curdate.strftime(&quot;%d %b %Y %I:%M:%S %p&quot;)      .....:       Out[194]: '17 Feb 2009 05:18:27 PM'     printing the date in tuple format is not a good idea because it is not understood by most of the people.we want to convert that into a readable string.     strftime() is function we need to use to format the datetime into string.     &quot;%d %b %Y %I:%M:%S %p&quot;&#160; is the format string each { %character} mentions how to print the repective components of datetime.      %M in format string specifies Localeâ€™s abbreviated month name     (means print Feb instead of 2)     %I in format string specifies Hour (12-hour clock) as a decimal number     (means print the time in 12hour format instead of 24 hr format)     you can find out various other directives ({%character} is called a directive) at the bottom of datetime module docs. http://docs.python.org/library/datetime.html  How to convert string to datetime object?   In [195]: dt = datetime.strptime('17 Feb 2009 04:22:11 PM','%d %b %Y %I:%M:%S %p')       In [196]: dt       Out[196]: datetime.datetime(2009, 2, 17, 16, 22, 11)       In [197]: dt.strftime(&quot;%d %b %Y %I:%M:%S %p&quot;)       Out[197]: '17 Feb 2009 04:22:11 PM'   most of time we recieve datetime ( '17 Feb 2009 04:22:11 PM') as a string&#160; from the user we need to make datetime object from that string.    strptime() is the function which does this task of converting string into datetime.     Format String &quot;%d %b %Y %I:%M:%S %p&quot; specifies the order in which the components of datetime will appear&#160; and way in which they appear (i.e first day will appear as decimal representing day of the month,second month&#160; will appear as&#160; Localeâ€™s abbreviated month name etc...)  How to convert a tuple into datetime object?   Out[87]: k =&#160; (2009, 2, 17, 16, 22, 11)      In [89]: dt = datetime.datetime(*k[0:6])       In [206]: dt       Out[206]: datetime.datetime(2009, 2, 17, 16, 22, 11)       In [207]: dt.strftime(&quot;%d %b %Y %I:%M:%S %p&quot;)       Out[207]: '17 Feb 2009 04:22:11 PM'   Many times you encounter a situation where you need to form a datetime object from a tuple as shown above&#160; (2009, 2, 17, 16, 22, 11).For example Universal feed parser gets blog entry date in 9 tuple format.    we use the&#160; code dt = datetime.datetime(*k[0:6]) to convert it into datetime object.  Airthmetic with datetime: How to get two days back/after datetime from now ?   In [3]: curdate = datetime.now()      In [5]: curdate.strftime(&quot;%d %b %Y %I:%M:%S %p&quot;)       Out[5]: '18 Feb 2009 09:56:59 AM'       #gives you the two days back date       In [14]: curdate = curdate-timedelta(days=2)       In [15]: curdate.strftime(&quot;%d %b %Y %I:%M:%S %p&quot;)       Out[15]: '16 Feb 2009 09:56:59 AM'       #gives you the date after 3 days etc..       In [17]: curdate = curdate+timedelta(days=3,hours=5,minutes=5,milliseconds=1000)       In [18]: curdate.strftime(&quot;%d %b %Y %I:%M:%S %p&quot;)       Out[18]: '20 Feb 2009 03:07:51 PM'     1) timedelta object is being used to represent the duration. please&#160; see in[14],in[17] for the various ways in which you can intialize timedelta objects.     MOre details at : http://docs.python.org/library/datetime.html#datetime.timedelta     2) use this timedelta object in airthmetic wih datetime (in[14]) to get the datetime before and after specified duration.)      With this timdelta object you can such answer questions such as 1) get the datetime after 45 days,before 1month etc..  How to check the timezone associated with datetime object?   The timezones in python are represented through an abstract base class called tzinfo. To assign a timezone to a datetime object&#160; we need to create a subclass of tzinfo and attach this object to the datetime.tzinfo attribute as shown in the below examples.   In [211]: curdate = datetime.now()      In [212]:print&#160; curdate.tzinfo       None   For the above object the timezone is null/None.These datetime objects are called naive datetime objects (i.e datetime objects who do not know their own timzone).We can't perform timezone related operations on such naive objects.    if tzinfo is not null those objects are called Timezone aware objects we can perform timzone related operations on such objects.Below i will show you an example which clearly illustrates the process.     In [162]: class GMT5(tzinfo):      .....:&#160;&#160;&#160;&#160; def utcoffset(self,dt):       #51/2 hours ahead of GMT       .....:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return timedelta(hours=5,minutes=30)       .....:&#160;&#160;&#160;&#160; def tzname(self,dt):       .....:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return &quot;GMT +5&quot;       .....:&#160;&#160;&#160;&#160; def dst(self,dt):       .....:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return timedelta(0)       In [171]: gmt5 = GMT5()       In [220]: curdate = datetime(2009,2,17,19,10,2,tzinfo=gmt5)       In [221]: curdate.tzinfo       Out[221]: &lt;__main__.GMT5 object at 0x8a4b7cc&gt;       In [222]:   Please follow the above code where i have shown you the&#160; way to assign timzone object (tzinfo) to datetime object.    1) create an object which is a subclass of tzinfo.     2) overide the tzname,utcoffset,dst (Daylight Saving Time) methods to provide the offset,dst that this time zone has from GMT.(Every timezone is represented as an offset from Greenwhich mean time)     As the tzinfo is not null for the curdate.It is&#160; timezone aware object.we can perform operations on such objects.     Below is another way to assign the timezone to datetime object.  In [172]: curdate = datetime.now()      In [173]: curdate = curdate.replace(tzinfo=gmt5)       In [174]: curdate       Out[174]: datetime.datetime(2009, 2, 17, 17, 18, 27, 593447, tzinfo=&lt;__main__.GMT5 object at 0x8a4b7cc&gt;)       In [176]: curdate.utcoffset()       Out[176]: datetime.timedelta(0, 19800)   curdate.utcoffset&#160; will give you the&#160; offset from GMT in seconds.THis method general used to intialize local timezone to naive datetime object which represents the local datetime.  Converting from one timezone to another timezone  Suppose we want to convert a datetime whose timezone&#160; is +5:30 ahead of GMT (India) to another timezone whose timezone is ( -3:30 ) 3 1/2 hours behind GMT.    Below is the code which does this.  In [162]: class GMT5(tzinfo):      .....:&#160;&#160;&#160;&#160; def utcoffset(self,dt):       #51/2 hours ahead of GMT       .....:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return timedelta(hours=5,minutes=30)       .....:&#160;&#160;&#160;&#160; def tzname(self,dt):       .....:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return &quot;GMT +5&quot;       .....:&#160;&#160;&#160;&#160; def dst(self,dt):       .....:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return timedelta(0)       In [171]: gmt5 = GMT5()       In [220]: curdate = datetime(2009,2,18,10,21,58,tzinfo=gmt5)       In [69]: curdate.strftime(&quot;%d %b %Y %I:%M:%S %p %Z&quot;)       Out[69]: '18 Feb 2009 10:21:58 AM GMT +5'       In [57]: class GMT3(tzinfo):       def utcoffset(self,dt):       #31/2 hours behind&#160; GMT       return timedelta(hours=-3,minutes=30)       def tzname(self,dt):       return &quot;GMT -3&quot;       def dst(self,dt):       return timedelta(0)       ....:       In [66]: gmt_3 = GMT3()       In [67]: newdate = curdate.astimezone(gmt_3)       In [70]: newdate.strftime(&quot;%d %b %Y %I:%M:%S %p %Z&quot;)       Out[70]: '18 Feb 2009 02:21:58 AM GMT -3'   1.create a timezone object (tzinfo) represeting the GMT-3 timezone.    2.use astimezone() function to convert the present locatime datetime(GMT+5:30) to (GMT-3:30)     as shown above. In next post we will discuss some more tips and tricks associated with dates and time.  Do you know?     Do you know any important tips and tricks which are helpful when working with dates and time? if yes please mention&#160; in the comments.  Resources:    ------------------     http://docs.python.org/library/datetime.html#datetime.datetime     http://www.saltycrane.com/blog/2008/11/python-datetime-time-conversions/
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

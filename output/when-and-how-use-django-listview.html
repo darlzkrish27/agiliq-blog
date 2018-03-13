@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>When and how to use Django ListView</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/when-and-how-use-django-listview.html" rel="bookmark"
+           title="Permalink to When and how to use Django ListView">When and how to use Django ListView</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-29T00:06:39+05:30">
+                Published: Fri 29 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-29T11:36:39+05:30">
+                Updated: Fri 29 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <h3>When to use ListView?</h3>
+<p>Django provides several class based generic views to accomplish common tasks. One among them is ListView. Our <a href="http://agiliq.com/blog/2017/12/when-and-how-use-django-templateview/" target="_blank">last post</a> was on TemplateView.</p>
+<p>ListView <strong>should be used</strong> when you want to present a list of objects in a html page.</p>
+<p>ListView <strong>shouldn't be used</strong> when your page has forms and does creation or update of objects.</p>
+<p>TemplateView can achieve everything which ListView can, but ListView avoids a lot of boilerplate code which would be needed with TemplateView.</p>
+<p>Let's write a view using base view <strong>View</strong> and then modify it to use TemplateView and then to use ListView. ListView would help us avoid several lines of code and would also provide better separation of concern.</p>
+<h3>Vanilla View</h3>
+<p>Assume there is a model called Book which looks like:</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Book</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="nx">author_name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+
+<p>We want to have a page which shows all the books in the database. View would look like:</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">BookListView</span><span class="p">(</span><span class="nx">View</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="nx">def</span> <span class="nx">get</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">books</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">all</span><span class="p">()</span>
+        <span class="nx">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;books&#39;</span><span class="o">:</span> <span class="nx">books</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nx">render</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="s2">&quot;book-list.html&quot;</span><span class="p">,</span> <span class="nx">context</span><span class="o">=</span><span class="nx">context</span><span class="p">)</span>
+</pre></div>
+
+
+<p>book-list.html looks like the following:</p>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">book</span> <span class="k">in</span> <span class="nv">books</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">  </span><span class="cp">{{</span><span class="nv">book.name</span><span class="cp">}}</span><span class="x"></span>
+<span class="x">  &lt;br/&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+
+
+<h4>By subclassing TemplateView</h4>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">BookListView</span><span class="p">(</span><span class="nx">TemplateView</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">template_name</span> <span class="o">=</span> <span class="s1">&#39;book-list.html&#39;</span>
+
+    <span class="nx">def</span> <span class="nx">get_context_data</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">context</span> <span class="o">=</span> <span class="kr">super</span><span class="p">(</span><span class="nx">BookListView</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">get_context_data</span><span class="p">(</span><span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+        <span class="nx">context</span><span class="p">[</span><span class="s1">&#39;books&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">all</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nx">context</span>
+</pre></div>
+
+
+<p>As discussed in last post on TemplateView, we didn't have to provide a get() implementation and bother with render() while using TemplateView. All that was taken care of by TemplateView.</p>
+<h4>By subclassing ListView</h4>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.views.generic.list</span> <span class="kn">import</span> <span class="n">ListView</span>
+
+<span class="k">class</span> <span class="nc">BookListView</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;book-list.html&#39;</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s1">&#39;books&#39;</span>
+</pre></div>
+
+
+<p>ListView removes more boilerplate from TemplateView. With ListView we didn't have to bother with get_context_data() implementation. ListView takes care of setting context variable 'books' with the queryset we defined on BookListView.</p>
+<p>We can also add filtering in ListView.queryset.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">BookListView</span><span class="p">(</span><span class="nx">ListView</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">template_name</span> <span class="o">=</span> <span class="s1">&#39;book-list.html&#39;</span>
+    <span class="nx">queryset</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">name</span><span class="o">=</span><span class="s1">&#39;A Feast for Crows&#39;</span><span class="p">)</span>
+    <span class="nx">context_object_name</span> <span class="o">=</span> <span class="s1">&#39;books&#39;</span>
+</pre></div>
+
+
+<p>Had we wanted pagination, we would have had to add several lines of code in TemplateView or vanilla View implementation. ListView provides pagination for free, we don't have to add pagination code.</p>
+<p>Pagination can be added to ListView subclasses by setting a variable <code>paginate_by</code></p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">BookListView</span><span class="p">(</span><span class="nx">ListView</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">template_name</span> <span class="o">=</span> <span class="s1">&#39;book-list.html&#39;</span>
+    <span class="nx">queryset</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">all</span><span class="p">()</span>
+    <span class="nx">context_object_name</span> <span class="o">=</span> <span class="s1">&#39;books&#39;</span>
+    <span class="nx">paginate_by</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+
+
+<p>After this <strong>/books-list/?page=1</strong> will return first 10 books. <strong>/books-list/?page=2</strong> will return next 10 books and so on.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

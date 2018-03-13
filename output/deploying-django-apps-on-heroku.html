@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Deploying Django apps on Heroku</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/deploying-django-apps-on-heroku.html" rel="bookmark"
+           title="Permalink to Deploying Django apps on Heroku">Deploying Django apps on Heroku</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-04-02T00:00:01+05:30">
+                Published: Mon 02 April 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-02-22T02:06:10+05:30">
+                Updated: Wed 22 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>Deploying Django apps on Heroku:</p>
+<p>Read this first: http://devcenter.heroku.com/articles/django.</p>
+<p>This is a great article by the Heroku. I am just filling in some more details and making this step-by-step.</p>
+<ol>
+<li>Get your Django project code.</li>
+<li>
+<p>Create a virtualenv with a no-site-packages command ::</p>
+<p>virtualenv vent --no-site-packages</p>
+</li>
+<li>
+<p>Install Django, psycopg2 (postgres connector), gunicorn and any other required Django libraries.</p>
+</li>
+<li>Confirm that you have all the required libraries and you can run your code locally using <code>manage.py runserver</code>.</li>
+<li>
+<p>Create a requirement.txt by using 
+    ::</p>
+<div class="highlight"><pre><span></span>pip freeze &gt; requirements.txt
+</pre></div>
+
+
+</li>
+<li>
+<p>Make sure you have a requirements.txt at the root of your repo. Heroku uses this to identify that the app is a Python app.</p>
+</li>
+<li>
+<p>Create a Procfile. Put this entry: ::</p>
+<p>web: python mysite/manage.py run_gunicorn -b "0.0.0.0:$PORT" -w 3shabda</p>
+</li>
+<li>
+<p>This is what your directory structure will look like</p>
+<p>::</p>
+<div class="highlight"><pre><span></span><span class="k">[root-of-heroku-folder]</span>
+    <span class="na">requirements.txt</span>
+    <span class="na">Procfile</span>
+    <span class="k">[Django-project-folder]</span>
+        <span class="na">__init__.py</span>
+        <span class="na">manage.py</span>
+        <span class="na">settings.py</span>
+        <span class="k">[app1]</span>
+        <span class="k">[app2]</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>(If you aren't tracking your files with git yet.) Track your files with git. ::</p>
+<p>git init
+git add .
+git commit -am "First commit"</p>
+</li>
+<li>
+<p>Make sure you have the heroku toolbelt installed. If not go to http://toolbelt.herokuapp.com/ and install.</p>
+</li>
+</ol>
+<p>11.You should have these commands available now: ::</p>
+<div class="highlight"><pre><span></span>heroku
+foreman
+</pre></div>
+
+
+<ol>
+<li>
+<p>Authenticate to heroku with </p>
+<p>::</p>
+<div class="highlight"><pre><span></span>heroku auth:login
+</pre></div>
+
+
+</li>
+<li>
+<p>Run this command. 
+    ::</p>
+<div class="highlight"><pre><span></span>heroku create --stack cedar
+</pre></div>
+
+
+</li>
+</ol>
+<p>This will create a new Heroku app and create a new remote in your git repo.</p>
+<ol>
+<li>
+<p>Push your code to heroku. 
+    ::</p>
+<div class="highlight"><pre><span></span>git push heroku master
+</pre></div>
+
+
+</li>
+<li>
+<p>Your app should be working on Heroku now. <code>heroku open</code> will show your site.</p>
+</li>
+</ol>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

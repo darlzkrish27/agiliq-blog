@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - encoding</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/character-encoding-and-unicode.html">Character encoding and Unicode</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-11-19T02:15:15+05:30">
+                Published: Wed 19 November 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-11-19T13:45:15+05:30">
+                Updated: Wed 19 November 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/encoding.html">encoding</a> </p>
+</footer><!-- /.post-info --><h3>Before you proceed.</h3>
+<p>This <a href="http://www.joelonsoftware.com/articles/Unicode.html" target="_blank">blog post</a> by Joel Spolsky got me interested in Unicode and character encoding and taught me several things. I suggest you read this.</p>
+<h3>Basics</h3>
+<p>Computers only work with 0 and 1 i.e binary. Any character needs to have a binary representation so computer can store it on disk or in the memory.</p>
+<p>Computer cannot store 'a'. Computer can only store a bit pattern, say 01100001. So a character needs to have a binary representation so it can be stored on disk.</p>
+<p>When you write 'a' to a file and save it, binary representation 01100001 or whatever is the binary representation of 'a' gets saved to disk. When the text editor reads this file, it finds 01100001 and knows that this is the binary representation of character 'a' and so the text editor shows you 'a'.</p>
+<p>There are various ways in which characters can be converted to binary. Those ways are called character encoding schemes. eg: ascii, utf-8</p>
+<p>Encoding means the process of converting a string to a binary representation.</p>
+<p>A character encoding scheme, say 'encoding1', gives a one-to-one mapping between a character and a bit pattern.  A character say 'a' will have only one binary representation, say 01100001. 'a' cannot map to any other binary representatio apart from 01100001. Vice versa, in a particular character encoding scheme, bit pattern 01100001 can only mean a particular character. This bit pattern cannot map to two different characters.</p>
+<p>Different encoding schemes(hereafter called encoding) might have different binary representation for the same character. An encoding named 'encoding1' could represent 'a' as 01100001 while 'encoding2' could represent 'a' as 11111111.</p>
+<h3>A tool called <strong>xxd</strong></h3>
+<p>Earlier I said, Computers can only store bit pattern. With <strong>xxd</strong>, you can see the binary content of a file. If there is a file called <code>abc.txt</code> in your current directory, you can say:</p>
+<div class="highlight"><pre><span></span>xxd -b abc.txt
+</pre></div>
+
+
+<p>And it will show you the binary representation of what abc.txt stores.</p>
+<h3>ASCII:</h3>
+<p>ASCII is one possible character encoding scheme.</p>
+<p>ASCII says that binary representation of 'a' is 01100001. ASCII says 'a' needs to be stored as 01100001 on disk.</p>
+<p>Theoritically there could be another character encoding scheme which can say that binary representation of 'a' is 11111111. If this encoding scheme is being used, 'a' would be stored as 11111111 on disk.</p>
+<p>Quoting Wikipedia page on ASCII:</p>
+<div class="highlight"><pre><span></span>ASCII specifies a correspondence between digital bit patterns and character symbols
+</pre></div>
+
+
+<p>It means there is a one to one mapping between characters and their binary representation.</p>
+<p>ASCII could only represent English characters. It could not represent Chinese or Tamil characters. Since ASCII could not handle non-english characters, other encoding schemes evolved.</p>
+<h3>Unicode</h3>
+<p>Unicode can represent every character of almost all widely used languages. With unicode it is possible to represent Chinese, Tamil and any other character set you could think of. And if a new language(character set) comes in future, Unicode would be able to represent that too.</p>
+<p>But unicode doesn't give a binary representation of characters. The binary representation task is left for the encoding scheme. Unicode is not an encoding scheme. Unicode is a standard and character encoding schems implement this standard in a particular way.</p>
+<p>Unicode only gives a <strong>codepoint</strong> for the character.</p>
+<p>An example would make it clear. Feminine ordinal indicator, 'ª' has codepoint U+00AA. After giving a codepoint, Unicode doesn't care how the encoding scheme represents it. utf-8 is one encoding scheme which complies with Unicode. utf-8 represents this codepoint as hexadecimal "0xc2 0xaa" whose binary equivalent is "11000010 10101010". iso-latin-5(iso-8859-9), another encoding represents this codepoint as hexadecimal "0xaa" whose binary equivalent is "10101010".</p>
+<h4>Verifying how this character is stored</h4>
+<p>We will create two files and use different encoding schemes to store this character in the two files.</p>
+<ul>
+<li>First case: Use encoding scheme 'utf-8' to encode the character and store in file char_utf8.txt</li>
+<li>Second case: Use encoding scheme 'iso-latin-5' to encode the character and store in file char_latin.txt</li>
+</ul>
+<p>And then we will use <code>xxd</code> to find out the binary representation of 'ª' stored in these two files.</p>
+<p>It is easy with Python to convert a codepoint to the encoding scheme's binary representation. So I will use Python. It's only few lines of Python, you should be able to follow even if you don't use Python. You only need Python installed on your machine, so you can execute the snippets.</p>
+<h5>Using encoding utf-8</h5>
+<p>Start Python shell. (I am using Python 2.7)</p>
+<div class="highlight"><pre><span></span># Store the codepoint of `ordinal` character in a variable
+ordinal_unicode = u&#39;\u00aa&#39;
+
+# Open a file where you will store this character, after encoding it to utf8
+f = open(&#39;ordinal_utf8.txt&#39;, &#39;wb&#39;)
+
+# Encode the character to utf-8 and write to the file.
+# Encoding means converting character to a bit representation, remember?
+f.write(ordinal_unicode.encode(&#39;utf-8&#39;))
+
+f.close()
+</pre></div>
+
+
+<h5>Using encoding iso-latin-5</h5>
+<div class="highlight"><pre><span></span>ordinal_unicode = u&#39;\u00aa&#39;
+
+f = open(&#39;ordinal_latin.txt&#39;, &#39;wb&#39;)
+
+# Latin 5 is also called iso-8859-9
+f.write(ordinal_unicode.encode(&#39;iso-8859-9&#39;))
+
+f.close()
+</pre></div>
+
+
+<p>Check the content of both file using xxd.</p>
+<div class="highlight"><pre><span></span>~ $ xxd -b ordinal_utf8.txt
+0000000: 11000010 10101010
+
+~ $ xxd -b ordinal_latin.txt
+0000000: 10101010
+</pre></div>
+
+
+<p>So, the same character when encoded with different encoding schemes, give different binary representation.</p>
+<p>In <code>xxd</code> output, you only need to see the bits after ":". Initial "0000000" do not concern us.</p>
+<h4>Magic with <strong>cat</strong></h4>
+<p>If you use Windows, you'll have to use <strong>type</strong> instead of <strong>cat</strong>.</p>
+<p>I am on Mac, and my terminal encoding is set to utf-8. So when I try <code>cat &lt;filename&gt;</code>, my terminal will see the binary representation of file and see what characters they map to in utf-8 and will show those characters. If your terminal encoding is not utf-8, change it to utf-8 for now.</p>
+<div class="highlight"><pre><span></span>$ cat ordinal_utf8.txt
+ª
+</pre></div>
+
+
+<p>Feminine ordinal indicator gets printed in this case. Now try cat on file where Latin-5 encoded character is written.</p>
+<div class="highlight"><pre><span></span>$ cat ordinal_latin.txt
+�
+</pre></div>
+
+
+<p>Some gibberish gets printed. Terminal reads the binary content of file. But in utf-8(my terminal's encoding), <em>10101010</em>, doesn't map to any character. So terminal doesn't know what character to print and so prints question mark.</p>
+<p><strong>Change the terminal encoding to Latin-5</strong></p>
+<p>On Mac, it can be changed in following way. <strong>Profiles</strong> -&gt; <strong>Open Profiles</strong> -&gt; <strong>Edit Profiles</strong> -&gt; <strong>Terminal</strong> -&gt; <strong>Character Encoding</strong> -&gt; <strong>Choose "Turkish (ISO Latin 5)"</strong></p>
+<p>Again cat ordinal_latin.txt</p>
+<div class="highlight"><pre><span></span>$ cat ordinal_latin.txt
+ª
+</pre></div>
+
+
+<p>Terminal reads the binary content of file. In Latin-5, <em>10101010</em> is mapped to feminine ordinal character. And hence that gets printed.</p>
+<h4>Surprise</h4>
+<p>Cat on ordinal_utf8.txt</p>
+<div class="highlight"><pre><span></span>$ cat ordinal_utf8.txt
+Âª
+</pre></div>
+
+
+<p>Why did output of ordinal_utf8.txt change? As we know, binary content of ordinal_utf8.txt is <em>11000010 10101010</em>. It is 2 bytes. Our terminal encoding is set to Latin-5. In Latin-5, <em>11000010</em>(first byte) is mapped to character <em>Â</em> and <em>10101010</em>(second byte) is mapped to character <em>ª</em>. And that's what our output shows.</p>
+<p>Change your terminal encoding back to whatever was your default encoding to avert any surprising behavior.</p>
+<h3>More takeaway</h3>
+<ul>
+<li>
+<p>Unicode gives <strong>codepoints</strong> for different characters. It can give codepoint for any character in any language. Suppose a new character gets added in future, Unicode would give a codepoint for that new character too.</p>
+</li>
+<li>
+<p>Each encoding, which confirms to Unicode, has a one-to-one mapping between a codepoint and the binary representation of code point.</p>
+</li>
+<li>
+<p>In file I write 'a' in encoding A, so it's written as 00000001. But my terminal is set to encoding B. And if encoding B thinks 00000001 as character 'b'. Then my terminal will show as 'b'.</p>
+</li>
+<li>
+<p>You need to know the encoding in which a file is written to meaningfully read it. Else, you will have a file written in Latin-5 and you will assume it is in utf-8 and will see gibberish in that case.</p>
+</li>
+</ul>
+<h3>Updates</h3>
+<p>Added a <a href="http://agiliq.com/blog/2014/12/understanding-python-unicode-str-unicodeencodeerro/" target="_blank">blog post</a> about Python unicode handling, UnicodeEncodeError and UnicodeDecodeError. Wrote a post to describe a <a href="http://agiliq.com/blog/2014/12/how-not-knowing-encoding-can-trip-you/">practical scenario</a> where not knowing encoding of a file can hurt.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

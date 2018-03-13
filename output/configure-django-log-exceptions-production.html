@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Configure Django to log exceptions in production</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/configure-django-log-exceptions-production.html" rel="bookmark"
+           title="Permalink to Configure Django to log exceptions in production">Configure Django to log exceptions in production</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-02T00:49:18+05:30">
+                Published: Sat 02 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-02T08:19:18+05:30">
+                Updated: Sat 02 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>Django default logging behaviour for unhandled exceptions is:</p>
+<h4>With DEBUG=True (Development)</h4>
+<ul>
+<li>Log the exception on console/stream.</li>
+<li>Show the exception on page, i.e in http response.</li>
+</ul>
+<h4>With DEBUG=False (Production)</h4>
+<ul>
+<li>Do not log the exception on console/stream.</li>
+<li>Do not show the exception in response.</li>
+<li>Send an email to admin if email settings are configured correctly.</li>
+</ul>
+<p>Usually not logging the exception on console isn't a problem since an exception email is sent to you which can help you know the source of exception. But this assumes that email settings are configured correctly else you will not receive the exception email.</p>
+<p>You might not have email settings configured correctly and don't want to get into that right away. You might instead want to log the exception on console even with DEBUG=False. This post would help you in such scenario.</p>
+<h4>Default logging configuration</h4>
+<p>Django's default logging setting is:</p>
+<div class="highlight"><pre><span></span>DEFAULT_LOGGING = {
+    &#39;version&#39;: 1,
+    &#39;disable_existing_loggers&#39;: False,
+    &#39;filters&#39;: {
+        &#39;require_debug_false&#39;: {
+            &#39;()&#39;: &#39;django.utils.log.RequireDebugFalse&#39;,
+        },
+        &#39;require_debug_true&#39;: {
+            &#39;()&#39;: &#39;django.utils.log.RequireDebugTrue&#39;,
+        },
+    },
+    &#39;formatters&#39;: {
+        &#39;django.server&#39;: {
+            &#39;()&#39;: &#39;django.utils.log.ServerFormatter&#39;,
+            &#39;format&#39;: &#39;[%(server_time)s] %(message)s&#39;,
+        }
+    },
+    &#39;handlers&#39;: {
+        &#39;console&#39;: {
+            &#39;level&#39;: &#39;INFO&#39;,
+            &#39;filters&#39;: [&#39;require_debug_true&#39;],
+            &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+        },
+        &#39;django.server&#39;: {
+            &#39;level&#39;: &#39;INFO&#39;,
+            &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+            &#39;formatter&#39;: &#39;django.server&#39;,
+        },
+        &#39;mail_admins&#39;: {
+            &#39;level&#39;: &#39;ERROR&#39;,
+            &#39;filters&#39;: [&#39;require_debug_false&#39;],
+            &#39;class&#39;: &#39;django.utils.log.AdminEmailHandler&#39;
+        }
+    },
+    &#39;loggers&#39;: {
+        &#39;django&#39;: {
+            &#39;handlers&#39;: [&#39;console&#39;, &#39;mail_admins&#39;],
+            &#39;level&#39;: &#39;INFO&#39;,
+        },
+        &#39;django.server&#39;: {
+            &#39;handlers&#39;: [&#39;django.server&#39;],
+            &#39;level&#39;: &#39;INFO&#39;,
+            &#39;propagate&#39;: False,
+        },
+    }
+}
+</pre></div>
+
+
+<p>Without any explicit <code>settings.LOGGING</code> configured in settings.py, this is the default logging configuration Django works with. You can ignore <code>django.server</code> part.</p>
+<p>Any unhandled Django exception is handled in function <code>handle_uncaught_exception</code>. The relevant code is on <a href="https://github.com/django/django/blob/1.11.7/django/core/handlers/exception.py#L124" target="_blank">Github</a></p>
+<p>Error is logged using <code>logger.error</code> in this function. This logger is an instance of <code>django.request</code>. Since logger <code>django</code> is a parent of <code>django.request</code>, so log records are propogated to logger <code>django</code>.</p>
+<p>As you can see from <code>DEFAULT_LOGGING</code>, logger <code>django</code> has two handlers.</p>
+<ul>
+<li>console</li>
+<li>mail_admins</li>
+</ul>
+<p>As you can see from <code>DEFAULT_LOGGING</code>, handler <code>console</code> has a filter called <code>require_debug_true</code> because of which this handler doesn't handle log records in production, i.e when DEBUG=False.</p>
+<h4>Logging to console in production</h4>
+<p>So you can create a new handler which directs <code>ERROR</code> log records to Stream when DEBUG=False.</p>
+<p>This handler would look like</p>
+<div class="highlight"><pre><span></span>&#39;console_debug_false&#39;: {
+    &#39;level&#39;: &#39;ERROR&#39;,
+    &#39;filters&#39;: [&#39;require_debug_false&#39;],
+    &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+}
+</pre></div>
+
+
+<p>And you can ask logger <code>django</code> to use this handler by adding this handler in <code>loggers['django']['handlers']</code>.</p>
+<p>Your final <code>settings.LOGGING</code> would look like following:</p>
+<div class="highlight"><pre><span></span>LOGGING = {
+    &#39;version&#39;: 1,
+    &#39;disable_existing_loggers&#39;: False,
+    &#39;filters&#39;: {
+        &#39;require_debug_false&#39;: {
+            &#39;()&#39;: &#39;django.utils.log.RequireDebugFalse&#39;,
+        },
+        &#39;require_debug_true&#39;: {
+            &#39;()&#39;: &#39;django.utils.log.RequireDebugTrue&#39;,
+        },
+    },
+    &#39;formatters&#39;: {
+        &#39;django.server&#39;: {
+            &#39;()&#39;: &#39;django.utils.log.ServerFormatter&#39;,
+            &#39;format&#39;: &#39;[%(server_time)s] %(message)s&#39;,
+        }
+    },
+    &#39;handlers&#39;: {
+        &#39;console&#39;: {
+            &#39;level&#39;: &#39;INFO&#39;,
+            &#39;filters&#39;: [&#39;require_debug_true&#39;],
+            &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+        },
+        &#39;console_debug_false&#39;: {
+            &#39;level&#39;: &#39;ERROR&#39;,
+            &#39;filters&#39;: [&#39;require_debug_false&#39;],
+            &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+        },
+        &#39;django.server&#39;: {
+            &#39;level&#39;: &#39;INFO&#39;,
+            &#39;class&#39;: &#39;logging.StreamHandler&#39;,
+            &#39;formatter&#39;: &#39;django.server&#39;,
+        },
+        &#39;mail_admins&#39;: {
+            &#39;level&#39;: &#39;ERROR&#39;,
+            &#39;filters&#39;: [&#39;require_debug_false&#39;],
+            &#39;class&#39;: &#39;django.utils.log.AdminEmailHandler&#39;
+        }
+    },
+    &#39;loggers&#39;: {
+        &#39;django&#39;: {
+            &#39;handlers&#39;: [&#39;console&#39;, &#39;console_debug_false&#39;, &#39;mail_admins&#39;],
+            &#39;level&#39;: &#39;INFO&#39;,
+        },
+        &#39;django.server&#39;: {
+            &#39;handlers&#39;: [&#39;django.server&#39;],
+            &#39;level&#39;: &#39;INFO&#39;,
+            &#39;propagate&#39;: False,
+        }
+    }
+}
+</pre></div>
+
+
+<p>If you don't want emails to be sent to admins, in case email settings aren't configured correctly, then you should remove <code>mail_admins</code> from <code>loggers['django']['handlers']</code>.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

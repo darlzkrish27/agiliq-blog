@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>A brief overview of Vagrant</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/brief-overview-vagrant.html" rel="bookmark"
+           title="Permalink to A brief overview of Vagrant">A brief overview of Vagrant</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-01-07T00:01:52+05:30">
+                Published: Sat 07 January 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-01-06T11:31:52+05:30">
+                Updated: Fri 06 January 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->      <p>Vagrant is a very good wrapper around Oracle's VirtualBox. It makes life easier for web developers and the like by providing a nice command-line interface to build, manage, provision, use virtual machines.</p>
+<h2>Why should you use Vagrant?</h2>
+<ul>
+<li>You may want to install different versions of software without worrying about conflicts</li>
+<li>You don't want to remember which services to start/stop when you start working on a project</li>
+<li>The version of Operating system you use can be different from the one on the server. So, you want a way to emulate the behavior on server</li>
+<li>You want to develop locally without latency as with servers, but run everything in a server-like environment</li>
+<li>You don't want to sit and type through the same steps of installation etc when you deploy to server</li>
+<li>A new person joins your team and you want him to get up and running quickly without wasting a lot of time</li>
+<li>Won't it be great if you can rollback to a snapshot easily when you mess things up?</li>
+</ul>
+<h2>Installation</h2>
+<p>Before installing vagrant, we need the following minimum requirements installed - Oracle's VirtualBox, Ruby, Rubygems</p>
+<p>This is how easy it is, to install and get started with Vagrant on Ubuntu - </p>
+<div class="highlight"><pre><span></span>sudo apt-get install ruby rubygems
+
+sudo apt-get install virtualbox
+
+sudo gem install vagrant
+</pre></div>
+
+
+<p>Once everything is installed, just typing <code>vagrant</code> will show you all vagrant commands. Before discussing these commands, we should understand some basic terminology. A <strong>box</strong> is a packaged file which contains the files required for a virtual machine. A <strong>virtual machine</strong> is used to run an operating system within your existing OS. You can use a <strong>base box</strong> to create a virtual machine with a basic OS. <code>vagrant box</code> is used to manage boxes and <code>vagrant package</code> can be used to create a box from an existing virtual machine.</p>
+<div class="highlight"><pre><span></span>vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
+vagrant init lucid32 
+vagrant up
+</pre></div>
+
+
+<p>The first command downloads a box from the URL and saves it as lucid32 on your machine. Vagrant uses boxes like this to build and run the virtual machine. The second command creates an example <code>Vagrantfile</code> with a good amount of sample provisioning code commented. The third command, <code>vagrant up</code>, starts the virtual system.</p>
+<p>Like a normal operating system, you can </p>
+<div class="highlight"><pre><span></span>vagrant suspend # sleep
+vagrant resume  # back from sleep
+vagrant halt    # shut-down
+</pre></div>
+
+
+<p>The sweetest of the commands is <code>vagrant ssh</code> which lets you ssh into the guest VM. You can easily get rid of this virtual machine and free up some space with <code>vagrant destroy</code>. All these commands should be run from the directory containing Vagrantfile.</p>
+<h2>Provisioning</h2>
+<p>A base box contains nothing but the OS and some files. If you want things like apache2, mysql, memcached installed on first boot without much intervention, you can provision using one of the supported provisioners. Chef and Puppet are popular provisioning tools with good communities. <a href="https://github.com/opscode/cookbooks">OpsCode cookbooks</a> is a good collection of chef cookbooks by the creators of chef and the community. I found Dougal Matthews' <a href="https://github.com/d0ugal/chef_recipes/">chef_recipes</a> good for django, postgres installation. More about provisioning <a href="http://vagrantup.com/docs/getting-started/provisioning.html">here</a>.</p>
+<h2>Some important features</h2>
+<ul>
+<li>You can enable <strong>Port forwarding</strong> asking the guest VM to forward some ports to the host. This way you can run the server from the VM and use the browser and editor on host. You can also assign a <strong>Static IP</strong> for your VM.</li>
+<li>You can share files, directories between the VM and your OS. These files will be in <code>/vagrant</code> on the VM by default. Filesystem intensive tasks like version control are generally faster on the host system</li>
+<li>When you share a box with team members, you don't even need to repackage and distribute. You can even share the Virtual Machine disk file.</li>
+</ul>
+<p>I found Vagrant to be a very useful and it has already saved some 20 developer hours on one project. It seems to be a good idea to use Vagrant for every project we work on. We will discuss basic provisioning and workflow in another post.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

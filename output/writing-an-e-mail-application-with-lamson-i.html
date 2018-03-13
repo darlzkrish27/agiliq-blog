@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Writing an e-mail application with Lamson - I</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li class="active"><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/writing-an-e-mail-application-with-lamson-i.html" rel="bookmark"
+           title="Permalink to Writing an e-mail application with Lamson - I">Writing an e-mail application with Lamson - I</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-04-01T09:08:15+05:30">
+                Published: Fri 01 April 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-04-01T19:38:15+05:30">
+                Updated: Fri 01 April 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/e-mail.html">e-mail</a> </p>
+</footer><!-- /.post-info -->      <p>Off late, we've been slightly busy with a 'lot' of new developments on our
+end and we've not been able to devote attention to the blog. In these busy
+periods, we tend to forget things faster. One such thing that Shabda recently
+pointed out that a couple of our applications (client and open source project)
+were raising exception. Because of the low frequency of these errors, they went unnoticed
+for quite a few days. We do check e-mail often but we are mostly drowned in
+our project management tool, <a class="reference external" href="http://www.unfuddle.com/">Unfuddle</a>. Shabda suggested we open a ticket for
+every error (with duplicates taken care off) and this way we wouldn't have to
+distract ourselves scouring multiple sources like mail, Unfuddle etc.</p>
+<p>This was a fairly straightforward requirement. Unfuddle has an API and all we
+have to do is wrap the <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/http/views/#the-500-server-error-view">500 error handler</a>. We could write the error handler
+in a separate app and then add it to the <tt class="docutils literal">INSTALLED_APPS</tt> setting and error handler
+to all the projects. Sounds fine but we should not miss out a single project! It didn't
+sound like a scalable solution and so we decided to add an e-mail address to the
+<tt class="docutils literal">MAIL_ADMINS</tt> setting that would open a ticket invoking the Unfuddle API. Not a
+big difference over the previous solution. This method just saves 1 line of typing
+over the previous. But the idea of having to learn and use <a class="reference external" href="http://lamsonproject.org/">Lamson</a> got us excited!</p>
+<p>Lamson is a Python SMTP server written by <a class="reference external" href="http://zedshaw.com/">Zed Shaw</a> that makes e-mail application development not suck!
+If we hadn't heard of Lamson, we would've probably used Postfix to drop mail to
+fetchmail and then run a python script to parse the mail and redirect it accordingly.
+This solution has way too many dependencies and is a configuration hell!</p>
+<p>In the coming blog posts, let's write a Lamson powered e-mail app that will open a
+ticket in the unfuddle project management system through their API. Before we start,
+I will give away a little secret. You don't have to be a sys-admin or a python expert
+to write an e-mail app powered by Lamson. It's as easy as writing a simple web app
+in django.</p>
+<div class="section" id="installation-of-lamson">
+<h2>Installation of Lamson</h2>
+<p>The Lamson documentation covers how to <a class="reference external" href="http://lamsonproject.org/docs/getting_started.html">install</a> Lamson. But we are not going to discuss
+this very deeply. We'll just use a <a class="reference external" href="http://pypi.python.org/pypi/virtualenv">virtualenv</a> to install it.:</p>
+<pre class="literal-block">
+$ virtualenv lamson_env
+$ cd lamson_env
+$ source bin/activate
+$ pip install lamson
+</pre>
+<p>Now let's create a lamson app named <tt class="docutils literal"><span class="pre">ticket-creator</span></tt> that will house the e-mail application.:</p>
+<pre class="literal-block">
+$ lamson gen -project ticket-creator
+$ cd ticket-creator
+$ ls ticket-creator
+app  config  logs  muttrc  README  run  tests
+</pre>
+<p>Lamson creates files for us to make code organization very easy. Let us next look at the
+functionality of the files:</p>
+<pre class="literal-block">
+$ ls app/
+data  handlers  __init__.py  model  templates
+</pre>
+<p>The <tt class="docutils literal">app</tt> directory holds all the logic for the e-mail application. Right from the models (models),
+the views (templates) and controllers (handlers), it houses them all! Doesn't this method of
+organizing the code look similar? Yes, it is an MVC based e-mail app framework!:</p>
+<pre class="literal-block">
+$ ls config
+boot.py  __init__.py  logging.conf  settings.py  testing.py  test_logging.conf
+</pre>
+<p>The <tt class="docutils literal">boot.py</tt> contains the config attributes that is loaded when lamson starts. Most likely, you
+wouldn't have to touch this file. The <tt class="docutils literal">settings.py</tt> holds all the configuration attributes. This
+file is analogous to the django settings and is just a plain python file. The <tt class="docutils literal">testing.py</tt>
+is equivalent to <tt class="docutils literal">boot.py</tt> but is used in test mode. The <tt class="docutils literal">logging.conf</tt> and <tt class="docutils literal">test_logging.conf</tt>
+hold all the logging related attributes.</p>
+<p>The <tt class="docutils literal">logs</tt> directory holds the files where the logging outputs are redirected. To debug your
+server, this is <cite>the</cite> place you've to start off. The <tt class="docutils literal">muttrc</tt> file holds the mutt configuration
+directives to use lamson to send mail and open a local mailbox. The <tt class="docutils literal">run</tt> directory holds the pid
+and other runtime specific files. The <tt class="docutils literal">tests</tt> directory houses all the test cases you might write
+while developing your e-mail application.</p>
+<p>For this session, let's close with starting the lamson server. In the e-mail app:</p>
+<pre class="literal-block">
+$ lamson start
+$ ls run
+smtp.pid undeliverable
+$ ps aux|grep lamson
+theju 10155 0.2 0.1 21768 7532 ? Sl 19:19 0:00 /home/theju/lamson_env/bin/python /home/theju/lamson_env/bin/lamson start
+</pre>
+<p>To see on which port lamson is running, or to modify the port, we can change the port of the <tt class="docutils literal">receiver_config</tt>
+attribute in the <tt class="docutils literal">config/settings.py</tt> file. To stop lamson, just type:</p>
+<pre class="literal-block">
+$ lamson stop
+Stopping processes with the following PID files: ['./run/smtp.pid']
+Attempting to stop lamson at pid 10155
+</pre>
+<p>This is the end of the first part where we just dipped our finger nails into this amazing project
+called <tt class="docutils literal">Lamson</tt>. In the coming post, we are going to see how to write the logic for the application
+and in the final post on how to deploy this application.</p>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
