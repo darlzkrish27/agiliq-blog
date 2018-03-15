@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Remote debugging - debugging pesky server only bugs</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/remote-debugging-debugging-pesky-server-only-bugs.html" rel="bookmark"
+           title="Permalink to Remote debugging - debugging pesky server only bugs">Remote debugging - debugging pesky server only bugs</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-07-02T13:07:02+05:30">
+                Published: Thu 02 July 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-07-02T23:37:02+05:30">
+                Updated: Thu 02 July 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>Here is a quick tip. (Obvious if you work with Django for any length of time, but I have seen a few people who are not aware)</p>
+<p>You can put debug trace <code>import pdb; pdb.set_trace()</code> in your code, and put it on the server. When you access this view from your local browser, the debug is still hit and you have a debug shell on your server where you can step through. (Obviously this works only if you ran the code via <code>manage.py runserver</code>. But <code>manage.py runserver</code> start the server to listen only on local connections. If you want to access remotely you need to run as,</p>
+<div class="highlight"><pre><span></span>python manage.py runserver 0.0.0.0:8000
+</pre></div>
+
+
+<p>Edit: As <a href="http://tactful.co.nz/">SmileyChris</a> commented, a faster way is,</p>
+<div class="highlight"><pre><span></span>python manage.py runserver 0:8000
+</pre></div>
+
+
+<p>The <code>0.0.0.0</code> implies that remote connections are possible.</p>
+<p>For me, this has been a lifesaver against those pesky bugs which show themselves only on the server, but not on the local machine.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

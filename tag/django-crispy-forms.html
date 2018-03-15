@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - Django-crispy-forms</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/writing-styled-forms-with-absolutely-minimal-html-.html">Writing styled forms with absolutely minimal HTML (Part-1)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-04-24T09:05:34+05:30">
+                Published: Thu 24 April 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-04-24T19:35:34+05:30">
+                Updated: Thu 24 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rakesh.html">Rakesh</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django-crispy-forms.html">Django-crispy-forms</a> </p>
+</footer><!-- /.post-info --><p>When controlling the form rendering, we all know that we can use the three pre-baked output format
+of the forms namely: as_u, as_p and as_table.</p>
+<p>For example: if we use: {{ registration_form.as_ul}}
+The output template would be:</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_uname&quot;</span><span class="nt">&gt;</span>Userame:<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;username&quot;</span> <span class="na">id=</span><span class="s">&quot;id_uname&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;li&gt;</span>
+
+<span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;id_email&quot;</span><span class="nt">&gt;</span>Email:<span class="nt">&lt;/lable&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;email&quot;</span> <span class="na">id=</span><span class="s">&quot;id_email&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;li&gt;</span>
+</pre></div>
+
+
+<p>And so on...</p>
+<h2>Here are some questions that come into the picture:</h2>
+<ol>
+<li>What if we to want deal with divs?</li>
+<li>What if we want to reorder the fields? and what if I have 100 such fields?</li>
+<li>And what if I want to deal with model forms? How about field.errors and form.non_field_errors?</li>
+</ol>
+<hr>
+<p>To answer all those significant questions Django-crispy-forms steps into the arena.</p>
+<h2>What are Django-crispy-forms?</h2>
+<ul>
+<li>
+<p>It's an app that brings up the best way to get the DRY Django forms,
+providing the tag and filter that lets us quickly render forms in a div format.
+This also provides an enormous amount of capability to configure and control the rendered HTML.</p>
+</li>
+<li>
+<p>As an added asset Django-crispy-forms support several frontend frameworks like Twitter Bootstrap(versions- 2 and 3),
+Uniform and Foundation.</p>
+</li>
+<li>
+<p>Using Django-crispy-forms is very simple and effortless.</p>
+</li>
+</ul>
+<p>Let's dive in to learn to use the Django-crispy-forms with Twitter Bootstrap in straightforward 5 steps:</p>
+<p>(We assume that you have set up the minimal Django configuration before following the below steps)</p>
+<ul>
+<li>
+<p>Step1: Installing using pip.</p>
+<p><code>pip install django-crispy-forms</code></p>
+</li>
+<li>
+<p>Step-2: Add crispy_forms to the INSTALLED_APPS in settings.py.</p>
+<p><code>INSTALLED_APPS = (
+    ....
+    'crispy_forms',
+    )</code></p>
+</li>
+<li>
+<p>Step-3: Set up a default template pack in the settings.py for the project (I assume Bootstrap3 here)</p>
+<p><code>CRISPY_TEMPLATE_PACK = 'bootstrap3'</code></p>
+</li>
+<li>
+<p>Step-4: Create your desired custom form and view.</p>
+</li>
+</ul>
+<p>Eg: forms.py</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">SimpleForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">user_name</span> <span class="o">=</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">label</span><span class="o">=</span><span class="s1">&#39;Username&#39;</span><span class="p">,</span> <span class="nx">required</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+    <span class="p">..........</span>
+</pre></div>
+
+
+<p>Eg: views.py</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Index1View</span><span class="p">(</span><span class="nx">FormView</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">template_name</span> <span class="o">=</span> <span class="s1">&#39;crispy_example/index.html&#39;</span>
+    <span class="nx">form_class</span> <span class="o">=</span> <span class="nx">SimpleForm</span>
+</pre></div>
+
+
+<ul>
+<li>Step-5: Loading crispy forms tag in the template</li>
+</ul>
+<p>In the template, add the below template tags:</p>
+<div class="highlight"><pre><span></span>1. {% load crispy_forms_tags %}
+2. {% crispy form %}
+</pre></div>
+
+
+<p>Add the first tag in the initial part to the template and the second tag in the place where you want to render the form.</p>
+<p>That's all, the above steps results you an impressive bootstrap form.</p>
+<p>You can have a look at the complete example that I have created in github over here: <a href="https://github.com/krvc/crispy_example">Link</a></p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

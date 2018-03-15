@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Method decorators in Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/method-decorators-in-python.html" rel="bookmark"
+           title="Permalink to Method decorators in Python">Method decorators in Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-07-15T09:16:08+05:30">
+                Published: Tue 15 July 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-07-15T19:46:08+05:30">
+                Updated: Tue 15 July 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->      <p>This post assumes you have a basic understanding of Decorators. If not, you can read our <a href="http://agiliq.com/blog/2012/11/understanding-decorators-2/" target="_blank">introductory post on Decorator</a></p>
+<h3>Method decorators</h3>
+<p>In introductory post, we learnt about function decorators. In this post we'll see method decorators:</p>
+<p>Let's write a Class and a method on it which we will decorate later.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; class Person(object):
+...     def __init__(self, name):
+...         self.name = name
+...     def print_name(self):
+...         print self.name
+</pre></div>
+
+
+<p>Create a Person instance. p1 refers to the created instance.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; p1 = Person(&quot;eddard&quot;)
+</pre></div>
+
+
+<p>Call print_name on Person.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; p1.print_name()
+eddard     #output
+</pre></div>
+
+
+<p>Something worth noting about previous Python statement. Quoting from <a href="https://docs.python.org/2/tutorial/classes.html" target="_blank">docs</a></p>
+<div class="highlight"><pre><span></span>&quot;The method function is declared with an explicit first argument representing the object, which is provided implicitly by the call&quot;
+</pre></div>
+
+
+<p>It means, call p1.print_name() implicitly passes p1 to method print_name. And so <strong>self</strong> in print_name starts referring to our created Person instance.</p>
+<p>There is another way in which print_name() can be called on p1. Knowing this way would make understanding method decorator easier.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; Person.print_name(p1)
+eddard     #output
+</pre></div>
+
+
+<p>In last statement, print_name() wasn't called on p1, but instead called on class Person. So p1 couldn't be passed to print_name() implicitly. It had to be done explicitly.</p>
+<p>This paragraph is important. We can think a method as just a function. If provided with correct arguments, it would work similar to any other function. If called on the instance, instance is passed implicitly as the argument and so method/function works. If called on class, instance has to be passed explicitly and then method/function works. So, most of the things which can be done with a function can be done with the method. Let's play around with it a little.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; some_func = Person.print_name
+&gt;&gt;&gt; some_func(p1)
+eddard     #output
+
+&gt;&gt;&gt; Person.another_print_name_reference = Person.print_name
+&gt;&gt;&gt; Person.another_print_name_reference(p1)
+eddard     #output
+</pre></div>
+
+
+<h4>Scenario for using decorator</h4>
+<p>We want Person.print_name code to be executed only if name of the Person instance is not "joffrey". Let's write the decorator for it.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; def decorate_method(method):
+...     def inner(person_instance):
+...         if person_instance.name == &quot;joffrey&quot;:
+...             print &quot;What a stupid name, I won&#39;t print name for you&quot;
+...         else:
+...             method(person_instance)
+...     return inner
+</pre></div>
+
+
+<h5>Structure of decorate_method</h5>
+<ul>
+<li>Signature of function created by the decorator, which in our case is function named <strong>inner</strong>, should be similar to signature of the function it is trying to decorate.</li>
+<li>Here we are trying to decorate a method, print_name, which ultimately is a function. And this function expects a Person instance as its only argument.</li>
+<li>So <strong>inner</strong> is defined to expect one argument too.</li>
+</ul>
+<p>Let's use this decorator without using decorator syntax.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; Person.decorated_print_name = decorate_method(Person.print_name)
+&gt;&gt;&gt; p1.decorated_print_name()
+eddard     #output
+
+&gt;&gt;&gt; p2 = Person(&quot;joffrey&quot;)
+&gt;&gt;&gt; p2.decorated_print_name()
+What a stupid name, I won&#39;t print name for you
+</pre></div>
+
+
+<p>Let's use this decorator with decorator syntax.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; class Person(object):
+...     def __init__(self, name):
+...         self.name = name
+...     @decorate_method
+...     def print_name(self):
+...         print self.name
+</pre></div>
+
+
+<p>So, this was similar to saying:</p>
+<div class="highlight"><pre><span></span>Person.print_name = decorate_method(Person.print_name)
+</pre></div>
+
+
+<p>Using our decorated method:</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; p1 = Person(&quot;eddard&quot;)
+&gt;&gt;&gt; p1.print_name()
+eddard
+&gt;&gt;&gt; p2 = Person(&quot;joffrey&quot;)
+&gt;&gt;&gt; p2.print_name()
+What a stupid name, I won&#39;t print name for you
+</pre></div>
+
+
+<p>ou</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

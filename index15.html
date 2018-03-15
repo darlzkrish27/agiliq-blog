@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/css-frameworks.html" rel="bookmark"
+                           title="Permalink to CSS Frameworks">CSS Frameworks</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-03-30T04:27:23+05:30">
+                Published: Tue 30 March 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-03-30T14:57:23+05:30">
+                Updated: Tue 30 March 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/saikiran.html">saikiran</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/design.html">Design</a> </p>
+</footer><!-- /.post-info -->                A framework is a basic conceptual structure which you can use as a â€œscratchâ€ for your web-projects. For instance, instead of defining global reset, consistent baseline, typographic rules or basic styles for forms over and over again â€” every time you work on a new project â€” you can prepare a default-style once and reuse it in all your future projects. This is what you call a CSS Framework. <strong> </strong> <strong>Major Advantages of CSS Frameworks</strong> <ul> <li>Increase productivity.</li> <li>Cross Bowser Compatibility</li> <li>Clean, Well structured easy to maintain code base.</li> </ul> <strong>Disadvantages of CSS Frameworks</strong> <ul> <li>Takes time to understand
+                <a class="readmore" href="/css-frameworks.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/rails-and-django-commands-comparison-and-conversio.html" rel="bookmark"
+                           title="Permalink to Rails and Django commands : comparison and conversion">Rails and Django commands : comparison  and conversion</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-03-20T08:05:30+05:30">
+                Published: Sat 20 March 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-03-20T18:35:30+05:30">
+                Updated: Sat 20 March 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/uncategorized.html">Uncategorized</a> </p>
+</footer><!-- /.post-info -->                <p>The most commonly used Rails commands and their Django equivalents Rails | Django -------------------------|-------------------- rails console | manage.py shell rails server | manage.py runserver rake | None rails generate | None rails dbconsole | manage.py dbshell rails app_name | django-admin.py startproject/manage.py startapp rake db:create | manage.py syncdb The salient points to note are, 1. Django has all commands via <code>manage.py</code>, Rails has it broken into <code>rails</code> and <code>rake</code>. 2. Overall there are more Rails+Rake commands available than Django commands 3. There is no one to one mapping between Rails and Django commands. Eg. There are no equivalent to rake doc:*</p>
+                <a class="readmore" href="/rails-and-django-commands-comparison-and-conversio.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/the-rails-and-django-models-layer-rosseta-stone.html" rel="bookmark"
+                           title="Permalink to The Rails and Django models layer Rosseta stone">The Rails and Django models layer Rosseta stone</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-03-20T05:42:50+05:30">
+                Published: Sat 20 March 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-03-20T16:12:50+05:30">
+                Updated: Sat 20 March 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/rails.html">rails</a> </p>
+</footer><!-- /.post-info -->                <p>Rails Active records and Django models are more similar than they are different. This is a quick guide to converting between Rails 3 and Django 1.2, and is available on github at <a href="http://github.com/uswaretech/Acts-as-Django">http://github.com/uswaretech/Acts-as-Django</a> #### Defining models Both Django and Rails keep the canonical database representation in ruby or python. #Django class Post(models.Model): name = models.CharField(max_length = 100, ) slug = models.CharField(max_length = 100, ) body = models.TextField() class Comments(models.Model): post = models.ForeignKey(Post) username = models.CharField(max_length = 100, ) comment = models.TextField() #Rails #db/schema.rb ActiveRecord::Schema.define(:version =&gt; 20100319195739) do create_table "comments", :force =&gt; true do |t| t.string "username" t.text "comment" t.integer "post_id"</p>
+                <a class="readmore" href="/the-rails-and-django-models-layer-rosseta-stone.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/doing-things-with-django-models-aka-django-models-.html" rel="bookmark"
+                           title="Permalink to Doing things with Django models - aka - Django models tutorial">Doing things with Django models - aka - Django models tutorial</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-18T00:00:17+05:30">
+                Published: Mon 18 January 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-01-18T11:30:17+05:30">
+                Updated: Mon 18 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/models.html">models</a> </p>
+</footer><!-- /.post-info -->                <p>Django abstracts most of the actions you would be doing with the Database. What it doesn't abstracts, and doesn't try to abstract is the Database modelling part. This is a quick tutorial describing to how model your data in Django models.py, and how to access and modify them. Consider a hypothetical HR department, which wants you to build an application to track and manage their processes. They have employees who work for a department, contractors who work for multiple department. Let's see how you you would do that in Django. from django.db import models class Employee(models.Model): name = models.CharField(max_length =</p>
+                <a class="readmore" href="/doing-things-with-django-models-aka-django-models-.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/wordpress-and-django-best-buddies.html" rel="bookmark"
+                           title="Permalink to Wordpress and Django: best buddies">Wordpress and Django: best buddies</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-17T09:25:29+05:30">
+                Published: Sun 17 January 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-01-17T20:55:29+05:30">
+                Updated: Sun 17 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/about.html">about</a> </p>
+</footer><!-- /.post-info -->                
+                <a class="readmore" href="/wordpress-and-django-best-buddies.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/doing-things-with-django-forms.html" rel="bookmark"
+                           title="Permalink to Doing things with Django forms">Doing things with Django forms</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-14T06:26:18+05:30">
+                Published: Thu 14 January 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-01-14T17:56:18+05:30">
+                Updated: Thu 14 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> </p>
+</footer><!-- /.post-info -->                <p>Forms are one of the best features of Django. (After models, admin, url routing etc :) ). Here is a quick tutorial describing how to do things with Django forms. 1. Basic form Prob. You want to show a form, validate it and display it. Ans. Create a simple form. class UserForm(forms.Form): username = forms.CharField() joined_on = forms.DateField() This wil take care that the form is displayed with two text field, and a value for them are filled in, and the second field has correct formatting for a date. 2. Prob. Create a form which has values populated depending upon</p>
+                <a class="readmore" href="/doing-things-with-django-forms.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/tools-of-pro-django-developer-aka-what-powers-dine.html" rel="bookmark"
+                           title="Permalink to Tools of Pro Django developer - aka What powers dinette and almost every app we write.">Tools of Pro Django developer - aka What powers dinette and almost every app we write.</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-13T07:32:11+05:30">
+                Published: Wed 13 January 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-01-13T19:02:11+05:30">
+                Updated: Wed 13 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>There are some tools and apps which we use with almost all apps we write, and in particular which, we used for <a href="http://uswaretech.com/forum/">dinette</a>. Here they are broken into useful during development, and (also) useful post development. #### During Development 0. <a href="http://ipython.scipy.org/">Ipython</a> and <a href="http://pypi.python.org/pypi/ipdb">ipdb</a> 3. <a href="http://south.aeracode.org/">South</a> 4. <a href="http://ericholscher.com/projects/django-test-utils/">Django test utils</a> 1. <a href="http://github.com/django-extensions/django-extensions">Django extensions</a> 2. <a href="http://github.com/robhudson/django-debug-toolbar">Django debug toolbar</a> ##### <a href="http://ipython.scipy.org/">Ipython</a> and <a href="http://pypi.python.org/pypi/ipdb">ipdb</a> Ipython is a enhanced shell for python. Ipdb similarly add extra capacity to the builtin pdb debugger. It is extremely convenient to drop into a ipython shell right where a complex piece of code is being hit. from IPython.Shell import</p>
+                <a class="readmore" href="/tools-of-pro-django-developer-aka-what-powers-dine.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-forum.html" rel="bookmark"
+                           title="Permalink to django-forum">django-forum</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-07T06:19:03+05:30">
+                Published: Thu 07 January 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-01-07T17:49:03+05:30">
+                Updated: Thu 07 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/apps.html">apps</a> </p>
+</footer><!-- /.post-info -->                <h3>twitter ready version: We have released a <a href="http://uswaretech.com/forum/">Django forum</a> application, with some cool features not in any other Django based forum. <a href="http://github.com/uswaretech/Dinette">You can get it here</a> or <a href="http://uswaretech.com/forum/">see it in action</a>. ### blog version There are quite a few <a href="http://code.djangoproject.com/wiki/ForumAppsComparison">Django based forum applications</a>, so why another? Its a bit of a rhetorical question, as the answer is "none of them met my needs exactly, so we created my own", as you might expect. Without further ado here is a list of features. It is available on <a href="http://uswaretech.com/forum/">uswaretech.com/forum/</a>. * Based on, inspired by and ripped from <a href="http://punbb.informer.com/">PunBB</a>. (Thanks!) * PunBB</h3>
+                <a class="readmore" href="/django-forum.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-buzz.html" rel="bookmark"
+                           title="Permalink to Django-buzz">Django-buzz</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-12-12T16:31:42+05:30">
+                Published: Sat 12 December 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-12-13T04:01:42+05:30">
+                Updated: Sun 13 December 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/uncategorized.html">Uncategorized</a> </p>
+</footer><!-- /.post-info -->                <p>We have updated the <a href="http://uswaretech.com/blog/2009/02/django-popular-stories-widget/">Django popular stories widget</a>, which powers the widget in the side bar. <a href="http://github.com/uswaretech/django-buzz">It is now on Github</a>. Earlier the code used was hardcoded to only find Django stories, but now you can create arbitary topics from admin. Get the code and create the widgets on your servers, (or let us know, and we will create it here if it is interesting). We created three we want to track. <a href="http://uswaretech.com/pystories/databases/">Databases</a>, <a href="http://uswaretech.com/pystories/python/">Python</a> and <a href="http://uswaretech.com/pystories/javascript/">Javascript</a> ###<a href="http://uswaretech.com/pystories/databases/">Databases</a> <iframe src ="http://uswaretech.com/pystories/widget/databases/" id="doloto_iframe" width="250px" height="525px" frameborder=0 border=0 style = "padding-top : 5px"> </iframe> ###<a href="http://uswaretech.com/pystories/python/">Python</a> &lt;iframe src ="http://uswaretech.com/pystories/widget/python/" id="doloto_iframe" width="250px" height="525px" frameborder=0 border=0</p>
+                <a class="readmore" href="/django-buzz.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/using-bpython-shell-with-django-and-some-ipython-f.html" rel="bookmark"
+                           title="Permalink to Using bpython shell with django (and some Ipython features you should know)">Using bpython shell with django (and some Ipython features you should know)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-12-12T11:17:37+05:30">
+                Published: Sat 12 December 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-12-12T22:47:37+05:30">
+                Updated: Sat 12 December 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> </p>
+</footer><!-- /.post-info -->                <h3>What is bpython? &gt; bpython is a fancy interface to the Python interpreter for Unix-like operating system. says the <a href="http://bpython-interpreter.org/">bpython</a> home page. It provides syntax highlighting, auto completion, auto-indentation and such stuff. Unlike <a href="http://ipython.scipy.org/moin/">iPython</a>, which implements then entire shell functions and emulates the standard python shell, and adds enhancements, bpython just adds features on top of the existing python shell functionality, using the curses module. <img src="http://i.imgur.com/cqky1.png" alt="bpython" /> The "killer feature" of bpython is, as you can see from the image above, the IDE like prompting of the function parameters and the doc string of the function dynamically. I</h3>
+                <a class="readmore" href="/using-bpython-shell-with-django-and-some-ipython-f.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="/index14.html">&laquo;</a>
+    Page 15 / 23
+        <a href="/index16.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - yahoo</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/django-socialauth-login-via-twitter-facebook-openi.html">Django-SocialAuth - Login via twitter, facebook, openid, yahoo, google using a single app.</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2009-08-27T04:20:33+05:30">
+                Published: Thu 27 August 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-08-27T14:50:33+05:30">
+                Updated: Thu 27 August 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/yahoo.html">yahoo</a> </p>
+</footer><!-- /.post-info --><p>TL;DR version: Here is an app to allow logging in via twitter, facebook, openid, yahoo, google, which should work transparently with Django authentication system. (@login_required, User and other infrastructure work as expected.) <a href="http://socialauth.uswaretech.net/">Demo</a> and <a href="http://github.com/uswaretech/Django-Socialauth/tree/master">Code</a>.Longer version follow:</p>
+<hr>
+<p>We are releasing our new app. <a href="http://github.com/uswaretech/Django-Socialauth/tree/master"><strong>Django-Socialauth</strong></a>. This app makes it awfully easy,
+to allow users to login your site using Yahoo/Google/Twitter/Facebook/Openid. A demo is available <a href="http://socialauth.uswaretech.net/">here</a>.</p>
+<p>This is released under an <a href="http://www.opensource.org/licenses/attribution.php">Attribution Assurance License</a>. A copy of the same is
+provided included with the code.</p>
+<p>After installing this app, you can use @login_required on any view and users identified
+via any means can access protected content.</p>
+<hr>
+<p>We provide services to integrate and implement this, for a low price of USD 1600.
+Please contact us at <a href="mailto:licenses@uswaretech.com">licenses@uswaretech.com</a> to discuss your exact needs.</p>
+<hr>
+<p>The README is copied here for convenience.</p>
+<h3>What it does.</h3>
+<p>Allow logging in via various providers.</p>
+<h4>Logging In</h4>
+<p>This is a application to enable authentication via various third party sites.
+In particular it allows logging in via</p>
+<ol>
+<li>Twitter</li>
+<li>Gmail</li>
+<li>Facebook</li>
+<li>Yahoo(Essentially openid)</li>
+<li>OpenId</li>
+</ol>
+<p>Libs you need to install</p>
+<ol>
+<li><a href="http://pypi.python.org/pypi/python-openid/">python-openid</a> (<code>easy_install</code>)</li>
+<li>python-yadis (<code>easy_install</code>)</li>
+<li><a href="http://oauth.googlecode.com/svn/code/python/oauth/">python-oauth</a>(<code>easy_install</code>)</li>
+</ol>
+<p>The API Keys are available from</p>
+<ul>
+<li><a href="http://www.facebook.com/developers/createapp.php">http://www.facebook.com/developers/createapp.php</a></li>
+<li><a href="https://developer.yahoo.com/dashboard/createKey.html">https://developer.yahoo.com/dashboard/createKey.html</a></li>
+<li><a href="https://www.google.com/accounts/ManageDomains">https://www.google.com/accounts/ManageDomains</a></li>
+<li><a href="http://twitter.com/oauth_clients">http://twitter.com/oauth_clients</a></li>
+</ul>
+<h4>How it works.</h4>
+<p>Openid: Users need to provide their openid providers. Talk to the providers and
+login.<br>
+Yahoo: Yahoo is an openid provider. Talk to Yahoo endpoints. (Endpoint: http://yahoo.com)<br>
+Google: Google is a provider. Talk to them. (Endpoint: https://www.google.com/accounts/o8/id)<br>
+Facebook: Facebook connect provides authentication framework.<br>
+Twitter: We use Twitter Oauth for authentication. In theory, Oauth shouldn't be
+used for authentication. (It is an autorisation framework, not an authentication one),
+In practice it works pretty well. Once you have an access_token, and a name, essentially
+authenticated.  </p>
+<p>References</p>
+<ol>
+<li><a href="http://socialauth.uswaretech.net/">Demo of app</a></li>
+<li><a href="http://github.com/uswaretech/Django-Socialauth/tree/master">Code for app</a></li>
+<li><a href="http://openid.net/developers/">http://openid.net/developers/</a></li>
+<li><a href="http://developer.yahoo.com/openid/">http://developer.yahoo.com/openid/</a></li>
+<li><a href="http://code.google.com/apis/accounts/docs/OpenID.html">http://code.google.com/apis/accounts/docs/OpenID.html</a></li>
+<li><a href="http://apiwiki.twitter.com/OAuth-FAQ">http://apiwiki.twitter.com/OAuth-FAQ</a></li>
+<li><a href="http://developers.facebook.com/connect.php">http://developers.facebook.com/connect.php</a></li>
+</ol>
+<h2>Below the hoods</h2>
+<ol>
+<li>For all providers(except Facebook) there are two urls and views. (start and done)</li>
+<li>Start sets up the required tokens, and redirects and hands off to the correct
+provider.</li>
+<li>Provider handles authentication on their ends, and hands off to Us, providing
+authorization tokens.</li>
+<li>In done, we check if the user with these details already exists, if yes, we
+log them in. Otherwise we create a new user, and log them in.</li>
+</ol>
+<p>For all of these, we use standard django authenication system, with custom
+<code>auth_backends</code>, hence all existing views, and decorators as <code>login_required</code>
+will work as expected.</p>
+<h2>Urls</h2>
+<div class="highlight"><pre><span></span>/login/ Login page. Has all the login options  
+/openid_login/ AND /openid_login/done/  
+/yahoo_login/ AND /yahoo_login/done/  
+/gmail_login/ AND /gmail_login/done/  
+/twitter_login/ AND /twitter_login/done/  
+/facebook_login/done/ We dont have a start url here, as the starting tokens are  
+set in a popup, as per FB Connect recommendations.
+</pre></div>
+
+
+<h2>Implementation</h2>
+<ol>
+<li>Install required libraries.</li>
+<li>Get tokens and populate in localsettings.py</li>
+<li>Set the token callback urls correctly at Twitter and Facebook.</li>
+<li>Add the OpenId middleware. Set the Authentication backends. (Set in localsettings.example.py)</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/yahoo-boss-python-api.html" rel="bookmark"
+                           title="Permalink to Yahoo BOSS python api">Yahoo BOSS python api</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-14T11:17:51+05:30">
+                Published: Sun 14 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-14T21:47:51+05:30">
+                Updated: Sun 14 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/yahoo.html">yahoo</a> </p>
+</footer><!-- /.post-info -->                <p>Yahoo has a search api with generous limits, <a href="http://developer.yahoo.com/search/boss/">BOSS</a>. There are a few <a href="http://www.google.co.in/search?q=boss+python+api">python</a> <a href="http://pysearch.sourceforge.net/">apis</a> around it. But we wanted a lighter api, and one which has the same interface as out Bing Python api. So here is the updated <a href="http://pypi.python.org/pypi/bingapi/0.02">bingapi</a>.(Now with bossapi.py as well). Or svn it from <a href="https://svn.uswaretech.com/bingapi/">here</a> ------------- ### Usage Usage is mostly compatible with bingapi In [2]: from bingapi import bossapi In [3]: api = bossapi.Boss('<appid>') In [4]: api.do_web_search('Uswaretech') Out[4]: .... In [5]: api.do_news_search('salsa') Out[5]: ... In [6]: api.do_siteexplorer_search('http://uswaretech.com') Out[6]: .....</p>
+                <a class="readmore" href="/yahoo-boss-python-api.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

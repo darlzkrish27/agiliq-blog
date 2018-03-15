@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Deploying Django apps on Heroku</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li class="active"><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/deploying-django-apps-on-heroku-2.html" rel="bookmark"
+           title="Permalink to Deploying Django apps on Heroku">Deploying Django apps on Heroku</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-02-04T00:00:01+05:30">
+                Published: Sat 04 February 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-02-22T02:10:49+05:30">
+                Updated: Wed 22 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>Read this first: <a class="reference external" href="http://devcenter.heroku.com/articles/django">http://devcenter.heroku.com/articles/django</a>.</p>
+<p>This is a great article by the Heroku. I am just filling in some more details and making this step-by-step.</p>
+<ol class="arabic">
+<li><p class="first">Get your Django project code.</p>
+</li>
+<li><p class="first">Create a virtualenv with a no-site-packages command</p>
+<pre class="literal-block">
+virtualenv vent --no-site-packages
+</pre>
+</li>
+<li><p class="first">Install Django, psycopg2 (postgres connector), gunicorn and any other required Django libraries.</p>
+</li>
+<li><p class="first">Confirm that you have all the required libraries and you can run your code locally using <tt class="docutils literal">manage.py runserver</tt>.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Create a requirement.txt by using</dt>
+<dd><pre class="first last literal-block">
+pip freeze &gt; requirements.txt
+</pre>
+</dd>
+</dl>
+</li>
+<li><p class="first">Make sure you have a requirements.txt at the root of your repo. Heroku uses this to identify that the app is a Python app.</p>
+</li>
+<li><p class="first">Create a Procfile. Put this entry:</p>
+<pre class="literal-block">
+web: python mysite/manage.py run_gunicorn -b &quot;0.0.0.0:$PORT&quot; -w 3shabda
+</pre>
+</li>
+<li><p class="first">This is what your directory structure will look like</p>
+<blockquote>
+<pre class="literal-block">
+[root-of-heroku-folder]
+    requirements.txt
+    Procfile
+    [Django-project-folder]
+        __init__.py
+        manage.py
+        settings.py
+        [app1]
+        [app2]
+</pre>
+</blockquote>
+</li>
+<li><p class="first">(If you aren't tracking your files with git yet.) Track your files with git.</p>
+<pre class="literal-block">
+git init
+git add .
+git commit -am &quot;First commit&quot;
+</pre>
+</li>
+<li><p class="first">Make sure you have the heroku toolbelt installed. If not go to <a class="reference external" href="http://toolbelt.herokuapp.com/">http://toolbelt.herokuapp.com/</a> and install.</p>
+</li>
+</ol>
+<p>11.You should have these commands available now:</p>
+<pre class="literal-block">
+heroku
+foreman
+</pre>
+<ol class="arabic" start="12">
+<li><p class="first">Authenticate to heroku with</p>
+<pre class="literal-block">
+heroku auth:login
+</pre>
+</li>
+<li><p class="first">Run this command.</p>
+<pre class="literal-block">
+heroku create --stack cedar
+</pre>
+</li>
+</ol>
+<p>This will create a new Heroku app and create a new remote in your git repo.</p>
+<ol class="arabic" start="14">
+<li><p class="first">Push your code to heroku.</p>
+<pre class="literal-block">
+git push heroku master
+</pre>
+</li>
+<li><p class="first">Your app should be working on Heroku now. <tt class="docutils literal">heroku open</tt> will show your site.</p>
+</li>
+</ol>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

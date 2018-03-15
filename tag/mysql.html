@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - mysql</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/setting-your-system-start-django-development-ubunt.html">Setting up your system to start with Django development on Ubuntu:</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2011-07-14T14:44:10+05:30">
+                Published: Thu 14 July 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-07-01T22:30:00+05:30">
+                Updated: Fri 01 July 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info --><p>If you don't have it installed, give the following command from the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python
+</pre></div>
+
+
+<p>This will install Python on your machine.</p>
+<p>2&gt;If you will be developing a database driven web application, you need to have a database setup on your system. I feel mysql is good and will tell you about installing mysql. It is pretty easy to install and use. You need to issue the following command from terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install mysql-server
+</pre></div>
+
+
+<p>While installing mysql, you will be prompted to enter a password which you will require when you try to use mysql. Give a password.
+This should install mysql on your system. 
+To check whether mysql is properly installed or not, give this command from the terminal:</p>
+<div class="highlight"><pre><span></span>mysql -u root -p
+</pre></div>
+
+
+<p>This command would prompt you to enter the password. After entering the password you set earlier for mysql, you would be taken to mysql prompt.
+If you reach the mysql prompt, it means mysql is successfully installed onto your system.
+Now, give the command as "exit". This exits from mysql.</p>
+<p>3&gt;Installing mysqldb:
+To write Python scripts that connects to mysql, you need Python interface to mysql. MySQLdb is the python interface to mysql.
+Give the following command at the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python-mysqldb
+</pre></div>
+
+
+<p>If this command executes successfully, python can access the database server.If you want to test this, go to python interactive environment by typing "python" at the terminal:
+Inside python interactive environment, write the following statement:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">MySQLdb</span>
+</pre></div>
+
+
+<p>If this statement excutes without giving an ImportError then you have successfully installed mysqldb and now your python program can interact with mysql.</p>
+<p>4&gt;Installing Django
+Go to this link:
+    https://www.djangoproject.com/download/</p>
+<p>I suggest to use option 1 as it worked easily for me</p>
+<p>Now, you have django setup on your system and can start developing applications.
+1&gt;Being a Python web framework, Django requires Python. If you are on ubuntu, you probably have python installed on your system.
+If you don't have it installed, give the following command from the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python
+</pre></div>
+
+
+<p>This will install Python on your machine.</p>
+<p>2&gt;If you will be developing a database driven web application, you need to have a database setup on your system. I feel mysql is good and will tell you about installing mysql. It is pretty easy to install and use. You need to issue the following command from terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install mysql-server
+</pre></div>
+
+
+<p>While installing mysql, you will be prompted to enter a password which you will require when you try to use mysql. Give a password.
+This should install mysql on your system. 
+To check whether mysql is properly installed or not, give this command from the terminal:</p>
+<div class="highlight"><pre><span></span>mysql -u root -p
+</pre></div>
+
+
+<p>This command would prompt you to enter the password. After entering the password you set earlier for mysql, you would be taken to mysql prompt.
+If you reach the mysql prompt, it means mysql is successfully installed onto your system.
+Now, give the command as "exit". This exits from mysql.</p>
+<p>3&gt;Installing mysqldb:
+To write Python scripts that connects to mysql, you need Python interface to mysql. MySQLdb is the python interface to mysql.
+Give the following command at the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python-mysqldb
+</pre></div>
+
+
+<p>If this command executes successfully, python can access the database server.If you want to test this, go to python interactive environment by typing "python" at the terminal:
+Inside python interactive environment, write the following statement:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">MySQLdb</span>
+</pre></div>
+
+
+<p>If this statement excutes without giving an ImportError then you have successfully installed mysqldb and now your python program can interact with mysql.</p>
+<p>4&gt;Installing Django
+Go to this link:
+    https://www.djangoproject.com/download/</p>
+<p>I suggest to use option 1 as it worked easily for me</p>
+<p>Now, you have django setup on your system and can start developing applications.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-with-mysql-and-apache-on-ec2.html" rel="bookmark"
+                           title="Permalink to Django with Mysql and Apache on EC2">Django with Mysql and Apache on EC2</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-06T02:18:17+05:30">
+                Published: Fri 06 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-06T13:48:17+05:30">
+                Updated: Fri 06 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>What is EC2 ---------------- Unless you have been living on Mars these last few years, you are sure to have heard of <a href="http://aws.amazon.com/ec2/">EC2</a>. Amazon's cloud offering, it offers infinite scalability. Using EC2, you can bring up any number of machines online at minutes notice, and after you are done with them, bring them down. How does EC2 work? ----------------------- A EC2 machine is nothing but a bare machine. An <a href="http://aws.amazon.com/ec2/instance-types/">Amazon Machine Image</a> (AMI) is a machine bundled as an Image, with preconfigured software which you can start at moments notice. We will take a AMI with a basic Ubuntu installed,</p>
+                <a class="readmore" href="/django-with-mysql-and-apache-on-ec2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/automatically-backup-mysql-database-to-amazon-s3-using-django-python-script.html" rel="bookmark"
+                           title="Permalink to Automatically backup mysql database to Amazon S3 using django (Python) script">Automatically backup mysql database to Amazon S3 using django (Python) script</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-02-23T06:48:31+05:30">
+                Published: Mon 23 February 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-02-23T18:18:31+05:30">
+                Updated: Mon 23 February 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Many of us use Amazon S3 to backup  their mysql databases.As we do it so often we thought of writing an automated script which does this task of taking the backup of a mysql database and then moving it to the Amazon S3 .  Below is the django script .</p> <p><a href=
+                <a class="readmore" href="/automatically-backup-mysql-database-to-amazon-s3-using-django-python-script.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

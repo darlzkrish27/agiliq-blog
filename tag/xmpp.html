@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - xmpp</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/real-time-applications-with-django-xmpp-and-stroph.html">Real time applications with Django, XMPP and StropheJS</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2010-12-22T02:00:47+05:30">
+                Published: Wed 22 December 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-12-22T13:30:47+05:30">
+                Updated: Wed 22 December 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/xmpp.html">xmpp</a> </p>
+</footer><!-- /.post-info --><div class="section" id="tl-dr">
+<h2>TL;DR:</h2>
+<ul class="simple">
+<li>django-pubsub allows you to create Twitter like real-time updates for your models with Admin like ease.</li>
+<li>Demo at <a class="reference external" href="http://chat.agiliq.com/pubsub/">http://chat.agiliq.com/pubsub/</a></li>
+<li>Code at <a class="reference external" href="https://github.com/agiliq/django-pubsub">https://github.com/agiliq/django-pubsub</a></li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction:</h2>
+<p>PubSub is a XMPP extension which allows publishing and subscribing to events.
+This is useful when you instantly want to notify many clients about something
+interesting happening on your server.</p>
+<p>Quoting the authors of <a class="reference external" href="http://xmpp.org/extensions/xep-0060.html">PubSub specs</a>:</p>
+<pre class="literal-block">
+The protocol enables XMPP entities to create nodes (topics) at a
+pubsub service and publish information at those nodes; an event
+notification (with or without payload) is then broadcasted to all
+entities that have subscribed to the node. Pubsub therefore
+adheres to the classic Observer design pattern and can serve as
+the foundation for a wide variety of applications, including news
+feeds, content syndication, rich presence, geolocation, workflow
+systems, network management systems, and any other application
+that requires event notifications.
+</pre>
+<p>To understand this better, think of newspapers as publishers and the
+people who subscribe to the newspapers as subscribers. Getting your
+daily newspaper is similar to checking your RSS feeds because you
+only get information at regular intervals. (Of course you could keep
+buying newspapers every 'x' hours, i.e. keep refreshing your RSS
+reader so often). This is as inefficient as it sounds. For
+instance, you never know if a newspaper actually has new stuff, you
+need to buy and read it before you realize there's nothing new. And
+there will be always be a delay (unless you are really lucky) between
+the time something happens and you read it in the your 'n'th
+newspaper of the day.</p>
+<p>PubSub solves this problem by having a system where subscribers subscribe to
+nodes and the publisher notifies its subscribers when something happens. Nodes
+are like TV channels, so you only subscribe to the channels you are interested
+in.</p>
+</div>
+<div class="section" id="how-it-can-be-useful-to-you">
+<h2>How it can be useful to you:</h2>
+<p>In addition to the points mentioned in the quote, pubSub can be used
+in your project to send instant notifications, maintain the same
+state across multiple sessions, or monitor live activity.</p>
+</div>
+<div class="section" id="introducing-django-pubsub">
+<h2>Introducing django-pubsub:</h2>
+<p><a class="reference external" href="https://github.com/agiliq/django-pubsub">django-pubsub</a> allows you write PubSub enabled applications easily.</p>
+<p><a class="reference external" href="http://chat.agiliq.com/pubsub/">This demo</a> using django-pubsub shows how to use the module. The stack used
+in the demo is:</p>
+<ul class="simple">
+<li>fcgi</li>
+<li>nginx</li>
+<li>ejabberd with mod_http_bind and mod_pubsub</li>
+</ul>
+<p>You can register a model with the pubsub app and all registered models
+will automatically send out notification (with the payload) on <tt class="docutils literal">save</tt>
+to the default node.</p>
+<p>Then you can use the PubSub client provided in <tt class="docutils literal">media</tt> to subscribe and
+receive events from the registered models.</p>
+<p>The default payload includes an XML serialized instance of the model.
+You can use jquery to extract required <tt class="docutils literal">fields</tt> from the payload.</p>
+<p>You can also directly use <tt class="docutils literal">pubsub.publish</tt> to publish any item to any
+node. An example is provided in the demo included with the app.</p>
+</div>
+<div class="section" id="how-it-works">
+<h2>How it works:</h2>
+<p>Since XMPP and HTTP speak different languages, you need some kind of a
+bridge to connect these two. This can be achieved using <a class="reference external" href="http://en.wikipedia.org/wiki/BOSH">BOSH</a>.</p>
+<p>The BOSH bridge is provided by ejabberd's <tt class="docutils literal">mod_http_bind</tt>
+module. (You can also use <a class="reference external" href="https://github.com/twonds/punjab">Punjab</a> for this purpose)</p>
+<p>If you are using mod_http_bind, you will also need to setup
+appropriate url forwarding using nginx because mod_http_bind listens
+on the port 5280 and will not be able to communicate with the client
+on port 8080.</p>
+<p>Strophe will use the BOSH url to talk to ejabberd. Our PubSub
+client which is written using Strophe will then be able to subscribe
+and receive notifications from the server.</p>
+<p>On the server side, the pubsub app uses xmpppy to send out the correct <tt class="docutils literal">Iq</tt>
+stanzas on <tt class="docutils literal">save</tt> or <tt class="docutils literal">publish</tt>. The client will receive these stanzas
+on subscribing to the appropriate node.</p>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion:</h2>
+<p>If your app needs real-time updates, push notifications, and scalable
+infrastructure, you can make use of XMPP and Strophejs.</p>
+</div>
+<div class="section" id="references">
+<h2>References:</h2>
+<p>ejabberd's blog post on related topic:</p>
+<p><a class="reference external" href="http://www.process-one.net/en/blogs/article/introducing_the_xmpp_application_server">http://www.process-one.net/en/blogs/article/introducing_the_xmpp_application_server</a></p>
+<p>a similar project using comet, orbit and twisted instead of xmpp:</p>
+<p><a class="reference external" href="http://www.clemesha.org/blog/realtime-web-apps-python-django-orbited-twisted">http://www.clemesha.org/blog/realtime-web-apps-python-django-orbited-twisted</a></p>
+<p>ab</p>
+</div>
+                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

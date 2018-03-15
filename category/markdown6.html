@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - markdown</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/producer-consumer-problem-in-python.html" rel="bookmark"
+                           title="Permalink to Producer-consumer problem in Python">Producer-consumer problem in Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-10-17T00:16:37+05:30">
+                Published: Thu 17 October 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-10-17T10:46:37+05:30">
+                Updated: Thu 17 October 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/threads.html">threads</a> </p>
+</footer><!-- /.post-info -->                <p>We will solve Producer Consumer problem in Python using Python threads. This problem is nowhere as hard as they make it sound in colleges. This blog will make more sense if you have some idea about <a href="http://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem">Producer Consumer problem</a>. Why care about Producer Consumer problem: * Will help you understand more about concurrency and different concepts of concurrency. * The concept of Producer Consumer problem is used to some extent in implementing a message queue. And you will surely need message queue at some point of time. While we use threads, you will learn about the following thread topics: *</p>
+                <a class="readmore" href="/producer-consumer-problem-in-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/state-pattern-with-ui-code.html" rel="bookmark"
+                           title="Permalink to State pattern with UI Code">State pattern with UI Code</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-10-14T06:09:27+05:30">
+                Published: Mon 14 October 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-10-14T16:39:27+05:30">
+                Updated: Mon 14 October 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/design-pattern.html">design pattern</a> </p>
+</footer><!-- /.post-info -->                <p>This blog tells how I used state pattern in my UI code, and explains state pattern with JavaScript and jQuery. Disclaimer: * This blog will not talk much about benefits of State pattern as there is a already a lot written about it. It only gives a practical example of using state pattern with UI code. * I am not much confident about difference between State pattern and Strategy pattern. Let's discuss if I misunderstood State pattern. ###Use case: * I have a page with two input fields. * Page initially has one title field and one body field. *</p>
+                <a class="readmore" href="/state-pattern-with-ui-code.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/understanding-threads-in-python.html" rel="bookmark"
+                           title="Permalink to Understanding Threads in Python">Understanding Threads in Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-17T13:23:01+05:30">
+                Published: Tue 17 September 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-09-17T23:53:01+05:30">
+                Updated: Tue 17 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/threads.html">threads</a> </p>
+</footer><!-- /.post-info -->                <p>We will see some examples of using threads in Python and how to avoid race conditions: You should run each example several times to notice that threads are unpredictable and that your results differ every time. Disclaimer: Forget anything you heard about GIL for now, because GIL is not going to mess up with scenarios I want to show. ###Example 1: We want to fetch five different urls: ####Single threaded way: def get_responses(): urls = ['http://www.google.com', 'http://www.amazon.com', 'http://www.ebay.com', 'http://www.alibaba.com', 'http://www.reddit.com'] start = time.time() for each in urls: print each resp = urllib2.urlopen(each) print resp.getcode() print "Elapsed time: %s" % (time.time()-start)</p>
+                <a class="readmore" href="/understanding-threads-in-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/process-and-threads-for-beginners.html" rel="bookmark"
+                           title="Permalink to Process and Threads for Beginners">Process and Threads for Beginners</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-11T02:03:39+05:30">
+                Published: Wed 11 September 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-09-11T12:33:39+05:30">
+                Updated: Wed 11 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/process.html">process</a> </p>
+</footer><!-- /.post-info -->                <p>We will cover this post in following sequence: * Process and multiprocessing * Threads and multithreading ###Process and multiprocessing A process is an executable instance of a program. ####example: You write a java program and save it as <code>abcd.java</code> and run it with <code>java abcd</code>. While this program is executing it is a process. File <code>abcd.java</code> is not a process, but when it's executing it is a process. You write a Python program and save it as <code>abcd.py</code> and run it with <code>python abcd.py</code>. So, while this program is executing it is a process. Once the program terminates, the process</p>
+                <a class="readmore" href="/process-and-threads-for-beginners.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/minimal-nginx-and-gunicorn-configuration-for-djang.html" rel="bookmark"
+                           title="Permalink to Minimal Nginx and Gunicorn configuration for Django projects">Minimal Nginx and Gunicorn configuration for Django projects</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-26T19:35:50+05:30">
+                Published: Mon 26 August 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-08-26T18:05:50+05:30">
+                Updated: Mon 26 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/nginx.html">nginx</a> </p>
+</footer><!-- /.post-info -->                <p>We will see how to deploy a Django project with nginx and gunicorn. It was much easier for me to understand nginx and gunicorn on development machine and then move to a publicly accessible server. We will cover this post in the following sequence: * Use django's <code>runserver</code> to serve the site. * Stop <code>runserver</code> and start using gunicorn instead. * Add nginx to this configuration. * Deploy the project on a publicly accessible server using same stack. ###Project Structure We will use a minimal project with two apps and few static files. You can view this project at <a href="https://github.com/akshar-raaj/static-files-in-django">github</a>.</p>
+                <a class="readmore" href="/minimal-nginx-and-gunicorn-configuration-for-djang.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/writing-thread-safe-django-code.html" rel="bookmark"
+                           title="Permalink to Writing thread-safe django - get_or_create">Writing thread-safe django - get_or_create</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-21T09:04:24+05:30">
+                Published: Wed 21 August 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-08-21T19:34:24+05:30">
+                Updated: Wed 21 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/threads.html">threads</a> </p>
+</footer><!-- /.post-info -->                <p>In this blog post, we'll discuss thread-safety, why it's important and how to write thread-safe django code, especially for bulk operations like management commands. Thread-safety: -------------- Thread-safety means that our code can be run in multiple threads and behave as expected. The reason that code can be unsafe with regard to threads is because we'll be manipulating shared memory (e.g. database) from the threads and there's a chance of a race-condition which will produce unexpected results. To avoid this, we have the option of using read-write locks, transactions etc. We'll look at some simple examples and try to understand these</p>
+                <a class="readmore" href="/writing-thread-safe-django-code.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/accept-bitcoins-using-python.html" rel="bookmark"
+                           title="Permalink to Accept bitcoins using python">Accept bitcoins using python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-07-12T08:02:44+05:30">
+                Published: Fri 12 July 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-07-12T18:32:44+05:30">
+                Updated: Fri 12 July 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>In this blog post we'll talk about bitcoins and look at an overview of how to accept them from your python app. Bitcoin: -------- Bitcoin is crypto-currency whose protocol allows fast, anonymous and secure digital transactions. To know more about bitcoin and to install it, go to the <a href="http://bitcoin.org/en/bitcoin-for-developers">"Developer Guide"</a> guide. Here I'll discuss how we can implement a simple bitcoin payment processing app in python. Getting started: ---------------- To get started, install bitcoin (assuming Ubuntu): &gt; sudo apt-get install bitcoind Now edit <code>~/.bitcoin/bitcoin.conf</code> and add: testnet=1 This will allow us to run bitcoin in test mode. Now start the</p>
+                <a class="readmore" href="/accept-bitcoins-using-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basics-wsgi.html" rel="bookmark"
+                           title="Permalink to Basics of WSGI">Basics of WSGI</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-07-01T01:15:22+05:30">
+                Published: Mon 01 July 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-07-01T11:45:22+05:30">
+                Updated: Mon 01 July 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>In this post we will write a web app which will serve few urls. We will not use any Python framework for it. It's only to illustrate how things work under the hood.</p>
+                <a class="readmore" href="/basics-wsgi.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/self-testing-fabfile-using-docker.html" rel="bookmark"
+                           title="Permalink to Self-testing fabfile using docker">Self-testing fabfile using docker</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-28T08:27:35+05:30">
+                Published: Fri 28 June 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-06-28T18:57:35+05:30">
+                Updated: Fri 28 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/docker.html">docker</a> </p>
+</footer><!-- /.post-info -->                <p>In my last blog post, I discussed <a href="http://agiliq.com/blog/2013/06/deploying-django-using-docker/">deploying django on docker</a>. This is a blog post on a related note and we'll be looking at using docker to test a fabfile and make sure it's working as intended. Fabfile and testing: -------------------- <a href="http://docs.fabfile.org/en/latest/index.html">Fabfile</a> is a great tool for automating deployments, and is very useful for creating continous integration workflows. With good tests, you can be sure that your fabfile works out of the box and be prepared for server migrations or upgrades. One apporach to testing complex fabfiles is using vagrant or using a VM manually. I think docker is</p>
+                <a class="readmore" href="/self-testing-fabfile-using-docker.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/deploying-django-using-docker.html" rel="bookmark"
+                           title="Permalink to Deploying django using docker">Deploying django using docker</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-14T08:46:51+05:30">
+                Published: Fri 14 June 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-06-14T19:16:51+05:30">
+                Updated: Fri 14 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/docker.html">docker</a> </p>
+</footer><!-- /.post-info -->                <p>In this blog post we'll take a look at <a href="http://docker.io">Docker</a> and discuss ways to deploy django using docker. About Docker: ------------- Docker is a tool that helps you manage lxc containers and images. You can create an image, launch container from the existing image, attach to a running container, and generally play around with the containers. The most important benefit of using docker and containers in general is that you have a clean, hygeinic and portable runtime enivorment for your app. This means you don't have to worry about missing dependecies, packages and other pain points during subsequent deployments. You</p>
+                <a class="readmore" href="/deploying-django-using-docker.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="/category/markdown5.html">&laquo;</a>
+    Page 6 / 19
+        <a href="/category/markdown7.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

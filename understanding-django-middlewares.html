@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Understanding Django Middlewares</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/understanding-django-middlewares.html" rel="bookmark"
+           title="Permalink to Understanding Django Middlewares">Understanding Django Middlewares</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-07-17T03:56:11+05:30">
+                Published: Fri 17 July 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-07-17T14:26:11+05:30">
+                Updated: Fri 17 July 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/middlewares.html">middlewares</a> </p>
+</footer><!-- /.post-info -->      <p>I assume you have read <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/" target="_blank">official Django docs on middleware</a>. I will elaborate on things mentioned in the documentation but I assume you are familiar with basics of middleware.</p>
+<p>In this post we will discuss the following.</p>
+<ul>
+<li>What is a middleware</li>
+<li>When to use middleware</li>
+<li>Things to remember when writing middleware</li>
+<li>Writing some middlewares to understand how order of middleware matters</li>
+</ul>
+<h3>What is a middleware</h3>
+<p>Middlewares are hooks to modify Django <strong>request</strong> or <strong>response</strong> object. Putting the definition of middleware from Django <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/">docs</a>.</p>
+<div class="highlight"><pre><span></span>Middleware is a framework of hooks into Django’s request/response processing. It’s a light, low-level “plugin” system for globally altering Django’s input or output.
+</pre></div>
+
+
+<h3>When to use middleware</h3>
+<p>You can use middleware if you want to modify the <strong>request</strong> i.e <strong>HttpRequest</strong> object which is sent to the view. Or you might want to modify the <strong>HttpResponse</strong> object returned from the view. Both these can be achieved by using a middleware.</p>
+<p>You might want to perform an operation before the view executes. In such case you would use a middleware.</p>
+<p>Django provides some default middleware. eg: AuthenticationMiddleware</p>
+<p>Very often you would have used <strong>request.user</strong> inside the view. Django wants <strong>user</strong> attribute to be set on <code>request</code> before any view executes. Django takes a middleware approach to accomplish this. So Django provides an AuthenticationMiddleware which can modify the request object.</p>
+<p>And Django modifies the request object like:</p>
+<div class="highlight"><pre><span></span>https://github.com/django/django/blob/master/django/contrib/auth/middleware.py#L22
+</pre></div>
+
+
+<p>Similarly you might have an application which works with users of different timezones. You want to use the user's timezone while showing any page to the user. You want access to user's timezone in all the views. It makes sense to add it in session in such case. So you can add a middleware like this:</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">TimezoneMiddleware</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="err">#</span> <span class="nx">Assuming</span> <span class="nx">user</span> <span class="nx">has</span> <span class="nx">a</span> <span class="nx">OneToOneField</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">model</span> <span class="nx">called</span> <span class="nx">Profile</span>
+        <span class="err">#</span> <span class="nx">And</span> <span class="nx">Profile</span> <span class="nx">stores</span> <span class="nx">the</span> <span class="nx">timezone</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">User</span><span class="p">.</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">session</span><span class="p">[</span><span class="s1">&#39;timezone&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">profile</span><span class="p">.</span><span class="nx">timezone</span>
+</pre></div>
+
+
+<p>TimezoneMiddleware is dependent on <code>request.user</code>. And <code>request.user</code> is populated in <strong>AuthenticationMiddleware</strong>. So TimezoneMiddleware written by us must come after Django provided AuthenticationMiddleware in the tuple settings.MIDDLEWARE_CLASSES.</p>
+<p>We will get more idea about order of middlewares in coming examples.</p>
+<h3>Things to remember when using middleware</h3>
+<ul>
+<li>Order of middlewares is important.</li>
+<li>A middleware only need to extend from class <strong>object</strong>.</li>
+<li>A middleware is free to implement some of the methods and not implement other methods.</li>
+<li>A middleware may implement <strong>process_request</strong> but may not implement <strong>process_response</strong> and <strong>process_view</strong>. Infact it is very common and lot of Django provided middlewares do it.</li>
+<li>A middleware may implement <strong>process_response</strong> but not implement <strong>process_request</strong>.</li>
+</ul>
+<p>AuthenticationMiddleware only implements process_request and doesn't implement process_response. You can check it <a href="https://github.com/django/django/blob/master/django/contrib/auth/middleware.py#L14" target="_blank">here</a></p>
+<p>GZipMiddleware only implements process_response and doesn't implement process_request or process_view. You can see it <a href="https://github.com/django/django/blob/master/django/middleware/gzip.py#L9" target="_blank">here</a></p>
+<h3>Writing some middlewares</h3>
+<p>Make sure you have a Django project with a url and a view, and that you are able to access that view. Since we will try several things with <code>request.user</code>, make sure authentication is properly set for you and that <code>request.user</code> prints the right thing in this view.</p>
+<p>Create a file middleware.py in any of your app.</p>
+<p>I have an app called <code>books</code> and so I am writing this in books/middleware.py</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">BookMiddleware</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;Middleware executed&quot;</span>
+</pre></div>
+
+
+<p>Add this middleware in MIDDLEWARE_CLASSES</p>
+<div class="highlight"><pre><span></span>MIDDLEWARE_CLASSES = (
+    &#39;books.middleware.BookMiddleware&#39;,
+    &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+    &#39;django.middleware.common.CommonMiddleware&#39;,
+    &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+    &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+    &#39;django.contrib.messages.middleware.MessageMiddleware&#39;,
+    &#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;,
+)
+</pre></div>
+
+
+<p>Make request to any url. This should get printed on <code>runserver</code> console</p>
+<div class="highlight"><pre><span></span>Middleware executed
+</pre></div>
+
+
+<p>Modify BookMiddleware.process_request so it looks like</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">BookMiddleware</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;Middleware executed&quot;</span>
+        <span class="nx">print</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span>
+</pre></div>
+
+
+<p>Make request to a url again. This will raise an error.</p>
+<div class="highlight"><pre><span></span>&#39;WSGIRequest&#39; object has no attribute &#39;user&#39;
+</pre></div>
+
+
+<p>This happened because attribute <code>user</code> hasn't been set on <code>request</code> yet.</p>
+<p>Now change the order of middlewares so BookMiddleware comes after AuthenticationMiddleware</p>
+<div class="highlight"><pre><span></span>MIDDLEWARE_CLASSES = (
+    &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+    &#39;django.middleware.common.CommonMiddleware&#39;,
+    &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+    &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+    &#39;books.middleware.BookMiddleware&#39;,
+    &#39;django.contrib.messages.middleware.MessageMiddleware&#39;,
+    &#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;,
+)
+</pre></div>
+
+
+<p>Make request to any url. This should get printed on <code>runserver</code> console</p>
+<div class="highlight"><pre><span></span>Middleware executed
+&lt;username&gt;
+</pre></div>
+
+
+<p>This tells that <code>process_request</code> is executed on the middlewares in the order in which they are listed in settings.MIDDLEWARE_CLASSES</p>
+<p>You can verify it further. Add another middleware in your middleware.py</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">AnotherMiddleware</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;Another middleware executed&quot;</span>
+</pre></div>
+
+
+<p>Add this middleware in MIDDLEWARE_CLASSES too.</p>
+<div class="highlight"><pre><span></span>MIDDLEWARE_CLASSES = (
+    &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+    &#39;django.middleware.common.CommonMiddleware&#39;,
+    &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+    &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+    &#39;books.middleware.BookMiddleware&#39;,
+    &#39;books.middleware.AnotherMiddleware&#39;,
+    &#39;django.contrib.messages.middleware.MessageMiddleware&#39;,
+    &#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;,
+)
+</pre></div>
+
+
+<p>Now output would be:</p>
+<div class="highlight"><pre><span></span>Middleware executed
+&lt;username&gt;
+Another middleware executed
+</pre></div>
+
+
+<h4>How returning HttpResponse from process_request changes things</h4>
+<p>Modify BookMiddleware so it looks like</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">BookMiddleware</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;Middleware executed&quot;</span>
+        <span class="nx">print</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span>
+        <span class="k">return</span> <span class="nx">HttpResponse</span><span class="p">(</span><span class="s2">&quot;some response&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Try any url now and your output would be:</p>
+<div class="highlight"><pre><span></span>Middleware executed
+&lt;username&gt;
+</pre></div>
+
+
+<p>You will notice two things:</p>
+<ul>
+<li>Your view will no more be executed and no matter which url you try, you will see "some response".</li>
+<li>AnotherMiddleware.process_request will not be executed anymore.</li>
+</ul>
+<p>So if a Middleware's process_request() returns a HttpResponse object then process_request of any subsequent middlewares is bypassed. Also view execution is bypassed. You would rarely do this or require this in your projects.</p>
+<p>Comment "return HttpResponse("some response")" so process_request of both middlewares keep executing.</p>
+<h4>Working with process_response</h4>
+<p>Add method process_response to both the middlewares</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">AnotherMiddleware</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;Another middleware executed&quot;</span>
+
+    <span class="nx">def</span> <span class="nx">process_response</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;AnotherMiddleware process_response executed&quot;</span>
+        <span class="k">return</span> <span class="nx">response</span>
+
+<span class="kr">class</span> <span class="nx">BookMiddleware</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">process_request</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;Middleware executed&quot;</span>
+        <span class="nx">print</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span>
+        <span class="k">return</span> <span class="nx">HttpResponse</span><span class="p">(</span><span class="s2">&quot;some response&quot;</span><span class="p">)</span>
+        <span class="err">#</span><span class="nx">self</span><span class="p">.</span><span class="nx">_start</span> <span class="o">=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">time</span><span class="p">()</span>
+
+    <span class="nx">def</span> <span class="nx">process_response</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="s2">&quot;BookMiddleware process_response executed&quot;</span>
+        <span class="k">return</span> <span class="nx">response</span>
+</pre></div>
+
+
+<p>Try some url. Output would be</p>
+<div class="highlight"><pre><span></span>Middleware executed
+&lt;username&gt;
+Another middleware executed
+AnotherMiddleware process_response executed
+BookMiddleware process_response executed
+</pre></div>
+
+
+<p>AnotherMiddleware.process_response() is executed before BookMiddleware.process_response() while AnotherMiddleware.process_request() executes after BookMiddleware.process_request(). So process_response() follows the reverse of what happens with process_request. process_response() is executed for last middleware then second last middleware and so on till the first middleware.</p>
+<h4>process_view</h4>
+<p>Django applies middleware's process_view() in the order it’s defined in MIDDLEWARE_CLASSES, top-down. This is similar to the order followed for process_request().</p>
+<p>Also if any process_view() returns an HttpResponse object, then subsequent process_view() calls are bypassed and not executed.</p>
+<p>Check our <a href="http://agiliq.com/blog/2015/07/profiling-django-middlewares/" target="_blank">next post</a> to see a practical use of middleware.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

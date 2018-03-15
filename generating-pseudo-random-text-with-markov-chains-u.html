@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Generating pseudo random text with Markov chains using Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/generating-pseudo-random-text-with-markov-chains-u.html" rel="bookmark"
+           title="Permalink to Generating pseudo random text with Markov chains using Python">Generating pseudo random text with Markov chains using Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-16T00:07:16+05:30">
+                Published: Tue 16 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-16T11:54:11+05:30">
+                Updated: Tue 16 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->      <p>First the definition from <a href="http://mathworld.wolfram.com/MarkovChain.html">Wolfram</a></p>
+<blockquote>
+A Markov chain is collection of random variables {X_t} (where the index t runs through 0, 1, ...) having the property that, given the present, the future is conditionally independent of the past.
+</blockquote>
+
+<p><a href="http://en.wikipedia.org/wiki/Transition_probabilities">Wikipedia</a> is a little clearer</p>
+<blockquote>
+ ...Markov chain is a stochastic process with markov property ... [Which means] state changes are probabilistic, and future state depend on current state only.
+</blockquote>
+
+<p>Markov chains have various uses, but now let's see how it can be used to generate
+gibberish, which might look legit.</p>
+<p>The algorithm is,</p>
+<ol>
+<li>Have a text which will serve as the corpus from which we choose the next
+transitions.</li>
+<li>Start with two consecutive words from the text. The last two words constitute
+the present state.</li>
+<li>Generating next word is the markov transition. To generate the next word, look
+in the corpus, and find which words are present after the given two words. Choose
+one of them randomly.</li>
+<li>Repeat 2, until text of required size is generated.</li>
+</ol>
+<p>The code for this is</p>
+<script src="http://gist.github.com/131679.js"></script>
+
+<p>To see a sample output, we take the text of <em>My man jeeves</em> by Wodehouse from
+<a href="http://www.gutenberg.org/etext/8164">Project Gutenberg</a>, and see a sample output.</p>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">file_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/home/shabda/jeeves.txt&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">markovgen</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">markov</span> <span class="o">=</span> <span class="n">markovgen</span><span class="o">.</span><span class="n">Markov</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">markov</span><span class="o">.</span><span class="n">generate_markov_text</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="s1">&#39;Can you put a few years of your twin-brother Alfred,</span>
+<span class="n">who</span> <span class="n">was</span> <span class="n">apt</span> <span class="n">to</span> <span class="n">rally</span> <span class="nb">round</span> <span class="n">a</span> <span class="n">bit</span><span class="o">.</span> <span class="n">I</span> <span class="n">should</span> <span class="n">strongly</span> <span class="n">advocate</span>
+<span class="n">the</span> <span class="n">blue</span> <span class="k">with</span> <span class="n">milk</span><span class="s1">&#39;</span>
+</pre></div>
+
+
+<p>[The files you need to run this are <a href='http://uswaretech.com/blog/wp-content/uploads/2009/06/jeeves.txt'>jeeves.txt</a> and <a href='http://uswaretech.com/blog/wp-content/uploads/2009/06/markovgenpy.txt'>markovgen.py</a>]</p>
+<h3>How is this a markov algorithm?</h3>
+<ul>
+<li>The last two words are the current state.</li>
+<li>Next word depends on last two words only, or on <em>present state</em> only.</li>
+<li>The next word is <em>randomly chosen</em> from a statistical model of the corpus.</li>
+</ul>
+<p>Here is some sample text.</p>
+<p>"The quick brown fox jumps over the brown fox who is slow jumps over the brown
+fox who is dead."</p>
+<p>This gives us a corpus like,</p>
+<div class="highlight"><pre><span></span>{(&#39;The&#39;, &#39;quick&#39;): [&#39;brown&#39;],
+ (&#39;brown&#39;, &#39;fox&#39;): [&#39;jumps&#39;, &#39;who&#39;, &#39;who&#39;],
+ (&#39;fox&#39;, &#39;jumps&#39;): [&#39;over&#39;],
+ (&#39;fox&#39;, &#39;who&#39;): [&#39;is&#39;, &#39;is&#39;],
+ (&#39;is&#39;, &#39;slow&#39;): [&#39;jumps&#39;],
+ (&#39;jumps&#39;, &#39;over&#39;): [&#39;the&#39;, &#39;the&#39;],
+ (&#39;over&#39;, &#39;the&#39;): [&#39;brown&#39;, &#39;brown&#39;],
+ (&#39;quick&#39;, &#39;brown&#39;): [&#39;fox&#39;],
+ (&#39;slow&#39;, &#39;jumps&#39;): [&#39;over&#39;],
+ (&#39;the&#39;, &#39;brown&#39;): [&#39;fox&#39;, &#39;fox&#39;],
+ (&#39;who&#39;, &#39;is&#39;): [&#39;slow&#39;, &#39;dead.&#39;]}
+</pre></div>
+
+
+<p>Now if we start with "brown fox", the next word can be "jumps" or "who". If we
+ choose "jumps", then the current state is "fox jumps" and next word is over,
+ and so on.</p>
+<h3>Hints</h3>
+<ul>
+<li>The larger text we choose, the more choices are there at each transition, and
+a better looking text is generated.</li>
+<li>The state can be set to depend on one word, two words, or any number of words.
+As the number of words in each state increases, the generated text becomes less
+random.</li>
+<li>Don't strip the punctuations etc. They lead to a more representative corpus,
+and a better random text.</li>
+</ul>
+<h3>Resources</h3>
+<ul>
+<li><a href='http://uswaretech.com/blog/wp-content/uploads/2009/06/jeeves.txt'>jeeves.txt</a></li>
+<li><a href='http://uswaretech.com/blog/wp-content/uploads/2009/06/markovgenpy.txt'>markovgen.py</a></li>
+<li><a href="http://www.yisongyue.com/shaney/">Online markov text generator</a></li>
+<li><a href="http://www.yaymukund.com/twittov/">Twitter markov script</a></li>
+</ul>
+<hr>
+<p>Did you know that markov chains have many other uses in finance, statistics and mathematics? In fact Google's page rank algorithm is essentially a markov chain of the web! We publish articles on Algorithms, Python, Django and related technologies every week. Why not <a href="http://agiliq.com/newsletter/subscribe/">Subscribe to us</a> or <a href="http://twitter.com/agiliqdotcom">follow us on twitter</a>?</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

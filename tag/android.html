@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - android</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/android-fragments-101.html">Android Fragments 101</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-01-01T00:00:00+05:30">
+                Published: Tue 01 January 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-01-01T11:30:00+05:30">
+                Updated: Tue 01 January 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ikram.html">ikram</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/android.html">android</a> </p>
+</footer><!-- /.post-info --><p><em><strong>Prerequisite</strong>: You are already aware of the <a href="http://developer.android.com/training/index.html">basics of building a HelloWorld</a> in Android and know <a href="http://developer.android.com/training/basics/fragments/support-lib.html">how to use the APIs provided in the support library</a>.</em></p>
+<p><em>The code example is available on <a href="http://github.com/iontech/Fragments_Example" title="Fragments Example">github</a>.</em></p>
+<hr>
+<p>Ever wanted a code snippet from an Activity to be available to other activities? Perhaps a Button or a ListView, maybe a Layout or any View/ViewGroup for that matter? Fragments let us do just that.</p>
+<p>Necessity is the mother of invention.<br>
+Before understanding what Fragments are and how they work, we must first realize their existence in the first place.</p>
+<h2>The Problem</h2>
+<p>Suppose we have an Android app with two Activities- <a href="https://github.com/iontech/Fragments_Example/blob/master/src/main/java/com/github/iontech/fragments_example/FirstActivity.java"><em>FirstActivity</em></a> and <a href="https://github.com/iontech/Fragments_Example/blob/master/src/main/java/com/github/iontech/fragments_example/SecondActivity.java"><em>SecondActivity</em></a>.<br>
+<em>FirstActivity</em> contains two Views, a <code>TextView</code> (<em>textView</em>) and a <code>Button</code> (<em>button1</em>); and <em>button1</em> has an <code>onClick()</code> callback that <code>Toast</code>'s a simple message "Button pressed".<br>
+<em>SecondActivity</em> contains both the Views present in <em>FirstActivity</em> and a <code>Button</code> (<em>button2</em>).</p>
+<p>Now we want to utilize the two layout components(Views) of <em>FirstActivity</em> in <em>SecondActivity</em>, we can go about this with two approaches:</p>
+<ol>
+<li>Copy and Paste the xml elements of the two Views.</li>
+<li>Create a separate layout for common Views and reuse it using <code>&lt;include /&gt;</code> layout element.<br>
+    More about this <a href="http://developer.android.com/training/improving-layouts/reusing-layouts.html">here</a>.</li>
+</ol>
+<p>Electing the second approach makes sense cause it enables us to make reusable layouts. Everything seems great till now. We are able to make reusable layouts and use them as many times as we want.</p>
+<p>Now recollect that we have an <code>onClick()</code> callback assigned to <em>button1</em>. How do we reuse the same callback functionality of <em>button1</em> across multiple Activities? <code>&lt;include /&gt;</code> lets us reuse layouts and not the Activity source.<br>
+This is where Fragments come into play.</p>
+<h2>Fragments</h2>
+<p><center> <img alt="image" src="http://iontech.files.wordpress.com/2013/01/androidfragmentation1-264x300.png"> </center>
+Fragments encompass both layout resource and Java source. Hence, unlike <code>&lt;include /&gt;</code>, they allow us to reuse the View components along with their functionality, if needed.
+Fragments were first introduced in Honeycomb(API 11), living under the <code>android.app</code> package.<br>
+<strong>Note</strong>: API 11 implies that Fragments have no support for devices less than Honeycomb and, for the record, as of writing this post, <a href="http://developer.android.com/about/dashboards/index.html">more than 50% of Android devices worldwide run versions of Android below Honeycomb</a>. Developer dissapointed? You don't have to be, cause google has been cautious enough to add the Fragment APIs to the support library. Yay!</p>
+<p>In the support library Fragment APIs sit in the <code>android.support.v4.app</code> package. This post assumes that your <code>minSdk</code> support is below API 11. Hence we concentrate on the Fragment APIs of the support library.</p>
+<h3>Diving into code</h3>
+<p>Performing code reuse with Fragments involves three major steps:</p>
+<ol>
+<li>Creating reusable View components - Creating a layout for the fragment.</li>
+<li>Creating reusable Java source - Writing the layout's corresponding Fragment class.</li>
+<li>Employing the reusable components in Activity - Making an Activity to host this Fragment.</li>
+</ol>
+<h4>1. Creating reusable View components</h4>
+<h5>Creating a layout for the Fragment</h5>
+<p>This is done precisely as we do it for our activity layouts. The layout contains a root element (ViewGroup) defining the layout, For instance in our example we use a LinearLayout and its child elements(the reusable Views) that we want to have in our fragment.</p>
+<blockquote>
+<p><a href="https://github.com/iontech/Fragments_Example/blob/master/res/layout/fragment_common.xml">fragment_common.xml</a></p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="nt">&lt;LinearLayout</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+        <span class="na">android:orientation=</span><span class="s">&quot;vertical&quot;</span>
+          <span class="na">android:layout_width=</span><span class="s">&quot;fill_parent&quot;</span>
+          <span class="na">android:layout_height=</span><span class="s">&quot;fill_parent&quot;</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;TextView</span>
+            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+            <span class="na">android:text=</span><span class="s">&quot;@string/textView&quot;</span>
+            <span class="na">android:id=</span><span class="s">&quot;@+id/textView&quot;</span> <span class="na">android:layout_gravity=</span><span class="s">&quot;center&quot;</span>
+            <span class="na">android:layout_margin=</span><span class="s">&quot;5dp&quot;</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;Button</span>
+            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+            <span class="na">android:text=</span><span class="s">&quot;@string/button1&quot;</span>
+            <span class="na">android:id=</span><span class="s">&quot;@+id/button1&quot;</span>
+            <span class="na">android:layout_gravity=</span><span class="s">&quot;center&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/LinearLayout&gt;</span>
+</pre></div>
+
+
+<h4>2. Creating reusable Java source</h4>
+<h5>Writing the layout's corresponding Fragment class</h5>
+<blockquote>
+<p><a href="https://github.com/iontech/Fragments_Example/blob/master/src/main/java/com/github/iontech/fragments_example/CommonFragment.java">CommonFragment.java</a></p>
+</blockquote>
+<p>This class will inherit <code>Fragment</code> class and must override the <code>onCreateView()</code> method.
+In this method we inflate the fragment layout using the following line of code.</p>
+<div class="highlight"><pre><span></span>View view = inflater.inflate(R.layout.fragment_common, container, false);
+</pre></div>
+
+
+<p><em>container</em> is the parent ViewGroup that the fragment's UI should be attached to.
+Once inflation is done, we can perform various operations on the component views of the fragment.
+Accessing the view elements from the layout is done exactly as we do in an Activity (using <code>findViewById()</code>) except that we use the <code>View</code> for the fragment's UI or an instance of the host Activity.</p>
+<p>In Activity we access Views(a Button for our example) as follows</p>
+<div class="highlight"><pre><span></span>Button button1 = (Button) findViewById(R.id.button1);
+</pre></div>
+
+
+<p>In Fragment, we need to use the inflated view(if in <code>onCreateView()</code>) or get the instance of the host activity and access the views through this instance(when in a <a href="http://developer.android.com/guide/components/fragments.html#Lifecycle" title="Fragment lifecycle callbacks">lifecycle callback</a> after <code>onCreateView()</code>, I generally do it in <code>onActivityCreated()</code>).</p>
+<div class="highlight"><pre><span></span>Button button1 = (Button) view.findViewById(R.id.button1);
+</pre></div>
+
+
+<p>or</p>
+<div class="highlight"><pre><span></span>Button button1 = (Button) getActivity().findViewById(R.id.button1);
+</pre></div>
+
+
+<p><code>getActivity()</code> returns the instance of the Activity that is hosting this Fragment.</p>
+<p>Finally, in <code>onCreateView()</code> we must return the View for the fragment's UI.</p>
+<div class="highlight"><pre><span></span>return view;
+</pre></div>
+
+
+<h4>3. Employing the reusable components in Activity</h4>
+<h5>Making an Activity to host this Fragment</h5>
+<p>This is done in two ways, statically by adding <code>&lt;fragment /&gt;</code> elements into the Activity layout or dynamically, at run time, by using <code>FragmentTransaction</code>s.
+<strong>Note</strong>: First thing we need to ensure is that our Activity extends <code>FragmentActivity</code> class instead of the regular <code>Activity</code>.
+If the <code>minSdk</code> is API 11 or higher, then we can leave our inheritance to <code>Activity</code> class and not bother about <code>FragmentActivity</code>.</p>
+<h5>a. Static approach to hosting the Fragments</h5>
+<h6>Adding <code>&lt;fragment /&gt;</code> element in activity layout</h6>
+<blockquote>
+<p><a href="https://github.com/iontech/Fragments_Example/blob/master/res/layout/activity_static.xml">activity_static.xml</a></p>
+</blockquote>
+<p>Inorder to statically add a Fragment into your Activity, just add <code>&lt;fragment /&gt;</code> element with the necessary layout attributes and the <code>android:name</code> attribute set to the fully qualified class name of the corresponding Fragment.</p>
+<div class="highlight"><pre><span></span>&lt;fragment android:layout_width=&quot;wrap_content&quot;
+          android:layout_height=&quot;wrap_content&quot;
+          android:name=&quot;com.github.iontech.fragments_example.CommonFragment&quot;
+          android:id=&quot;@+id/fragment&quot; android:layout_gravity=&quot;center&quot;/&gt;
+</pre></div>
+
+
+<h5>b. Dynamic approach</h5>
+<h6>Using <code>FragmentTransaction</code>s</h6>
+<blockquote>
+<p><a href="https://github.com/iontech/Fragments_Example/blob/master/src/main/java/com/github/iontech/fragments_example/ADynamicFragmentActivity.java">ADynamicFragmentActivity.java</a></p>
+</blockquote>
+<p>Can be done using <code>FragmentManager</code> and <code>FragmentTransaction</code> classes. We call <code>add()</code>, in our FragmentActivity implementation, on an instance of <code>FragmentTransaction</code> to add a fragment to the host Activity. But that is not enough to show the fragment on the screen, i.e. the FragmentTransaction is not complete. We must call <code>commit()</code> to finish the transaction.</p>
+<div class="highlight"><pre><span></span>CommonFragment fragment = new CommonFragment();
+FragmentManager manager = getSupportFragmentManager();
+FragmentTransaction transaction = manager.beginTransaction();
+transaction.add(R.id.dynamicFragmentLayout, fragment);
+transaction.commit();
+</pre></div>
+
+
+<p>Similarly Fragments can be removed(<code>remove()</code>) as well as replaced(<code>replace()</code>) from the activity all at runtime.</p>
+<p>Congratulations, now you can use Fragments to write reusable code and easily host them over multiple activities.</p>
+<p>Till next time.</p>
+<p>next time.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/getting-started-with-phonegap-using-xcode-for-mobi.html" rel="bookmark"
+                           title="Permalink to Getting started with PhoneGap using Xcode for Mobile app development">Getting started with PhoneGap using Xcode for Mobile app development</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-02-06T10:18:33+05:30">
+                Published: Sun 06 February 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-02-06T21:48:33+05:30">
+                Updated: Sun 06 February 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/android.html">android</a> </p>
+</footer><!-- /.post-info -->                <p>This is next in the series of apps I am building using various mobile technologies. It is the same app as build using Java for Android for calculating the Tax payable (in India). You can get the code for Objective-C, Java-Android, And PhoneGap. First the impressions ------------------------ <a href="http://www.phonegap.com/">Phonegap</a> was the easiest to work with among the Objective-C, Java and PhoneGap, by far. I created the app as easily as Step 1. Write the app and test it in Browser using the Chrome developer tools. Step 2. Start a project in Xcode. Step 3. Copy the HTML and CSS files to</p>
+                <a class="readmore" href="/getting-started-with-phonegap-using-xcode-for-mobi.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

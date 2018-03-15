@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - e-mail</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/writing-an-e-mail-application-with-lamson-ii.html">Writing an e-mail application with Lamson - II</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2011-04-05T03:14:10+05:30">
+                Published: Tue 05 April 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-04-05T13:44:10+05:30">
+                Updated: Tue 05 April 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/e-mail.html">e-mail</a> </p>
+</footer><!-- /.post-info --><p>In the <a class="reference external" href="http://agiliq.com/blog/2011/04/writing-an-e-mail-application-with-lamson-i/">last post</a>, we saw how to create the skeleton of a basic email application using Lamson. In this part, we'll see how to write a handler (in the controller) to open a ticket in Unfuddle, the project management tool we use at Agiliq.</p>
+<p>If you look at the <tt class="docutils literal">config/settings.py</tt> file, you'll see a <tt class="docutils literal">handlers</tt> attribute that should be updated to match the file that contains the rules for mail routing. In this case, let us create a <tt class="docutils literal">unfuddle.py</tt> under the <tt class="docutils literal">app/handlers</tt> directory and update the <tt class="docutils literal">config/settings.py</tt>:</p>
+<pre class="literal-block">
+handlers = [&quot;app.handlers.unfuddle&quot;]
+</pre>
+<p>In the <tt class="docutils literal">app/handlers/unfuddle.py</tt>, the handler code would be as below:</p>
+<pre class="literal-block">
+from lamson.routing import route, route_like, stateless
+from config.settings import UNFUDDLE_USERNAME, UNFUDDLE_PASSWORD
+import httplib2, json
+
+UNFUDDLE_API_ENDPOINT = &quot;https://%(subdomain)s.unfuddle.com/api/v1&quot;
+
+&#64;route(&quot;(subdomain)\+(project)&#64;(host)&quot;, subdomain=&quot;\w+&quot;, project=&quot;\w+&quot;, host=&quot;.+&quot;)
+def START(message, subdomain=None, project=None, host=None):
+   UNFUDDLE_API_URL = UNFUDDLE_API_ENDPOINT %({&quot;subdomain&quot;: subdomain})
+   h = httplib2.Http()
+   h.add_credentials(UNFUDDLE_USERNAME, UNFUDDLE_PASSWORD)
+   _, content = h.request(&quot;%(url)s/projects.json&quot; %({&quot;url&quot;: UNFUDDLE_API_URL}), method=&quot;GET&quot;)
+   json_content = json.loads(content)
+   proj = None
+   for proj_iter in json_content:
+       if proj_iter[&quot;short_name&quot;] == project:
+           proj = proj_iter
+   if not proj:
+       return START
+   _, tickets = h.request(&quot;%(url)s/projects/%(id)s/ticket_reports/dynamic.json?conditions_string=status-neq-closed&quot;
+                          %({&quot;url&quot;: UNFUDDLE_API_URL, &quot;id&quot;: proj[&quot;id&quot;]}))
+   ticket_json = json.loads(tickets)
+   tickets = []
+   if ticket_json[&quot;groups&quot;]:
+       tickets = ticket_json[&quot;groups&quot;][0][&quot;tickets&quot;]
+   for ticket in tickets:
+       if ticket[&quot;summary&quot;] == message.base[&quot;Subject&quot;]:
+           _, content = h.request(&quot;%(url)s/projects/%(id)s/tickets/%(ticket_id)s/comments.json&quot;
+                                    %({&quot;url&quot;: UNFUDDLE_API_URL, &quot;id&quot;: proj[&quot;id&quot;], &quot;ticket_id&quot;: ticket[&quot;id&quot;]}),
+                                  method=&quot;POST&quot;,
+                                  body=&quot;&quot;&quot;{&quot;comment&quot;: {&quot;body&quot;: &quot;%(body)s&quot; } }&quot;&quot;&quot;
+                                    %{&quot;body&quot;: message.body().replace('&quot;','\&quot;')},
+                                 headers={&quot;Accept&quot;: &quot;application/json&quot;,
+                                          &quot;Content-Type&quot;: &quot;application/json&quot;})
+           return START
+   _, content = h.request(&quot;%(url)s/projects/%(id)s/tickets.json&quot; %({&quot;url&quot;: UNFUDDLE_API_URL, &quot;id&quot;: proj[&quot;id&quot;]}),
+                          method=&quot;POST&quot;,
+                          body=&quot;&quot;&quot;{&quot;ticket&quot;: {&quot;summary&quot;: &quot;&quot;, &quot;description&quot;: &quot;&quot;, &quot;priority&quot;: &quot;3&quot;} }&quot;&quot;&quot;
+                             %({&quot;summary&quot;: message.base[&quot;Subject&quot;].replace('&quot;', '\&quot;'),
+                                &quot;description&quot;: message.body().replace('&quot;', '\&quot;') }),
+                       headers={&quot;Accept&quot;: &quot;application/json&quot;,
+                                &quot;Content-Type&quot;: &quot;application/json&quot;})
+   return START
+
+
+&#64;route_like(START)
+&#64;stateless
+def ERROR(message, subdomain=None, project=None, host=None):
+    return START
+</pre>
+<p>For a conventional application, e-mail is routed on the basis of rules mentioned in configuration files (aliases, macros etc) and then dropped off to a separate process (like fetchmail or procmail) which finally delivers the e-mail to it's destination. In lamson, all this routing is implemented through '<a class="reference external" href="http://en.wikipedia.org/wiki/Finite-state_machine">State Machines</a>'. This makes for cleaner code (unified at one place and process) and easy to develop and debug. Each function generally represents a state and returns the next state (could be the same state itself) where the application should proceed. Lamson uses data stores to store the state. By default, it uses the <tt class="docutils literal">MemoryStorage</tt> but it's very easy to write a custom data storage to say store the mails in a database etc.</p>
+<p>In our example app, there are two states to the state machine. They are 'START' and 'ERROR'. The ERROR state is a special state in which the application finds itself when there's any error. The 'START' state accepts all mails with the from address in the regexp format <tt class="docutils literal"><span class="pre">(?P&lt;subdomain&gt;\w+)\+(?P&lt;project&gt;\w+)&#64;(?P&lt;host&gt;.+)</span></tt>. These captured regular expression groups are passed as keyword arguments to the 'START' function. Based on these keyword arguments, we use the <a class="reference external" href="http://unfuddle.com/docs/api">Unfuddle API</a> (which uses HTTP Basic Auth) to create a ticket if it doesn't exist else attach a comment to the ticket.</p>
+<p>We'll have to restart the lamson server to be able to reflect the new changes. You can then use the local mutt config file to be able to send mails to the server and try out your changes (for example, send a mail to <a class="reference external" href="mailto:test+abc&#64;localhost">test+abc&#64;localhost</a>):</p>
+<pre class="literal-block">
+mutt -F muttrc
+</pre>
+<p>Keep a watch at the <tt class="docutils literal">logs/lamson.log</tt> files while developing because this information may be invaluable.</p>
+<p>In the next part, we'll see how to setup and deploy this application.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The code for this e-mail application is available at <a class="reference external" href="https://github.com/agiliq/unfuddle/tree/master/email2ticket">https://github.com/agiliq/unfuddle/tree/master/email2ticket</a></p>
+</div>
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/writing-an-e-mail-application-with-lamson-i.html" rel="bookmark"
+                           title="Permalink to Writing an e-mail application with Lamson - I">Writing an e-mail application with Lamson - I</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-04-01T09:08:15+05:30">
+                Published: Fri 01 April 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-04-01T19:38:15+05:30">
+                Updated: Fri 01 April 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/e-mail.html">e-mail</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">Writing to deploying a Lamson app --------------------------------- Off late, we've been slightly busy with a 'lot' of new developments on our end and we've not been able to devote attention to the blog. In these busy periods, we tend to forget things faster. One such thing that Shabda recently pointed out that some of our applications (client and open source projects) were erroring. Because of the low frequency of these errors, they went unnoticed for quite a few days. We do check e-mail often but we are mostly drowned in our project management tool, <a class="reference external" href="http://www.unfuddle.com/">Unfuddle</a>. Shabda suggested we open a</p>
+
+                <a class="readmore" href="/writing-an-e-mail-application-with-lamson-i.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

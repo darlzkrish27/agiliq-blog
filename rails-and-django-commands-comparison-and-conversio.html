@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Rails and Django commands : comparison and conversion</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/rails-and-django-commands-comparison-and-conversio.html" rel="bookmark"
+           title="Permalink to Rails and Django commands : comparison and conversion">Rails and Django commands : comparison  and conversion</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-03-20T08:05:30+05:30">
+                Published: Sat 20 March 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-03-20T18:35:30+05:30">
+                Updated: Sat 20 March 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/uncategorized.html">Uncategorized</a> </p>
+</footer><!-- /.post-info -->      <p>The most commonly used Rails commands and their Django equivalents</p>
+<table>
+<thead>
+<tr>
+<th>Rails</th>
+<th>Django</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rails console</td>
+<td>manage.py shell</td>
+</tr>
+<tr>
+<td>rails server</td>
+<td>manage.py runserver</td>
+</tr>
+<tr>
+<td>rake</td>
+<td>None</td>
+</tr>
+<tr>
+<td>rails generate</td>
+<td>None</td>
+</tr>
+<tr>
+<td>rails dbconsole</td>
+<td>manage.py dbshell</td>
+</tr>
+<tr>
+<td>rails app_name</td>
+<td>django-admin.py startproject/manage.py startapp</td>
+</tr>
+<tr>
+<td>rake db:create</td>
+<td>manage.py syncdb</td>
+</tr>
+</tbody>
+</table>
+<p>The salient points to note are,</p>
+<ol>
+<li>Django has all commands via <code>manage.py</code>, Rails has it broken into <code>rails</code> and <code>rake</code>.</li>
+<li>Overall there are more Rails+Rake commands available than Django commands</li>
+<li>There is no one to one mapping between Rails and Django commands.
+Eg. There are no equivalent to rake doc:* or rake notes in Django.</li>
+</ol>
+<p>Similarly there is no equivalent to <code>manage.py createsuperuser</code> in rails.</p>
+<h4>References</h4>
+<p><a href="http://docs.djangoproject.com/en/dev/ref/django-admin/">http://docs.djangoproject.com/en/dev/ref/django-admin/</a>
+<a href="http://guides.rails.info/command_line.html">http://guides.rails.info/command_line.html</a>
+<a href="http://github.com/uswaretech/Acts-as-Django/blob/master/commands.markdown">http://github.com/uswaretech/Acts-as-Django/blob/master/commands.markdown</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - business</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/essential-web-apps-to-run-a.html">Essential web-apps to run a software business.</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2010-10-17T14:23:28+05:30">
+                Published: Sun 17 October 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-10-18T00:53:28+05:30">
+                Updated: Mon 18 October 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/business.html">business</a> </p>
+</footer><!-- /.post-info --><p>We work on a variety of products and with people. We work in a highly distributed environment,
+with all of our clients working
+remotely from us. And while we work out of the same office, we are frequently
+working from other places as well. Here are the tools which help us stay productive,
+sane and working. :)</p>
+<ul>
+<li>Code hosting: <a href="http://agiliq.unfuddle.com/">Unfuddle</a> and <a href="http://github.com/agiliq">Github</a>.</li>
+</ul>
+<p>For our open source projects we use Github.<br>
+For our client and non OS projects, we use Unfuddle.  </p>
+<p>For our client code we need both SVN and Git, and we need tickets which can be
+assigned to people. Both these features are missing from Github.  </p>
+<p>For our open source projects, we use Github. It lacks the features above, but
+its code browser, code diff and patch queue etc are much more advanced than
+Unfuddle. Unfuddle doesn't have open access repositories, so they segment nicely
+for us.  </p>
+<p>For Unfuddle we pay 49$/Month. Since all our repositories at Github are open,
+we don't have to pay anything for it.  </p>
+<p>We also use <a href="http://bitbucket.org/agiliq">Bitbucket</a>, to keep
+our code in a Mercurial repo. Additionally,
+Bitbucket supports CNAMEs, so we can point <a href="http://code.agiliq.com">code.agiliq.com</a>,
+to our bitbucket code.
+(Github does not support Cnames for repositories.) This used to cost us USD 5/Month,
+but after <a href="http://blogs.atlassian.com/news/2010/09/atlassian_acquires_bitbucketorg_distributed_version_control.html">Atlassion acquisition of Bitbucket</a>, this is free.  </p>
+<ul>
+<li>Collaboration, docs and Mail: <a href="http://www.google.com/apps/intl/en/group/index.html">Google apps for your domains</a>.</li>
+</ul>
+<p>At free, the price is right. And with Gmail like interface and searching which
+is both best in class and familiar, using this is a no brainer. You can pay 50$/user/year,
+to get extra space and ads. We never hit the free space limitation.  </p>
+<ul>
+<li>Invoicing: <a href="http://agiliq.freshbooks.com/">Freshbooks</a>.</li>
+</ul>
+<p>We use Freshbooks for invoicing and accounting. Freshbooks is fairly standard as
+an invoicing tool, but its feature set leaves a bit to be desired. It only recently
+got <a href="http://www.freshbooks.com/blog/2010/01/13/multi-currency-arrives-at-freshbooks/">multi currency invoicing</a>,
+and still doesn't have multi currency expenses.</p>
+<p>(Which is sort of a deal breaker for us. We invoice is USD, AUD and Euro, our
+expenses are in USD and INR). We get around this by having multiple accounts for tracking
+the different currencies, but still have to account things by pen and paper.  </p>
+<p>Cost: 19$/Month.  </p>
+<ul>
+<li>Voice Chat: <a href="skype:shabda.raaj?call">Skype</a>.  </li>
+</ul>
+<p>Skype is the (Afaik) only voice chat software which works reliably across Win/Mac/Linux.
+We have a skype-in number and we use it to call out bound as well.  </p>
+<ul>
+<li>Cost: Depends upon usage.  </li>
+</ul>
+<p>Hosting: <a href="http://www.webfaction.com/">Webfaction</a>,
+<a href="http://www.slicehost.com/">Slicehost</a>, <a href="http://www.linode.com/">Linode</a>
+and <a href="http://aws.amazon.com/ec2">Ec2</a>.  </p>
+<p>It might be weird to see so many listed as webhosts. Webfaction is <em>really</em> easy as
+a Django host. They have one click install of Django, and make using Django apps easy
+without fiddling with Apache configs.<br>
+I started with Webfaction in 2008, and still have some sites from back then hosted with
+them. But soon we needed a VPS for flexibility.  </p>
+<p>Our next host was Slicehost, and we have been very happy with them. Their
+support and quality of support staff is phenomenal. However, they are weak when in comes
+to price to server specs bang.  </p>
+<p>We recently got a Linode to test things out and have been happy with them as well. I havent
+used their support yet, and they don't offer a easy backup like Slicehost, but are much more
+powered for he same price.  </p>
+<p>Cost: </p>
+<p>Webfaction: ~40$/Month.<br>
+Slicehost: 50$/Month, with backups.<br>
+Linode: 20$/Month.  </p>
+<ul>
+<li>Backup: <a href="http://aws.amazon.com/s3">S3</a>  </li>
+</ul>
+<p>We backup our media and Databases on S3,
+<a href="http://uswaretech.com/blog/2009/02/automatically-backup-mysql-database-to-amazon-s3-using-django-python-script/">using a custom script</a>.  </p>
+<p>Cost: Depends on usage, but very less.  </p>
+<ul>
+<li>Dns: <a href="http://www.dnsmadeeasy.com/">Dnsmadeeasy</a>  </li>
+</ul>
+<p>A good, fast DNS can speed up your site, and its a good idea to keep this separate from rest of your hosting.
+Dnsmadeeasy is straightforward DNS provider, which has proved very solid for us.  </p>
+<p>Cost: 30$/Year.  </p>
+<ul>
+<li>Email sending: <a href="http://www.sendgrid.com/">Sendgrid</a>  </li>
+</ul>
+<p>While it is easy to use a local SMTP to send emails from your servers, it is not easy to make
+sure it will reach recipients. You will need to fiddle with SPF, and other email mumbo-jumbo.
+It is easy to outsource it to a third party provider, which has expertise in email deliverability.  </p>
+<p>Cost: 10$/Month.  </p>
+<ul>
+<li>CRM: <a href="http://agiliq.highrisehq.com/">Highrise</a>.  </li>
+</ul>
+<p>We use Highrise to keep track on leads and contacts. However I haven't found any actionable
+insights to take actions from it, so I am looking for alternatives.  </p>
+<p>Cost: 49$/Month  </p>
+<hr>
+<p>Also,  </p>
+<ol>
+<li>We used to use <a href="http://www.efax.com/">Efax</a>, but nobody sent us fax, so we don't use that anymore.</li>
+<li>We used to use <a href="http://www.clicktale.com/">Clicktale</a>, but I could never figure out what to do with their data,
+and at 100$/month they are costly to keep around.</li>
+<li>We use <a href="http://www.crazyegg.com/">Crazyegg</a>, as needed.</li>
+<li>I used <a href="http://www.basecamphq.com">Basecamp</a> and <a href="http://assembla.com/">Assembla</a> but I much prefer Unfuddle.</li>
+<li>We also use Google Analytics, Google Adword, <a href="http://www.flickr.com/photos/agiliq">Flickr</a>,
+<a href="http://twitter.com/agiliqdotcom">Twitter</a>, <a href="http://facebook.com/agiliq">Facebook</a>, Delicious ...</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/web-development-companies-working-with-django.html" rel="bookmark"
+                           title="Permalink to Web development companies working with Django">Web development companies working with Django</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-09T03:16:04+05:30">
+                Published: Mon 09 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-09T11:54:11+05:30">
+                Updated: Mon 09 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/business.html">business</a> </p>
+</footer><!-- /.post-info -->                <p>At Usware, we work with some of the best web development agencies. I wanted a list of the other building web applications with Django, here is such a list, in no specific order. 1. <a href="http://additionalview.com.au/">Additional View</a> Tasmania, Australia 2. <a href="http://lincolnloop.com/">Lincolnloop</a> Colorado, USA 3. <a href="http://enzymeit.com/">EnzymeIt</a> Hong Kong and Australia 4. <a href="http://illusionfactory.com/">Illusion Factory</a> California, USA 5. <a href="http://zigzap.com">Zigzap Technologies</a> Cincinnati, USA 6. <a href="http://www.torchbox.com/">Torchbox</a> Oxfordshire, UK 7. <a href="http://www.liberiun.com/">Liberiun</a> Brazil 8. <del><a href="http://yed-prior.com/">Yed-Prior</a></del> Now known as <a href="http://djangostars.com/">Djangostars</a> Ukraine 9. <a href="http://www.tatuminteractive.com/">Tatum Interactive</a> New York, USA 10. <a href="http://www.menttes.com/">Menttes</a> Argentina 11. <a href="http://www.tarams.com/">Tarams</a> Bangalore, India 12. <a href="http://www.cubedroute.com/">Cubedroot</a> Ireland And of course <a href="http://www.uswaretech.com/">Usware</a> Additions: 1. <a href="http://www.adoleo.com/">Adoleo</a> Texas, USA 2. <a href="http://www.siudesign.co.uk/">Siu Design</a></p>
+                <a class="readmore" href="/web-development-companies-working-with-django.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

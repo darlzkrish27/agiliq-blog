@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Three underutilized python commands</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/three-underutilized-python-commands.html" rel="bookmark"
+           title="Permalink to Three underutilized python commands">Three underutilized python commands</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-05-01T06:35:18+05:30">
+                Published: Thu 01 May 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-05-01T17:05:18+05:30">
+                Updated: Thu 01 May 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info -->      <p>Today's post are three simple Python commands which should be known more widely, but are not.</p>
+<h4>Start a simple web server to serve files from current directory.</h4>
+<div class="highlight"><pre><span></span>~$ python -m SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+</pre></div>
+
+
+<p>This is neither secure, nor scalable, but handy if you are in a directory and want to quickly test something.</p>
+<h4>Testing emails</h4>
+<div class="highlight"><pre><span></span>~$ python -m smtpd -n -c DebuggingServer
+</pre></div>
+
+
+<p>Starts a fake SMTP server on port 1025. Useful if you are testing emails on a system which doesn't allow <a href="https://docs.djangoproject.com/en/dev/topics/email/#email-backends">pluggable emails backends.</a></p>
+<h4>Pretty print JSON</h4>
+<div class="highlight"><pre><span></span>echo &#39;{&quot;2legs&quot;:&quot;Better&quot;, &quot;4Legs&quot;: &quot;Good&quot;, &quot;6Legs&quot;: &quot;Spider&quot;}&#39; | python -m json.tool
+</pre></div>
+
+
+<ul>
+<li>Inspired by <a href="https://twitter.com/adrianholovaty/status/461699628967411713">a tweet from Adrian Holovaty</a></li>
+<li>The -m switch was added in <a href="http://legacy.python.org/dev/peps/pep-0338/">PEP-338</a></li>
+<li>Try these too <code>python -m unittest discover .</code>, <code>python -m timeit -s 'import random; 10*random.randint(10, 20)'</code></li>
+</ul>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Template fragment caching gotchas</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/template-fragment-caching-gotchas.html" rel="bookmark"
+           title="Permalink to Template fragment caching gotchas">Template fragment caching gotchas</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-08-06T00:42:19+05:30">
+                Published: Thu 06 August 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-08-06T11:12:19+05:30">
+                Updated: Thu 06 August 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <h4>Variables in cached template fragment</h4>
+<p>Assuming this is in template.</p>
+<div class="highlight"><pre><span></span>{% cache 300 nums %}
+{% for i in nums %}
+    <span class="nt">&lt;p&gt;</span>i<span class="nt">&lt;/p&gt;</span>
+{% endfor %}
+{% endcache %}
+</pre></div>
+
+
+<p>And assuming we send {'nums': range(100)} from context, then 0 to 99 will be sent in the response.</p>
+<p>Now suppose we change context to {'nums': range(1000)}, still for next 5 minutes i.e until the cache expires, 0 to 99 will be sent in the response. 0 to 999 will not be sent in the response.</p>
+<p>To fix this, we should use the variable too with the {% cache %} tag. So correct code would be</p>
+<div class="highlight"><pre><span></span>{% cache 300 nums_cache nums %}
+{% for i in nums %}
+    <span class="nt">&lt;p&gt;</span>i<span class="nt">&lt;/p&gt;</span>
+{% endfor %}
+{% endcache %}
+</pre></div>
+
+
+<p>After this whenever context <strong>nums</strong> changes, cache would be reevaluated.</p>
+<h4>Boolean variable in cached template fragment</h4>
+<p>Assuming template contains</p>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">cache</span> <span class="m">300</span> <span class="nv">hello</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">hello</span> <span class="cp">%}</span>
+  <span class="nt">&lt;p&gt;</span>Hello<span class="nt">&lt;/p&gt;</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endcache</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<p>and assuming {'hello': True} is sent in context. Then &lt;p&gt;Hello&lt;/p&gt; will be sent in response.</p>
+<p>Now even when we send {'hello': False} in context, "&lt;p&gt;Hello&lt;/p&gt;" will still be sent in response because it's already cached.</p>
+<p>To fix this.</p>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">cache</span> <span class="m">300</span> <span class="nv">hello_cache</span> <span class="nv">hello</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">hello</span> <span class="cp">%}</span>
+  <span class="nt">&lt;p&gt;</span>Hello<span class="nt">&lt;/p&gt;</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endcache</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<h4>request.user in cached template fragment</h4>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">cache</span> <span class="m">300</span> <span class="nv">username_cache</span> <span class="cp">%}</span>
+<span class="nt">&lt;p&gt;</span><span class="cp">{{</span><span class="nv">request.user.username</span><span class="cp">}}</span><span class="nt">&lt;/p&gt;</span>
+<span class="cp">{%</span> <span class="k">endcache</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<p>When current user logs out and a new user logs in, still the username of old user is shown on the web page because template fragment is already cached and would not be reevaluated.</p>
+<p>Fix it like</p>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">cache</span> <span class="m">300</span> <span class="nv">username_cache</span> <span class="nv">request.user.username</span> <span class="cp">%}</span>
+<span class="nt">&lt;p&gt;</span><span class="cp">{{</span><span class="nv">request.user.username</span><span class="cp">}}</span><span class="nt">&lt;/p&gt;</span>
+<span class="cp">{%</span> <span class="k">endcache</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<h4>Gotcha while using base template</h4>
+<p>Assuming we are using template inheritance, and our base template i.e base.html looks like:</p>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">cache</span> <span class="cp">%}</span>
+<span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+    <span class="cp">{%</span> <span class="k">cache</span> <span class="m">300</span> <span class="nv">base_body</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">endcache</span> <span class="cp">%}</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
+
+<p>And the child template, say test.html looks like</p>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">load</span> <span class="nv">cache</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span>
+  <span class="cp">{%</span> <span class="k">cache</span> <span class="m">300</span> <span class="nv">username</span> <span class="nv">request.user.username</span> <span class="cp">%}</span>
+    <span class="nt">&lt;p&gt;</span><span class="cp">{{</span><span class="nv">request.user.username</span><span class="cp">}}</span><span class="nt">&lt;/p&gt;</span>
+  <span class="cp">{%</span> <span class="k">endcache</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+
+
+<p>Assuming our view uses test.html. Suppose cache is empty now, and you are logged in as user1 and then you make the request to a url which uses test.html. So response will contain "&lt;p&gt;user1&lt;/p&gt;".</p>
+<p>Now if you logout and login as user2 and make the request, still the response will be "&lt;p&gt;user1&lt;/p&gt;" instead of "&lt;p&gt;user2&lt;/p&gt;".</p>
+<p>The reason for this is, as per <a href="https://docs.djangoproject.com/en/1.7/topics/templates/" target="_blank">Django docs</a>.</p>
+<div class="highlight"><pre><span></span>The extends tag is the key here. It tells the template engine that this template “extends” another template. When the template system evaluates this template, first it locates the parent – in this case, “base.html”.
+</pre></div>
+
+
+<p>But in our case, the parent template itself has some cached content, which Django will use. Django will not even bother to look at the <code>{% block body %}</code> of child template if it finds cached content <code>base_body</code> for the parent template.</p>
+<p>The fix for this is to differentiate the cache of different users even in the base template. So we could change the base template to look like.</p>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">cache</span> <span class="cp">%}</span>
+<span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+    <span class="cp">{%</span> <span class="k">cache</span> <span class="m">300</span> <span class="nv">base_body</span> <span class="nv">request.user.username</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">endcache</span> <span class="cp">%}</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
+
+<p>After this, if user1 is logged in the "&lt;p&gt;user1&lt;/p&gt;" is sent in response. If user2 is logged in then "&lt;p&gt;user2&lt;/p&gt;" is sent in response.</p>
+<h4>Gotcha with {% include %} tag.</h4>
+<p>It is similar to the gotcha of template inheritance discussed in last section.</p>
+<p>Assuming the view uses test.html, which contains.</p>
+<div class="highlight"><pre><span></span>{% cache 60 body_cache %}
+{% include &quot;body.html&quot; %}
+{% endcache %}
+</pre></div>
+
+
+<p>And body.html contains</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;p&gt;</span>Hello <span class="cp">{{</span><span class="nv">request.user.username</span><span class="cp">}}</span><span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<p>So when first user, say user1 logs in, cache is evaluated and &lt;p&gt;Hello user1&lt;/p&gt; is sent in response. When user2 logs in, still &lt;p&gt;Hello user2&lt;/p&gt; will be sent in response.</p>
+<p>To fix this, test.html should also use all the variables on which <strong>included</strong> template depends.</p>
+<p>So code in test.html should change to</p>
+<div class="highlight"><pre><span></span>{% cache 60 body_cache request.user %}
+{% include &quot;body.html&quot; %}
+{% endcache %}
+</pre></div>
+
+
+<p>If <strong>included</strong> template, i.e body.html depended on any other variable, that other variable too should be used with {% cache %} tag.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

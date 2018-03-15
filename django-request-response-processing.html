@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Django Request Response processing</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/django-request-response-processing.html" rel="bookmark"
+           title="Permalink to Django Request Response processing">Django Request Response processing</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-24T23:29:56+05:30">
+                Published: Wed 24 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-25T09:59:56+05:30">
+                Updated: Thu 25 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>Have you wondered the steps a users request goes through before being responded to by Django? The answer lies in reading <code>django.core.handlers.base</code> and <code>django.core.handlers.wsgi</code>. Here is a diagram explaining what happens. (<a href="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle.png">Click to enlarge</a>.)</p>
+<p><a href="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle.png"><img src="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle-300x207.png" alt="" title="django_request_response_lifecycle" width="300" height="207" class="alignnone size-medium wp-image-587" /></a></p>
+<p>The steps are.
+(With Apache/Mod_wsgi, similar steps for other setup.)</p>
+<ol>
+<li>User's request comes to Apache etc.</li>
+<li>Apache sends request to <code>django.core.handlers.wsgi</code> via <code>mod_wsgi</code>.</li>
+<li>A list of request and response middleware callables is created.</li>
+<li>Request middleware is applied. If it sends a response, it is returned to the user.</li>
+<li><code>urlresolvers.resolve</code> finds the view funcion to use.</li>
+<li>View middleware is applied. If response comes, it is sent back to the user.</li>
+<li>View function is called. It talks to models to do business logic, and renders the templates.</li>
+<li>The response middleware is applied, and response is sent back to the users.</li>
+</ol>
+<p>This misses a lot of important steps (Exception middleware, request_context populating, ...) but is a basic high level overview. </p>
+<p>Resources</p>
+<ul>
+<li><a href="http://code.djangoproject.com/browser/django/trunk/django/core/handlers/base.py">django/core/handlers/base.py</a></li>
+<li><a href="http://code.djangoproject.com/browser/django/trunk/django/core/handlers/wsgi.py">django/core/handlers/wsgi.py</a></li>
+<li><a href="http://github.com/uswaretech/Django-Request-Response/tree/master">.dia and other files for the image</a></li>
+</ul>
+<hr>
+<p>Do you <a href="http://twitter.com/uswaretech">twitter</a>? Do you <a href="http://github.com/uswaretech">Github</a>? Find us there.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

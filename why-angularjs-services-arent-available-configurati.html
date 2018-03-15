@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Why AngularJS services aren't available in configuration blocks</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/why-angularjs-services-arent-available-configurati.html" rel="bookmark"
+           title="Permalink to Why AngularJS services aren't available in configuration blocks">Why AngularJS services aren't available in configuration blocks</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-04-30T10:13:11+05:30">
+                Published: Sun 30 April 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-04-30T20:43:11+05:30">
+                Updated: Sun 30 April 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/angularjs.html">angularjs</a> </p>
+</footer><!-- /.post-info -->      <p>This post explains why services aren't available in configuration blocks.</p>
+<p>AngularJS has a concept of $injector which has a function called invoke().</p>
+<p>AngularJS has two injectors. They are:</p>
+<ul>
+<li>instanceInjector</li>
+<li>providerInjector</li>
+</ul>
+<p>When we say $injector, most of the times we mean instanceInjector. You can read more about injectors in <a href="http://agiliq.com/blog/2017/04/angularjs-injectors-internals/" target="_blank">our last post</a>.</p>
+<p>instanceInjector, or what we generally call $injector, can provide access to a service in either of the following ways:</p>
+<ul>
+<li>instantiate the service. Once instantiated instanceInjector caches the service</li>
+<li>get the service from cache if its alreay in cache</li>
+</ul>
+<p>At low level, Controller or Service code is executed by $injector.invoke(). And this $injector knows a way to reach the services in one of the two ways mentioned above.</p>
+<p>During configuration phase, i.e when configuration block is executed, $injector i.e instanceInjector isn't available. So instanceInjector cache isn't available too and so services aren't accessible in configuration blocks.</p>
+<p>Try to access a service in configuration block and it will fail:</p>
+<div class="highlight"><pre><span></span>angular.module(&quot;core&quot;, []);
+angular
+    .module(&quot;core&quot;)
+    .service(&quot;ProfileService&quot;, function () {
+        var profile = {&#39;name&#39;: &#39;hardcoded name&#39;};
+        return {
+            &#39;profile&#39;: profile;
+        }
+    });
+</pre></div>
+
+
+<p>Try to access this service in config block</p>
+<div class="highlight"><pre><span></span>angular
+    .module(&quot;core&quot;)
+    .config([&quot;ProfileService&quot;, function (ProfileService) {
+    }]);
+</pre></div>
+
+
+<p>This failed because $injector isn't available when config block executed.</p>
+<p>Also there shouldn't be a need to access services in configuration blocks. Configuration blocks are meant to configure things, eg: to configure a constant which will be used throughout the angular app. And services are meant to keep business logic. There shouldn't be need to use business logic during configuration phase.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
