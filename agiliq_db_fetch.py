@@ -11,8 +11,6 @@ def doQuery( conn ) :
 	cur = conn.cursor()
 
 	cur.execute( "SELECT b.text_markup_type, b.title, b.created_on, b.publish_date, b.slug, b.summary, a.username, t.name, b.text FROM blogango_blogentry as b, auth_user as a, taggit_tag as t , taggit_taggeditem as ti WHERE a.id = b.created_by_id AND t.id = ti.tag_id AND ti.object_id = b.id;" )
-
-
 	for text_markup_type, title, created_on, publish_date, slug, summary,authors,tags, text in cur.fetchall() :
 		if text_markup_type =='markdown':
 			file = open(os.path.join("content/markdown",slug+".md"),"w")

@@ -1,48 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>Django quiz</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="shabda" />
+        <meta name="copyright" content="shabda" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/django-quiz.html" rel="bookmark"
-           title="Permalink to Django quiz">Django quiz</a></h1>
+<meta name="keywords" content="django, markdown, " />
+
+<meta property="og:title" content="Django quiz "/>
+<meta property="og:url" content="/django-quiz.html" />
+<meta property="og:description" content="A quick django quiz. Answers available tomorrow. Get it as a text file (django-quiz) or on google docs or read below. ### Easy 1. You have a class defined as class Post(models.Model): name = models.CharField(max_length=100) is_active = models.BooleanField(default=False) You create multiple objects of this type. If you do Post.objects.get(is_active=False), what exceptions is raised? a. MultipleObjectsReturned b. ManyObjectsReturned c. SyntaxError d. MultipleModelReturned e. ManyModelReturned 2. Where is the function render_to_response defined? a. django.views b. django.shortcuts c. django.templates d. django.contrib.templates e. django.contrib.shortcuts 3. What is the default name for the table created for model named Post in application blog a. post_blog" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="shabda" />
+<meta property="og:article:published_time" content="2009-12-03T10:26:31+05:30" />
+<meta property="" content="2009-12-03T21:56:31+05:30" />
+<meta name="twitter:title" content="Django quiz ">
+<meta name="twitter:description" content="A quick django quiz. Answers available tomorrow. Get it as a text file (django-quiz) or on google docs or read below. ### Easy 1. You have a class defined as class Post(models.Model): name = models.CharField(max_length=100) is_active = models.BooleanField(default=False) You create multiple objects of this type. If you do Post.objects.get(is_active=False), what exceptions is raised? a. MultipleObjectsReturned b. ManyObjectsReturned c. SyntaxError d. MultipleModelReturned e. ManyModelReturned 2. Where is the function render_to_response defined? a. django.views b. django.shortcuts c. django.templates d. django.contrib.templates e. django.contrib.shortcuts 3. What is the default name for the table created for model named Post in application blog a. post_blog">
+
+        <title>Django quiz  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/django-quiz.html"> Django quiz  </a></h1>
     </header>
+</div>
 
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-12-03T10:26:31+05:30">
-                Published: Thu 03 December 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-12-03T21:56:31+05:30">
-                Updated: Thu 03 December 2009
-        </abbr>
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/django.html">django</a> </p>
-</footer><!-- /.post-info -->      <p>A quick django quiz. Answers available tomorrow. Get it as a text file <a href='http://dl.dropbox.com/u/271935/django-quiz.txt'>(django-quiz)</a> or on <a href="http://docs.google.com/Doc?docid=0AYLjHVQq0A8aZGZ0NTRxOXBfMGhxY2g2ZDhk&amp;hl=en">google docs</a> or read below.</p>
+            
+            <p>A quick django quiz. Answers available tomorrow. Get it as a text file <a href='http://dl.dropbox.com/u/271935/django-quiz.txt'>(django-quiz)</a> or on <a href="http://docs.google.com/Doc?docid=0AYLjHVQq0A8aZGZ0NTRxOXBfMGhxY2g2ZDhk&amp;hl=en">google docs</a> or read below.</p>
 <div class="highlight"><pre><span></span><span class="err">###</span> <span class="nx">Easy</span>
 
 <span class="mi">1</span><span class="p">.</span> <span class="nx">You</span> <span class="nx">have</span> <span class="nx">a</span> <span class="kr">class</span> <span class="nx">defined</span> <span class="kr">as</span>
@@ -443,37 +470,58 @@
 
 <hr>
 <p><a href="http://twitter.com/uswaretech">Follow us on twitter</a> or <a href="http://feeds.feedburner.com/uswarearticles">subscribe to our blog</a></p>
-    </div><!-- /.entry-content -->
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2009-12-03T10:26:31+05:30">Dec 3, 2009</time>
 
-  </article>
-</section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+<h4>Last Updated</h4>
+<time datetime="2009-12-03T21:56:31+05:30">Dec 3, 2009</time>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#django-ref">django
+                    <span>19</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

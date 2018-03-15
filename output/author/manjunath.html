@@ -1,195 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>agiliq_blog - manjunath</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="agiliq" />
+        <meta name="copyright" content="agiliq" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/getting-started-with-python-scrapy.html">Getting started with python scrapy</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2015-12-31T23:59:59+05:30">
-                Published: Thu 31 December 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2016-04-02T21:04:43+05:30">
-                Updated: Sat 02 April 2016
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/manjunath.html">manjunath</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/scrapy.html">scrapy</a> </p>
-</footer><!-- /.post-info --><p>Sometimes you may want to extract data from website. What if the website don't provide an API? don't worry scrapy comes to your rescue.</p>
-<p><code>Scrapy</code> is a python library which can crawl websites and extract data.</p>
-<p>We will try to extract small piece of data from <a href="http://timesofindia.indiatimes.com/">Times of India</a> and store the extracted data in our django model for our example.</p>
-<h3>To get started install scrapy</h3>
-<div class="highlight"><pre><span></span>pip install scrapy
-</pre></div>
-
-
-<p>For more information on installing scrapy on different platforms <a href="http://doc.scrapy.org/en/latest/intro/install.html">check this</a></p>
-<p>Alright, we have installed scrapy and lets create a new scrapy project</p>
-<div class="highlight"><pre><span></span>scrapy startproject toi
-</pre></div>
-
-
-<p><code>toi</code> is the name of our project(Times of India)</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/travis-and-coveralls-for-private-repo.html" rel="bookmark"
-                           title="Permalink to Travis and coveralls for private repo">Travis and coveralls for private repo</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-08-22T02:29:46+05:30">
-                Published: Fri 22 August 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-08-22T12:59:46+05:30">
-                Updated: Fri 22 August 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/manjunath.html">manjunath</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/coverallsio.html">coveralls.io</a> </p>
-</footer><!-- /.post-info -->                <p>Before we begin, i recommend you to read this first <a href="https://agiliq.com/blog/2014/05/continuous-integration-with-travis-and-coverallsio/">Continous integration with travis and coveralls.io for Django apps</a>. Here is how <code>.travis.yml</code> example file looks like: language: python python: - 2.7 install: - pip install -r requirements.txt - pip install coveralls script: coverage run manage.py test after_success: coveralls Setting up coveralls for private repositories requires you to add just one more file <code>.coveralls.yml</code>. 1) Create a <code>.coveralls.yml</code> and make sure it resides in your project's root directory. 2) Add the following to this file: service_name: travis-pro repo_token: **** <code>service_name</code> is to specify where Coveralls should look to find additional</p>
-                <a class="readmore" href="/travis-and-coveralls-for-private-repo.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/heroku-django-s3-for-serving-media-files.html" rel="bookmark"
-                           title="Permalink to Heroku Django S3 for serving Media files">Heroku Django S3 for serving Media files</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-06-04T21:47:35+05:30">
-                Published: Wed 04 June 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-06-05T08:17:35+05:30">
-                Updated: Thu 05 June 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/manjunath.html">manjunath</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/heroku.html">heroku</a> </p>
-</footer><!-- /.post-info -->                <h3>Why should i store my media files on AWS S3?\r\n\r\nHeroku dynos have limited life span, and when they die and get replaced, the files within them are lost. So you should set up Django media handler to put the files somewhere permanent.\r\n\r\n\r\n### Let\'s begin:\r\n\r\n1) Install dependencies:\r\n\r\n $ pip install django-storages boto\r\n \r\n(Update your <code>requirements.txt</code> using <code>pip freeze &gt; requirements.txt</code>)\r\n\r\n2) Update <code>INSTALLED_APPS</code> in your settings.py\r\n\r\n INSTALLED_APPS += (\'storages\',)\r\n\r\n<br>\r\n \r\n3) Sign in to <a href="http://aws.amazon.com/console/">AWS Console</a>, select <code>S3</code> under <code>Storage &amp; Content Delivery</code> and create a bucket.\r\n\r\n<br>\r\n\r\n4) Don\'t forget to generate <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>.\r\n\r\n<br>\r\n\r\n5) Add the below to your settings file:\r\n\r\n\r\n AWS_QUERYSTRING_AUTH</h3>
-                <a class="readmore" href="/heroku-django-s3-for-serving-media-files.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/migrating-django-app-from-mysql-to-postgres.html" rel="bookmark"
-                           title="Permalink to Migrating django app from MySQL to Postgres">Migrating django app from MySQL to Postgres</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-05-27T02:58:50+05:30">
-                Published: Tue 27 May 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-05-27T13:28:50+05:30">
-                Updated: Tue 27 May 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/manjunath.html">manjunath</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/mysqltopostgres.html">mysqltopostgres</a> </p>
-</footer><!-- /.post-info -->                <p>In this tutorial, we will take a django app backed by MySQL and will convert MySQL database to postgres database. This is useful if we are deploying our app to <code>Heroku</code> because <code>Heroku</code> uses standard <code>Postgres</code> ### Prerequisites: * We assume that you have a running django app with MySQL as a database. * Also, your app is running on virtualenv. ### Converting MySQL to Postgres: Let's assume that you have a django app running with MySQL and you want to convert this to Postgres. 1) Install dependenicies: $ pip install psycopg2 $ pip install py-mysql2pgsql 2) Create Postgres database:</p>
-                <a class="readmore" href="/migrating-django-app-from-mysql-to-postgres.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/google-diff-match-patch-library.html" rel="bookmark"
-                           title="Permalink to Google diff match patch library">Google diff match patch library</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-05-09T05:59:34+05:30">
-                Published: Fri 09 May 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-05-09T16:29:34+05:30">
-                Updated: Fri 09 May 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/manjunath.html">manjunath</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/google.html">google</a> </p>
-</footer><!-- /.post-info -->                <p>Google's <a href="http://code.google.com/p/google-diff-match-patch/">diff match patch library</a> is very simple to use.</p>
-                <a class="readmore" href="/google-diff-match-patch-library.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+<meta property="og:title" content="agiliq_blog"/>
+<meta name="twitter:title" content="agiliq_blog">
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="agiliq" />
+        <title>agiliq_blog - Articles by manjunath</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
                         </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<div class="row-fluid">
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+    <div class="row-fluid">
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+    </div>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    <div class="row-fluid">
+        <div class="span8 offset2">
+            <header>
+            <h1 id="recent-posts">Recent Posts <a id="allposts" href="/archives.html">all posts</a></h1>
+            </header>
+        <div class="recent-posts">
+            <article>
+                <a href="/getting-started-with-python-scrapy.html">Getting started with python scrapy  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2015-12-31T23:59:59+05:30">Thu 31 December 2015</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/travis-and-coveralls-for-private-repo.html">Travis and coveralls for private repo  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2014-08-22T02:29:46+05:30">Fri 22 August 2014</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/heroku-django-s3-for-serving-media-files.html">Heroku Django S3 for serving Media files  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2014-06-04T21:47:35+05:30">Wed 04 June 2014</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/migrating-django-app-from-mysql-to-postgres.html">Migrating django app from MySQL to Postgres  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2014-05-27T02:58:50+05:30">Tue 27 May 2014</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/google-diff-match-patch-library.html">Google diff match patch library  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2014-05-09T05:59:34+05:30">Fri 09 May 2014</time>
+                </div>
+                </section>
+            </article>
+        </div>
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

@@ -1,48 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>Adventures in advanced Django ORM with HyperLogLog</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="shabda" />
+        <meta name="copyright" content="shabda" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/adventures-in-advanced-django-orm-with-hyperloglog.html" rel="bookmark"
-           title="Permalink to Adventures in advanced Django ORM with HyperLogLog">Adventures in advanced Django ORM with HyperLogLog</a></h1>
+<meta name="keywords" content="django, markdown, " />
+
+<meta property="og:title" content="Adventures in advanced Django ORM with HyperLogLog "/>
+<meta property="og:url" content="/adventures-in-advanced-django-orm-with-hyperloglog.html" />
+<meta property="og:description" content="Counting distinct object is a common operation. Most databases and Django make its quite simple to do so. Given appropriate tables or models you would be doing something like select event_type, count(distinct user_id) from github_events group by 1; With appropriateley defined Django model you would do GithubEvents.objects.values( &#34;event_type&#34; ).annotate( distinct_user_count=Count( &#34;user_id&#34;, distinct=True ) ) Count distinct is however quite slow on large datasets. There are a few faster methods which give an approximate count in much less time. HyperLogLog is one of the most common methods. We will try implemnting that in Django ORM without going to raw SQL and" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="shabda" />
+<meta property="og:article:published_time" content="2017-12-11T11:24:38+05:30" />
+<meta property="" content="2017-12-11T22:54:38+05:30" />
+<meta name="twitter:title" content="Adventures in advanced Django ORM with HyperLogLog ">
+<meta name="twitter:description" content="Counting distinct object is a common operation. Most databases and Django make its quite simple to do so. Given appropriate tables or models you would be doing something like select event_type, count(distinct user_id) from github_events group by 1; With appropriateley defined Django model you would do GithubEvents.objects.values( &#34;event_type&#34; ).annotate( distinct_user_count=Count( &#34;user_id&#34;, distinct=True ) ) Count distinct is however quite slow on large datasets. There are a few faster methods which give an approximate count in much less time. HyperLogLog is one of the most common methods. We will try implemnting that in Django ORM without going to raw SQL and">
+
+        <title>Adventures in advanced Django ORM with HyperLogLog  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/adventures-in-advanced-django-orm-with-hyperloglog.html"> Adventures in advanced Django ORM with HyperLogLog  </a></h1>
     </header>
+</div>
 
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-12-11T11:24:38+05:30">
-                Published: Mon 11 December 2017
-        </abbr>
-		<br />
-        <abbr class="modified" title="2017-12-11T22:54:38+05:30">
-                Updated: Mon 11 December 2017
-        </abbr>
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/django.html">django</a> </p>
-</footer><!-- /.post-info -->      <p>Counting distinct object is a common operation. Most databases and Django make its quite simple to do so. Given appropriate tables or models you would be doing something like</p>
+            
+            <p>Counting distinct object is a common operation. Most databases and Django make its quite simple to do so. Given appropriate tables or models you would be doing something like</p>
 <div class="highlight"><pre><span></span>select event_type, count(distinct user_id)
 from github_events
 group by 1;
@@ -353,37 +380,58 @@ cardinality estimation algorithm</a></li>
 <li><a href="https://www.periscopedata.com/blog/hyperloglog-in-pure-sql">HyperLogLog in Pure SQL</a></li>
 <li><a href="https://www.citusdata.com/blog/2017/04/04/distributed_count_distinct_with_postgresql/">Distributed count(distinct) with HyperLogLog on Postgres</a></li>
 </ul>
-    </div><!-- /.entry-content -->
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2017-12-11T11:24:38+05:30">Dec 11, 2017</time>
 
-  </article>
-</section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+<h4>Last Updated</h4>
+<time datetime="2017-12-11T22:54:38+05:30">Dec 11, 2017</time>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#django-ref">django
+                    <span>19</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

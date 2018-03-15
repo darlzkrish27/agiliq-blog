@@ -1,415 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>agiliq_blog - Javed</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="agiliq" />
+        <meta name="copyright" content="agiliq" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/writing-thread-safe-django-code.html">Writing thread-safe django - get_or_create</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2013-08-21T09:04:24+05:30">
-                Published: Wed 21 August 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-08-21T19:34:24+05:30">
-                Updated: Wed 21 August 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/threads.html">threads</a> </p>
-</footer><!-- /.post-info --><p>In this blog post, we'll discuss thread-safety, why it's important and how to
-write thread-safe django code, especially for bulk operations like management
-commands. We'll take a simple example - get or create.</p>
-<h2>Thread-safety:</h2>
-<p>Thread-safety means that our code can be run in multiple threads and behave as
-expected. The reason that code can be unsafe with regard to threads is because
-we'll be manipulating shared memory (e.g. database) from the threads and there's
-a chance of a race-condition which will produce unexpected results.</p>
-<p>To avoid this, we have the option of using read-write locks, transactions etc.</p>
-<p>We'll look at some simple examples and try to understand these options.</p>
-<h2>The usual way:</h2>
-<p>Let's consider a management command that syncs data from another source (e.g. API,
-remote database etc.. The correct way to do this would be to use the built-in
-django utility - <code>get_or_create</code>:</p>
-<p><strong>Update</strong>: Updated the command to run each arg in a thread</p>
-<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">MyThread</span><span class="p">(</span><span class="nx">Thread</span><span class="p">)</span><span class="o">:</span>
-
-    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">my_id</span><span class="p">)</span><span class="o">:</span>
-        <span class="kr">super</span><span class="p">(</span><span class="nx">MyThread</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">__init__</span><span class="p">(</span><span class="nx">name</span><span class="o">=</span><span class="nx">my_id</span><span class="p">)</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">my_id</span> <span class="o">=</span> <span class="nx">my_id</span>
-
-    <span class="nx">def</span> <span class="nx">run</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
-        <span class="nx">instance</span><span class="p">,</span> <span class="nx">created</span> <span class="o">=</span> <span class="nx">MyModel</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get_or_create</span><span class="p">(</span><span class="nx">my_id</span><span class="o">=</span><span class="nx">my_id</span><span class="p">)</span>
-        <span class="nx">print</span> <span class="s1">&#39;%s %s&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">created</span><span class="p">)</span>
-        <span class="nx">instance</span><span class="p">.</span><span class="k">delete</span><span class="p">()</span>
-        <span class="k">return</span>
-
-
-<span class="kr">class</span> <span class="nx">Command</span><span class="p">(</span><span class="nx">BaseCommand</span><span class="p">)</span><span class="o">:</span>
-    <span class="nx">args</span> <span class="o">=</span> <span class="s1">&#39;&lt;my_id my_id ...&gt;&#39;</span>
-    <span class="nx">help</span> <span class="o">=</span> <span class="s1">&#39;Get or create instace of mymodel with my_id&#39;</span>
-
-    <span class="nx">def</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">options</span><span class="p">)</span><span class="o">:</span>
-        <span class="k">for</span> <span class="nx">my_id</span> <span class="k">in</span> <span class="nx">args</span>:
-            <span class="kt">thread</span> <span class="o">=</span> <span class="nx">MyThread</span><span class="p">(</span><span class="nx">my_id</span><span class="o">=</span><span class="nx">my_id</span><span class="p">)</span>
-            <span class="nx">thread</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
-</pre></div>
-
-
-<p>In this command, we'll be using the command line arg my_id get a MyModel
-instance if it exists, else, we create one.</p>
-<p>Note: we'll be discarding the object for simplicity.</p>
-<p>Now, this management command (let's call it sync_myapp) is thread-safe because
-we're just using the built-in <code>get_or_create</code> to do our database call.</p>
-<p>To test this, run the command with same arg repeated multiple times:</p>
-<div class="highlight"><pre><span></span>$&gt; python manage.py sync_myapp 1 1 1 1 1
-</pre></div>
-
-
-<p>This will create five threads which will simultaneously try to get or create an instance
-with my_id = 1</p>
-<div class="highlight"><pre><span></span>$&gt; 1 True
-$&gt; 1 False
-$&gt; 1 False
-$&gt; 1 False
-</pre></div>
-
-
-<p>Note that all the threads are successful, even though they were working on the
-same database at the same time.</p>
-<p>Now, even though get_or_create is the way to go, we might need to customize a
-few things which are outside the scope of <code>get_or_create</code>. For example, let's
-say we need to do something special just before creating a new instance.</p>
-<h2>The problem:</h2>
-<p>Let's assume our code was:</p>
-<div class="highlight"><pre><span></span>def run(self):
-    created = False
-    try:
-        instance = MyModel.objects.get(my_id=my_id)
-    except MyModel.DoesNotExist:
-        something_special()
-        instance = MyModel.objects.create(my_id=my_id)
-        created = True
-    instance.delete()
-    return
-</pre></div>
-
-
-<p>If we try to test it with the above command, you'll probably get:</p>
-<div class="highlight"><pre><span></span>Exception in thread 1:
-Traceback (most recent call last):
-....
-IntegrityError: duplicate key value violates unique constraint &quot;myapp_mymodel_my_id_key&quot;
-DETAIL:  Key (my_id)=(1) already exists.
-</pre></div>
-
-
-<p>This indicates that the try except block isn't thread-safe.</p>
-<p>Let's try to fix this problem.</p>
-<p><strong>Update</strong>: I've removed the section dealing with locks since it's only useful when
-dealing with shared memory in python processes, it's not applicable to
-databases.</p>
-<h2>Using database transactions:</h2>
-<p>We use django's built-in <code>transactions</code> module as follows:</p>
-<p><strong>Update</strong>: We only need to wrap the create command in a transaction</p>
-<div class="highlight"><pre><span></span>def run(self):
-    created = False
-    try:
-        instance = MyModel.objects.get(my_id=self.my_id)
-    except MyModel.DoesNotExist:
-            try:
-                something_special()
-                with transaction.commit_on_success():
-                    instance = MyModel.objects.create(my_id=self.my_id)
-                created = True
-            except IntegrityError:
-                instance = MyModel.objects.get(my_id=self.my_id)
-    print &#39;%s %s&#39; % (instance.id, created)
-    instance.delete()
-    return
-</pre></div>
-
-
-<p>Now, the transaction will be committed only if there's no error within the
-context block, so we can be sure that only one thread gets the go-ahead for
-<code>create</code> call.</p>
-<p>In addition to the context manager, django also has options for using savepoints,
-manually commits, rollbacks etc.</p>
-<p><a href="https://docs.djangoproject.com/en/1.5/topics/db/transactions">https://docs.djangoproject.com/en/1.5/topics/db/transactions</a></p>
-<h2>Caveats:</h2>
-<p>If you're using MySQL, refer to this open issue on problem with <code>get_or_create</code>:</p>
-<p><a href="https://code.djangoproject.com/ticket/13906">https://code.djangoproject.com/ticket/13906</a></p>
-<h2>Conclusion:</h2>
-<p>Using database transactions, we can avoid data integrity issues and write
-thread-safe code which can be run in parallel without any
-issues.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/accept-bitcoins-using-python.html" rel="bookmark"
-                           title="Permalink to Accept bitcoins using python">Accept bitcoins using python</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-07-12T08:02:44+05:30">
-                Published: Fri 12 July 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-07-12T18:32:44+05:30">
-                Updated: Fri 12 July 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <p>In this blog post we'll talk about bitcoins and look at an overview of how to accept them from your python app. Bitcoin: -------- Bitcoin is crypto-currency whose protocol allows fast, anonymous and secure digital transactions. To know more about bitcoin and to install it, go to the <a href="http://bitcoin.org/en/bitcoin-for-developers">"Developer Guide"</a> guide. Here I'll discuss how we can implement a simple bitcoin payment processing app in python. Getting started: ---------------- To get started, install bitcoin (assuming Ubuntu): &gt; sudo apt-get install bitcoind Now edit <code>~/.bitcoin/bitcoin.conf</code> and add: testnet=1 This will allow us to run bitcoin in test mode. Now start the</p>
-                <a class="readmore" href="/accept-bitcoins-using-python.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/self-testing-fabfile-using-docker.html" rel="bookmark"
-                           title="Permalink to Self-testing fabfile using docker">Self-testing fabfile using docker</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-06-28T08:27:35+05:30">
-                Published: Fri 28 June 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-06-28T18:57:35+05:30">
-                Updated: Fri 28 June 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/docker.html">docker</a> </p>
-</footer><!-- /.post-info -->                <p>In my last blog post, I discussed <a href="http://agiliq.com/blog/2013/06/deploying-django-using-docker/">deploying django on docker</a>. This is a blog post on a related note and we'll be looking at using docker to test a fabfile and make sure it's working as intended. Fabfile and testing: -------------------- <a href="http://docs.fabfile.org/en/latest/index.html">Fabfile</a> is a great tool for automating deployments, and is very useful for creating continous integration workflows. With good tests, you can be sure that your fabfile works out of the box and be prepared for server migrations or upgrades. One apporach to testing complex fabfiles is using vagrant or using a VM manually. I think docker is</p>
-                <a class="readmore" href="/self-testing-fabfile-using-docker.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/deploying-django-using-docker.html" rel="bookmark"
-                           title="Permalink to Deploying django using docker">Deploying django using docker</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-06-14T08:46:51+05:30">
-                Published: Fri 14 June 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-06-14T19:16:51+05:30">
-                Updated: Fri 14 June 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/docker.html">docker</a> </p>
-</footer><!-- /.post-info -->                <p>In this blog post we'll take a look at <a href="http://docker.io">Docker</a> and discuss ways to deploy django using docker. About Docker: ------------- Docker is a tool that helps you manage lxc containers and images. You can create an image, launch container from the existing image, attach to a running container, and generally play around with the containers. The most important benefit of using docker and containers in general is that you have a clean, hygeinic and portable runtime enivorment for your app. This means you don't have to worry about missing dependecies, packages and other pain points during subsequent deployments. You</p>
-                <a class="readmore" href="/deploying-django-using-docker.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/logging-in-django.html" rel="bookmark"
-                           title="Permalink to Logging in Django">Logging in Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-03-22T02:08:04+05:30">
-                Published: Fri 22 March 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-03-22T12:38:04+05:30">
-                Updated: Fri 22 March 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/html.html">html</a>.</p>
-<p>tags: <a href="/tag/talk.html">talk</a> </p>
-</footer><!-- /.post-info -->                This is a talk I gave at Agiliq on 21-March-2013 <script async class=
-                <a class="readmore" href="/logging-in-django.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/not-exactly-not-exactly-tim-the-enchanter.html" rel="bookmark"
-                           title="Permalink to Not exactly, not exactly tim the enchanter">Not exactly, not exactly tim the enchanter</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2012-11-08T00:00:00+05:30">
-                Published: Thu 08 November 2012
-        </abbr>
-		<br />
-        <abbr class="modified" title="2012-11-07T11:30:00+05:30">
-                Updated: Wed 07 November 2012
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/forms.html">forms</a> </p>
-</footer><!-- /.post-info -->                
-                <a class="readmore" href="/not-exactly-not-exactly-tim-the-enchanter.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/real-time-applications-with-django-xmpp-and-stroph.html" rel="bookmark"
-                           title="Permalink to Real time applications with Django, XMPP and StropheJS">Real time applications with Django, XMPP and StropheJS</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2010-12-22T02:00:47+05:30">
-                Published: Wed 22 December 2010
-        </abbr>
-		<br />
-        <abbr class="modified" title="2010-12-22T13:30:47+05:30">
-                Updated: Wed 22 December 2010
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/rst.html">rst</a>.</p>
-<p>tags: <a href="/tag/xmpp.html">xmpp</a> </p>
-</footer><!-- /.post-info -->                <p class="first last">Introduction: ============== I'll be discussing how to build real time applications using Django and XMPP. Twitter's homepage, Facebook notifications and gmail are just a few examples which have real time updates. Usually, you would want to use this when you require instant updates about things happening right now. A naive approach would be to have an intensive ajax poll every 'x' seconds. This works, but has a few obvious drawbacks such as scalability and resource wastage.</p>
-
-                <a class="readmore" href="/real-time-applications-with-django-xmpp-and-stroph.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/link-roundup-for-week-ending-19112010.html" rel="bookmark"
-                           title="Permalink to Link Roundup for week ending 19/11/2010">Link Roundup for week ending 19/11/2010</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2010-11-19T05:52:48+05:30">
-                Published: Fri 19 November 2010
-        </abbr>
-		<br />
-        <abbr class="modified" title="2010-11-19T17:22:48+05:30">
-                Updated: Fri 19 November 2010
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/rst.html">rst</a>.</p>
-<p>tags: <a href="/tag/linkroundup.html">linkroundup</a> </p>
-</footer><!-- /.post-info -->                <ul class="first last simple">
-<li><p class="first">policystat writes about <cite>shifting seamlessfly</cite> from PHP to Django .. <span class="target" id="shifting-seamlessly">shifting seamlessly</span> <a class="reference external" href="http://devblog.policystat.com/php-to-django-changing-the-engine-while-the-c">http://devblog.policystat.com/php-to-django-changing-the-engine-while-the-c</a> * allbuttonspressed has come up with <cite>part 2 of their tutorial</cite> on using django-mediagenerator to power an offline HTML5 canvas app. .. <span class="target" id="part-2-of-their-tutorial">part 2 of their tutorial</span> <a class="reference external" href="http://www.allbuttonspressed.com/blog/django/2010/11/Offline-HTML5-canvas-app-in-Python-with-django-mediagenerator-Part-2-Drawing">http://www.allbuttonspressed.com/blog/django/2010/11/Offline-HTML5-canvas-app-in-Python-with-django-mediagenerator-Part-2-Drawing</a> * No surprise. <a class="reference internal" href="#textcaptchabreaker">TextCaptchaBreaker</a> breaks <a class="reference internal" href="#textcaptcha">TextCaptcha</a> with amazing accuracy. It's on <a class="reference internal" href="#github">github</a> too. .. <span class="target" id="textcaptchabreaker">TextCaptchaBreaker</span> <a class="reference external" href="http://textcaptchabreaker.appspot.com/">http://textcaptchabreaker.appspot.com/</a> .. <span class="target" id="textcaptcha">TextCaptcha</span> <a class="reference external" href="http://textcaptcha.com/">http://textcaptcha.com/</a> .. <span class="target" id="github">github</span> <a class="reference external" href="https://github.com/kbhomes/TextCaptchaBreaker">https://github.com/kbhomes/TextCaptchaBreaker</a> * If you know a bit of jQuery and are looking to learn YUI3, you might be interested in this <a class="reference internal" href="#rosetta-stone">Rosetta Stone</a> .. <span class="target" id="rosetta-stone">Rosetta Stone</span> <a class="reference external" href="http://www.jsrosettastone.com/">http://www.jsrosettastone.com/</a> * <cite>Essential JavaScript &amp; jQuery Design Patterns For Beginners</cite> might</p>
-</li>
-</ul>
-
-                <a class="readmore" href="/link-roundup-for-week-ending-19112010.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/seven-reasons-why-you-should-switch-to-vim-for-dja.html" rel="bookmark"
-                           title="Permalink to Seven reasons why you should switch to Vim">Seven reasons why you should switch to Vim</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2010-11-03T05:46:15+05:30">
-                Published: Wed 03 November 2010
-        </abbr>
-		<br />
-        <abbr class="modified" title="2010-11-03T16:16:15+05:30">
-                Updated: Wed 03 November 2010
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/vim.html">vim</a> </p>
-</footer><!-- /.post-info -->                
-                <a class="readmore" href="/seven-reasons-why-you-should-switch-to-vim-for-dja.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+<meta property="og:title" content="agiliq_blog"/>
+<meta name="twitter:title" content="agiliq_blog">
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="agiliq" />
+        <title>agiliq_blog - Articles by Javed</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
                         </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<div class="row-fluid">
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+    <div class="row-fluid">
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+    </div>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    <div class="row-fluid">
+        <div class="span8 offset2">
+            <header>
+            <h1 id="recent-posts">Recent Posts <a id="allposts" href="/archives.html">all posts</a></h1>
+            </header>
+        <div class="recent-posts">
+            <article>
+                <a href="/writing-thread-safe-django-code.html">Writing thread-safe django - get_or_create  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2013-08-21T09:04:24+05:30">Wed 21 August 2013</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/accept-bitcoins-using-python.html">Accept bitcoins using python  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2013-07-12T08:02:44+05:30">Fri 12 July 2013</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/self-testing-fabfile-using-docker.html">Self-testing fabfile using docker  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2013-06-28T08:27:35+05:30">Fri 28 June 2013</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/deploying-django-using-docker.html">Deploying django using docker  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2013-06-14T08:46:51+05:30">Fri 14 June 2013</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/logging-in-django.html">Logging in Django  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#html-ref">html</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2013-03-22T02:08:04+05:30">Fri 22 March 2013</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/not-exactly-not-exactly-tim-the-enchanter.html">Not exactly, not exactly tim the enchanter  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2012-11-08T00:00:00+05:30">Thu 08 November 2012</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/real-time-applications-with-django-xmpp-and-stroph.html">Real time applications with Django, XMPP and StropheJS  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#rst-ref">rst</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2010-12-22T02:00:47+05:30">Wed 22 December 2010</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/link-roundup-for-week-ending-19112010.html">Link Roundup for week ending 19/11/2010  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#rst-ref">rst</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2010-11-19T05:52:48+05:30">Fri 19 November 2010</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/seven-reasons-why-you-should-switch-to-vim-for-dja.html">Seven reasons why you should switch to Vim  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2010-11-03T05:46:15+05:30">Wed 03 November 2010</time>
+                </div>
+                </section>
+            </article>
+        </div>
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

@@ -1,320 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>agiliq_blog - markdown</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="agiliq" />
+        <meta name="copyright" content="agiliq" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-
-                <section id="content" class="body">
-                    <ol id="posts-list" class="hfeed" start="9">
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/writing-your-own-template-loaders.html" rel="bookmark"
-                           title="Permalink to Writing your own template loaders">Writing your own template loaders</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-11-21T05:41:17+05:30">
-                Published: Sat 21 November 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-11-21T17:11:17+05:30">
-                Updated: Sat 21 November 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/tutorial.html">tutorial</a> </p>
-</footer><!-- /.post-info -->                <p>Django has three builtin template loaders which are used to get the templates for rendering. TEMPLATE_LOADERS = ( 'django.template.loaders.filesystem.load_template_source', 'django.template.loaders.app_directories.load_template_source', # 'django.template.loaders.eggs.load_template_source', ) Writing your template loader is a awfuly easy. It is a callable which 1. Returns a tuple of (openfile, filename) if it can find the template. 2. Raise TemplateDoesNotExist if the templates cannot be found. The simplest template loader can be from django.template import TemplateDoesNotExist def load_template_source(template_name, template_dirs=None): try: return open(template_name).read(), template_name except IOError: raise TemplateDoesNotExist, template_name if you put this to your template loaders directory, TEMPLATE_LOADERS = ( 'django.template.loaders.filesystem.load_template_source', 'django.template.loaders.app_directories.load_template_source', 'dgrid.load_template_source' # 'django.template.loaders.eggs.load_template_source', You can do</p>
-                <a class="readmore" href="/writing-your-own-template-loaders.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/django-gotchas.html" rel="bookmark"
-                           title="Permalink to Django gotchas">Django gotchas</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-11-11T07:27:25+05:30">
-                Published: Wed 11 November 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-11-11T18:57:25+05:30">
-                Updated: Wed 11 November 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/tutorial.html">tutorial</a> </p>
-</footer><!-- /.post-info -->                <p>This is announcement about our new work, <a href="http://djangogotchas.uswaretech.net/">Django Gotchas</a>, a teeny tiny ebook about commonly occurring gotchas with Django. Here is the readme copied from the project. ----- Django-gotchas is a collections of gotchas which happen commonly when you are working with Django. They are some errors which I have made commonly or seen others do, these are not the errors which happen because they are hard to reason about, these are those errors which hapen when you close your eyes for a moment when coding. ------ This is still very much a work in progress, released in the spirit</p>
-                <a class="readmore" href="/django-gotchas.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/pycon-india-2009-a-review.html" rel="bookmark"
-                           title="Permalink to Pycon India 2009 : A Review">Pycon India 2009 : A Review</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-10-02T12:24:41+05:30">
-                Published: Fri 02 October 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-10-02T22:54:41+05:30">
-                Updated: Fri 02 October 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/uncategorized.html">Uncategorized</a> </p>
-</footer><!-- /.post-info -->                <p><a href="http://in.pycon.org/2009/displayschedule/">Pycon India</a> <a href="http://pycon.blogspot.com/2009/09/pycon-india-receives-fantastic-response.html">concluded</a> last weekend at <a href="http://en.wikipedia.org/wiki/Indian_Institute_of_Science">Indian Institute of Science</a>, Bangalore. <img class="alignright" title="Keynote" src="http://farm4.static.flickr.com/3476/3957867912_c9c8263868_d.jpg" alt="" width="300" height="225" /> There have been so many python/django conferences recently, I have been tracking them literally all through the year. Another one, <a href="http://scipy.in/">SciPy India</a> just got announced. Week long, with sprints! Pycon India was attended by around 350 people and had 30 talks. I have attended many conferences, but this one was different. This one was where real people, the <a href="http://www.joelonsoftware.com/items/2009/05/12.html">real developers gave talks</a> and socialized. No enterprise BS, just the real thing*. There were a vast majority of <a href="http://in.pycon.org/2009/displayschedule/">good talks</a>. However, I</p>
-                <a class="readmore" href="/pycon-india-2009-a-review.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/beginning-python.html" rel="bookmark"
-                           title="Permalink to Beginning python">Beginning python</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-09-18T06:46:43+05:30">
-                Published: Fri 18 September 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-09-18T17:16:43+05:30">
-                Updated: Fri 18 September 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/tutorial.html">tutorial</a> </p>
-</footer><!-- /.post-info -->                <p><a href="http://www.slideshare.net/uswaretech/beginning-python">Slides</a> and <a href="http://bit.ly/pytalk">code</a> from my talk at <a href="http://twincling.org/node/725">twincling</a>. <div style="width:425px;text-align:left" id="__ss_1991104"><a style="font:14px Helvetica,Arial,Sans-serif;display:block;margin:12px 0 3px 0;text-decoration:underline;" href="http://www.slideshare.net/uswaretech/beginning-python" title="Beginning Python">Beginning Python</a><object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=talk-090913073858-phpapp02&stripped_title=beginning-python" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=talk-090913073858-phpapp02&stripped_title=beginning-python" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View more <a style="text-decoration:underline;" href="http://www.slideshare.net/">documents</a> from <a style="text-decoration:underline;" href="http://www.slideshare.net/uswaretech">Usware Technologies</a>.</div></div> <div style="width:477px;text-align:left" id="__ss_1995742"><a style="font:14px Helvetica,Arial,Sans-serif;display:block;margin:12px 0 3px 0;text-decoration:underline;" href="http://www.slideshare.net/uswaretech/talk-code" title="Talk Code">Talk Code</a><object style="margin:0px" width="477" height="510"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayerd.swf?doc=talkcode-090914105528-phpapp01&stripped_title=talk-code" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slidesharecdn.com/swf/ssplayerd.swf?doc=talkcode-090914105528-phpapp01&stripped_title=talk-code" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="477" height="510"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View more <a style="text-decoration:underline;" href="http://www.slideshare.net/">documents</a> from <a style="text-decoration:underline;" href="http://www.slideshare.net/uswaretech">Usware Technologies</a>.</div></div></p>
-                <a class="readmore" href="/beginning-python.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/django-socialauth-login-via-twitter-facebook-openi.html" rel="bookmark"
-                           title="Permalink to Django-SocialAuth - Login via twitter, facebook, openid, yahoo, google using a single app.">Django-SocialAuth - Login via twitter, facebook, openid, yahoo, google using a single app.</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-08-27T04:20:33+05:30">
-                Published: Thu 27 August 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-08-27T14:50:33+05:30">
-                Updated: Thu 27 August 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/yahoo.html">yahoo</a> </p>
-</footer><!-- /.post-info -->                <p>TL;DR version: Here is an app to allow logging in via twitter, facebook, openid, yahoo, google, which should work transparently with Django authentication system. (@login_required, User and other infrastructure work as expected.) <a href="http://socialauth.uswaretech.net/">Demo</a> and <a href="http://github.com/uswaretech/Django-Socialauth/tree/master">Code</a>.Longer version follow: ----------------------- We are releasing our new app. <a href="http://github.com/uswaretech/Django-Socialauth/tree/master"><strong>Django-Socialauth</strong></a>. This app makes it awfully easy, to allow users to login your site using Yahoo/Google/Twitter/Facebook/Openid. A demo is available <a href="http://socialauth.uswaretech.net/">here</a>. This is released under an <a href="http://www.opensource.org/licenses/attribution.php">Attribution Assurance License</a>. A copy of the same is provided included with the code. After installing this app, you can use @login_required on any view and users identified via any</p>
-                <a class="readmore" href="/django-socialauth-login-via-twitter-facebook-openi.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/a-response-to-dropping-django.html" rel="bookmark"
-                           title="Permalink to A response to Dropping Django">A response to Dropping Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-08-20T06:58:37+05:30">
-                Published: Thu 20 August 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-08-20T17:28:37+05:30">
-                Updated: Thu 20 August 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/rambling.html">rambling</a> </p>
-</footer><!-- /.post-info -->                <p><a href="http://blog.brandonbloom.name/2009/08/dropping-django.html">Brandon Bloom</a> yesterday wrote an interesting post titled dropping Django. Despite a lot of hand waving(We needed a pragmatic template language to replace Django's idealistic one.), it raises some valid questions, so here is a solution to some of them. #### No support for hierarchical url creation. The simplest representation of nested urls I can think of is a nested tuple. Lets represent, the urls for a simple app by, &gt;&gt;&gt; tree_urls = ('', 'list', ... ('edit/', 'edit', ('auto/', 'edit_auto')), ... ('^add/', 'add'), ... ('delete/', 'delete', ('hard/', 'delete_hard')) ... ) Guess what, urls.py is *just a python module which excepts</p>
-                <a class="readmore" href="/a-response-to-dropping-django.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/django-aggregation-tutorial.html" rel="bookmark"
-                           title="Permalink to Django aggregation tutorial">Django aggregation tutorial</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-08-18T07:38:29+05:30">
-                Published: Tue 18 August 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-08-18T18:08:29+05:30">
-                Updated: Tue 18 August 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/aggreagtion.html">aggreagtion</a> </p>
-</footer><!-- /.post-info -->                <p>One of the new and most awaited features with Django 1.1 was aggregation. As usual, Django comes with a very <a href="http://docs.djangoproject.com/en/dev/topics/db/aggregation/">comprehensive documentation</a> for this. Here, I have tried to put this in how-to form. <a href="#howtos">Jump to howtos</a> or <a href="http://github.com/uswaretech/Shiny-New-Django-1.1/tree/master">Get source on Github</a>. Essentially, aggregations are nothing but a way to perform an operation on group of rows. In databases, they are represented by operators as <code>sum</code>, <code>avg</code> etc. To do these operations Django added two new methods to querysets. 1. <code>aggregate</code> 2. <code>annotate</code> When you are have a queryset you can do two operations on it, 1. Operate</p>
-                <a class="readmore" href="/django-aggregation-tutorial.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/on-captcha.html" rel="bookmark"
-                           title="Permalink to On Captcha">On Captcha</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-07-16T03:35:35+05:30">
-                Published: Thu 16 July 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-07-16T14:05:35+05:30">
-                Updated: Thu 16 July 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/tips.html">tips</a> </p>
-</footer><!-- /.post-info -->                <p>When building public facing websites, spam is a real problem. Captcha has been teated as the first line of defence aginst this problem. If you must use captcha, here are some best practices working with them. ### Can you do without one? A lot of places captcha's are put to filter spam in user generated comment. One of the largest sources of UGC is comments on wordpress blogs. They do not use a captcha, and instead pass all comments through Akismet to verify which comments are spam, and reject the spams. In many cases, such a system would work for</p>
-                <a class="readmore" href="/on-captcha.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/django-design-patterns.html" rel="bookmark"
-                           title="Permalink to Django design patterns">Django design patterns</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-07-03T09:11:46+05:30">
-                Published: Fri 03 July 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-07-03T19:41:46+05:30">
-                Updated: Fri 03 July 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/book.html">book</a> </p>
-</footer><!-- /.post-info -->                <p>This is announcement about our new work, <a href="http://djangodesignpatterns.uswaretech.net/">Django design patterns</a>, a ebook about, well, Django design patterns. (Well imagine that!). Here is the readme copied from there. ------- [Edit] Syntax highlighting and indentation preservation were totally brroken. Fixed now. ------- Django design patterns is a book about commonly occuring patterns in Django. Not patterns in Gof sense, but patterns in the sense, we work this way, and it works for us. For us it is a ~pattern of work~ sense. At this point this is just a lot of brain dump from us. The latest sources are always available from</p>
-                <a class="readmore" href="/django-design-patterns.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/remote-debugging-debugging-pesky-server-only-bugs.html" rel="bookmark"
-                           title="Permalink to Remote debugging - debugging pesky server only bugs">Remote debugging - debugging pesky server only bugs</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2009-07-02T13:07:02+05:30">
-                Published: Thu 02 July 2009
-        </abbr>
-		<br />
-        <abbr class="modified" title="2009-07-02T23:37:02+05:30">
-                Updated: Thu 02 July 2009
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/django.html">django</a> </p>
-</footer><!-- /.post-info -->                <p>Here is a quick tip. (Obvious if you work with Django for any length of time, but I have seen a few people who are not aware) You can put debug trace <code>import pdb; pdb.set_trace()</code> in your code, and put it on the server. When you access this view from your local browser, the debug is still hit and you have a debug shell on your server where you can step through. (Obviously this works only if you ran the code via <code>manage.py runserver</code>. But <code>manage.py runserver</code> start the server to listen only on local connections. If you want to</p>
-                <a class="readmore" href="/remote-debugging-debugging-pesky-server-only-bugs.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-<p class="paginator">
-        <a href="/category/markdown12.html">&laquo;</a>
-    Page 13 / 19
-        <a href="/category/markdown14.html">&raquo;</a>
-</p>
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+<meta property="og:title" content="agiliq_blog"/>
+<meta name="twitter:title" content="agiliq_blog">
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="agiliq" />
+        <title>agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
                         </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<div class="row-fluid">
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+    <div class="row-fluid">
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+    </div>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    <div class="row-fluid">
+        <div class="span8 offset2">
+            <header>
+            <h1 id="recent-posts">Recent Posts <a id="allposts" href="/archives.html">all posts</a></h1>
+            </header>
+        <div class="recent-posts">
+            <article>
+                <a href="/prime-number-binary-trex.html">Finding a prime number whose binary representation is a giraffe (or a T-Rex)  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2018-01-21T08:11:32+05:30">Sun 21 January 2018</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-listview.html">When and how to use Django ListView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:06:39+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-templateview.html">When and how to use Django TemplateView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:00:27+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/adventures-in-advanced-django-orm-with-hyperloglog.html">Adventures in advanced Django ORM with HyperLogLog  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-11T11:24:38+05:30">Mon 11 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/configure-django-log-exceptions-production.html">Configure Django to log exceptions in production  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-02T00:49:18+05:30">Sat 02 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-performant-your-python-web-application.html">How performant is your Python web application  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-15T08:56:01+05:30">Wed 15 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-python-generators-are-similar-iterators.html">How Python generators are similar to iterators  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-01T00:59:47+05:30">Wed 01 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/real-world-usage-iterators-and-iterables.html">Real world usage of __iter__ and next  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-18T00:23:28+05:30">Wed 18 October 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/iterators-and-iterables.html">Iterators and Iterables  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-12T08:06:19+05:30">Thu 12 October 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/getting-started-webapp2-and-gae.html">Getting started with webapp2 and GAE  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-09-04T08:15:27+05:30">Mon 04 September 2017</time>
+                </div>
+                </section>
+            </article>
+        </div>
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

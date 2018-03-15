@@ -1,320 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>agiliq_blog</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="agiliq" />
+        <meta name="copyright" content="agiliq" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-
-                <section id="content" class="body">
-                    <ol id="posts-list" class="hfeed" start="9">
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/profiling-django-middlewares.html" rel="bookmark"
-                           title="Permalink to Profiling Django Middlewares">Profiling Django Middlewares</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-07-17T04:49:47+05:30">
-                Published: Fri 17 July 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-07-17T15:19:47+05:30">
-                Updated: Fri 17 July 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/middlewares.html">middlewares</a> </p>
-</footer><!-- /.post-info -->                <p>I assume you have a basic understanding of Profiling, what it means and why we use it. ### Why this post Recently I had to profile a Django application which wasn't performing as fast as it should. This application had several custom middlewares too. So it was possible that custom middlewares were the cause of slow performance. There are some existing Django libraries to profile Django code. eg: Django Debug Toolbar, django-silk , django_cprofile etc. Most of them can profile view code well but they can't profile other middlewares. I wanted a way to profile middlewares too. ### Problem with</p>
-                <a class="readmore" href="/profiling-django-middlewares.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/understanding-django-middlewares.html" rel="bookmark"
-                           title="Permalink to Understanding Django Middlewares">Understanding Django Middlewares</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-07-17T03:56:11+05:30">
-                Published: Fri 17 July 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-07-17T14:26:11+05:30">
-                Updated: Fri 17 July 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/middlewares.html">middlewares</a> </p>
-</footer><!-- /.post-info -->                <p>I assume you have read <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/" target="_blank">official Django docs on middleware</a>. I will elaborate on things mentioned in the documentation but I assume you are familiar with middleware. In this post we will discuss the following. * What is a middleware * When to use middleware * Things to remember when writing middleware * Writing some middlewares to understand how order of middleware matters ### What is a middleware Middlewares are hooks to modify Django <strong>request</strong> or <strong>response</strong> object. Putting the definition of middleware from Django <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/">docs</a>. Middleware is a framework of hooks into Django’s request/response processing. It’s a</p>
-                <a class="readmore" href="/understanding-django-middlewares.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/getting-started-with-celery-and-redis.html" rel="bookmark"
-                           title="Permalink to Getting started with Celery and Redis">Getting started with Celery and Redis</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-07-06T00:24:44+05:30">
-                Published: Mon 06 July 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-07-06T10:54:44+05:30">
-                Updated: Mon 06 July 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/redis.html">redis</a> </p>
-</footer><!-- /.post-info -->                <p>Getting started with Celery and Redis ### Agenda * When to use Celery. * Why to use Celery. * A simple celery program. * Having a slow script and making it faster using celery. * Celery configuration and code in different files. * Using celery with tasks spanned across multiple modules * Using celery with a package. * Redis and celery on separate machine * Web-application/script and celery on separate machines. ### When to use Celery Celery is a task processing system. It is useful in a lot of web applications. It can be used in following scenarios. To do</p>
-                <a class="readmore" href="/getting-started-with-celery-and-redis.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/tastypie-with-foreignkey.html" rel="bookmark"
-                           title="Permalink to Tastypie with ForeignKey">Tastypie with ForeignKey</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-03-29T02:36:51+05:30">
-                Published: Sun 29 March 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-03-29T13:06:51+05:30">
-                Updated: Sun 29 March 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/django-tastypie.html">django-tastypie</a> </p>
-</footer><!-- /.post-info -->                <p>This is a followup post on <a href="http://agiliq.com/blog/2015/03/getting-started-with-django-tastypie/" target="_blank">Getting started with tastypie</a>. We will use the same project setup as used in the last post. This post will cover: * Fetch ForeignKey data in GET calls * Create an object with ForeignKeys using POST calls ### Setup the application Let's add the capability to categorise the expenses Add a model called ExpenseCategory class ExpenseCategory(models.Model): name = models.CharField(max_length=100) description = models.TextField() Add a FK from Expense to ExpenseCategory class Expense(models.Model): description = models.CharField(max_length=100) amount = models.IntegerField() user = models.ForeignKey(User, null=True) category = models.ForeignKey(ExpenseCategory, null=True) There already exists some Expense in db</p>
-                <a class="readmore" href="/tastypie-with-foreignkey.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/getting-started-with-redis-py.html" rel="bookmark"
-                           title="Permalink to Getting started with redis-py">Getting started with redis-py</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-03-26T07:13:25+05:30">
-                Published: Thu 26 March 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-03-26T17:43:25+05:30">
-                Updated: Thu 26 March 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/redis.html">redis</a> </p>
-</footer><!-- /.post-info -->                <p>This post explains how to interface with Redis from Python and how to use different Redis commands from Python using redis-py. What this post is not about * Comparing relational and non-relational database * Comparing MySQL and Redis * Introduction to Redis I assume you know the following * Basics of Redis * Basic redis commands for working with Strings, Lists and Maps as described at <a href="http://redis.io/topics/data-types-intro" target="_blank">Redis docs</a>. I did not find enough examples of using redis-py provided methods and so wrote this blog post. ### Getting started Assuming you have Redis installed and your redis server is</p>
-                <a class="readmore" href="/getting-started-with-redis-py.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/getting-started-with-django-tastypie.html" rel="bookmark"
-                           title="Permalink to Getting started with Django tastypie">Getting started with Django tastypie</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-03-23T07:10:53+05:30">
-                Published: Mon 23 March 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-03-23T17:40:53+05:30">
-                Updated: Mon 23 March 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/django-tastypie.html">django-tastypie</a> </p>
-</footer><!-- /.post-info -->                <p>Django tastypie is a library to write RESTful apis in Django. ### Why use REST You have a database backed web application. This application tracks expenses. The application allows the capability to enter your expenses, view all your expenses, delete an expense etc. Essentially this application provides CRUD functionality. Django application has access to database credentials, but they are never seen by the users of the web application. Django application decides what to show to which user. Django application ensures that a particular user only sees the expenses entered by him and not somebody else's expenses. Now you want to</p>
-                <a class="readmore" href="/getting-started-with-django-tastypie.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/building-chrome-extensions.html" rel="bookmark"
-                           title="Permalink to Building Chrome Extensions">Building Chrome Extensions</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-03-04T00:10:38+05:30">
-                Published: Wed 04 March 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-03-04T11:40:38+05:30">
-                Updated: Wed 04 March 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/karambir.html">karambir</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/google.html">google</a> </p>
-</footer><!-- /.post-info -->                <p>In this blog post, we will look at how to build a chrome extension that can work with multiple online services. Specifically we will see how to update Trello web pages with relevant content from Google Drive. Google Chrome extensions are nothing but some html, js files linked together that are running behind the scenes. Before starting out, we need to make sure that <em>Developer mode</em> is checked in <code>chrome://extensions/</code>. Chrome extensions work by telling chrome about our html, js files using a Manifest.json. It will have some meta data like name, description, icon images and more important information like</p>
-                <a class="readmore" href="/building-chrome-extensions.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/importing-your-old-comments-to-disqus-site.html" rel="bookmark"
-                           title="Permalink to Importing your old comments to Disqus site">Importing your old comments to Disqus site</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-01-16T08:12:08+05:30">
-                Published: Fri 16 January 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-01-16T19:42:08+05:30">
-                Updated: Fri 16 January 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/rakesh.html">Rakesh</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/disqus.html">Disqus</a> </p>
-</footer><!-- /.post-info -->                <p>In one of my latest <a href="http://agiliq.com/blog/2014/11/disqus-and-disqus-sso/">blogpost</a> on disqus I covered topics on integrating Disqus to the website and disqus SSO. In this post, I will let you know how to migrate the older comments to Disqus. If you sneak peek in to the alluring features of disqus you may make your mind to migrate your custom commenting system on your blog to use disqus commenting system. The threaded comments and replies, powerful moderation and admin tools, RSS options and many more features come in as battaries included with Disqus which makes the commenting more interactive and easy to deal with.</p>
-                <a class="readmore" href="/importing-your-old-comments-to-disqus-site.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/how-not-knowing-encoding-can-trip-you.html" rel="bookmark"
-                           title="Permalink to How not knowing encoding can trip you">How not knowing encoding can trip you</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-12-08T17:17:52+05:30">
-                Published: Mon 08 December 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-12-08T16:47:52+05:30">
-                Updated: Mon 08 December 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <p>How not knowing encoding can trip you: A practical example</p>
-                <a class="readmore" href="/how-not-knowing-encoding-can-trip-you.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/understanding-python-unicode-str-unicodeencodeerro.html" rel="bookmark"
-                           title="Permalink to Understanding Python unicode, str, UnicodeEncodeError and UnicodeDecodeError">Understanding Python unicode, str, UnicodeEncodeError and UnicodeDecodeError</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-12-08T17:13:30+05:30">
-                Published: Mon 08 December 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-12-08T15:43:30+05:30">
-                Updated: Mon 08 December 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <p>Understanding Python unicode, str, UnicodeEncodeError, UnicodeDecodeError</p>
-                <a class="readmore" href="/understanding-python-unicode-str-unicodeencodeerro.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-<p class="paginator">
-        <a href="/index2.html">&laquo;</a>
-    Page 3 / 23
-        <a href="/index4.html">&raquo;</a>
-</p>
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+<meta property="og:title" content="agiliq_blog"/>
+<meta name="twitter:title" content="agiliq_blog">
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="agiliq" />
+        <title>agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li  class="active"><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
                         </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<div class="row-fluid">
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+    <div class="row-fluid">
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+    </div>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    <div class="row-fluid">
+        <div class="span8 offset2">
+            <header>
+            <h1 id="recent-posts">Recent Posts <a id="allposts" href="/archives.html">all posts</a></h1>
+            </header>
+        <div class="recent-posts">
+            <article>
+                <a href="/prime-number-binary-trex.html">Finding a prime number whose binary representation is a giraffe (or a T-Rex)  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2018-01-21T08:11:32+05:30">Sun 21 January 2018</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-listview.html">When and how to use Django ListView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:06:39+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-templateview.html">When and how to use Django TemplateView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:00:27+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/adventures-in-advanced-django-orm-with-hyperloglog.html">Adventures in advanced Django ORM with HyperLogLog  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-11T11:24:38+05:30">Mon 11 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/django-20-window-expressions-tutorial.html">Django 2.0 Window expressions tutorial  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#rst-ref">rst</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-06T05:22:38+05:30">Wed 06 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/configure-django-log-exceptions-production.html">Configure Django to log exceptions in production  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-02T00:49:18+05:30">Sat 02 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-performant-your-python-web-application.html">How performant is your Python web application  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-15T08:56:01+05:30">Wed 15 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-python-generators-are-similar-iterators.html">How Python generators are similar to iterators  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-01T00:59:47+05:30">Wed 01 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/real-world-usage-iterators-and-iterables.html">Real world usage of __iter__ and next  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-18T00:23:28+05:30">Wed 18 October 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/iterators-and-iterables.html">Iterators and Iterables  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-12T08:06:19+05:30">Thu 12 October 2017</time>
+                </div>
+                </section>
+            </article>
+        </div>
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

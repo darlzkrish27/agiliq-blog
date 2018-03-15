@@ -1,320 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>agiliq_blog</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="agiliq" />
+        <meta name="copyright" content="agiliq" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-
-                <section id="content" class="body">
-                    <ol id="posts-list" class="hfeed" start="9">
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/building-reusable-django-apps.html" rel="bookmark"
-                           title="Permalink to Building reusable Django apps">Building reusable Django apps</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-11-11T08:04:11+05:30">
-                Published: Tue 11 November 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-11-11T19:34:11+05:30">
-                Updated: Tue 11 November 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/tips.html">tips</a> </p>
-</footer><!-- /.post-info -->                <p>Recently I updated a lot of our old apps to be compatible with Django 1.0 and be reusable. Before we go further, let me define a _ Reusable Django App _. A Django app is reusable if * It is app. (That is, it is not a project, and has no settings.py/manage.py.) * It can be dropped in an existing project, and only places where the project should need editing are <code>settings.py</code> <code>installed_apps</code> and the projects level <code>urls.py</code>. * It can be used in the project with an arbitrary url prefix. The updated apps were written initially for Django 0.96</p>
-                <a class="readmore" href="/building-reusable-django-apps.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/using-subdomains-with-django.html" rel="bookmark"
-                           title="Permalink to Using subdomains with Django">Using subdomains with Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-10-10T10:01:57+05:30">
-                Published: Fri 10 October 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-10-10T20:31:57+05:30">
-                Updated: Fri 10 October 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/tips.html">tips</a> </p>
-</footer><!-- /.post-info -->                <p>Django makes using beautiful urls a snap. However using subdomains with Django is not so obvious. Here is an article explaining this. Advantages of subdomain 1. Sometimes looks more professional. Users will prefer someblog.wordpress.com over wordpress.com/someblog. 2. If each part of your site is Under a different untrusted users, you might want to give them a separate subdomain, so that if they do Blackhat Seo on their part, the main site is not harmed. 3. Your users can point a Cname to their subdomain to use domain of their choice with their subdomain. Disadvantages of subdomain 1. When you need</p>
-                <a class="readmore" href="/using-subdomains-with-django.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/dynamic-forms-with-django.html" rel="bookmark"
-                           title="Permalink to Dynamic forms with Django">Dynamic forms with Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-10-10T09:16:05+05:30">
-                Published: Fri 10 October 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-10-10T19:46:05+05:30">
-                Updated: Fri 10 October 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/forms.html">forms</a> </p>
-</footer><!-- /.post-info -->                <p><a href="http://docs.djangoproject.com/en/dev/topics/forms/">Newforms</a>, (or forms now) are without doubt one of the coolest features of Django. (Of course after Admin, Localflavor, and many others). Here is some sample code. class EmployeeForm(forms.Form): name = forms.CharField() age = forms.IntegerField() resume = forms.FileField() Just this code gives you 1. A form which knows how to render itself as Html. 2. A form which knows how to validate data on the server side. 3. A form which knows how to show the relevant errors. However think of this scenario, You need to customise your form depending on values in the Database. What you want to do</p>
-                <a class="readmore" href="/dynamic-forms-with-django.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/generating-pdfs-with-django.html" rel="bookmark"
-                           title="Permalink to Generating PDFs with Django">Generating PDFs with Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-10-07T12:31:17+05:30">
-                Published: Tue 07 October 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-10-07T23:01:17+05:30">
-                Updated: Tue 07 October 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/tips.html">tips</a> </p>
-</footer><!-- /.post-info -->                <p>If your web app creates report chances are you also want this report in PDF form. The Django docs describe a way to generate PDFs using ReportLab. Here is some code from there. from reportlab.pdfgen import canvas from django.http import HttpResponse def some_view(request): # Create the HttpResponse object with the appropriate PDF headers. response = HttpResponse(mimetype='application/pdf') response['Content-Disposition'] = 'attachment; filename=somefilename.pdf' # Create the PDF object, using the response object as its "file." p = canvas.Canvas(response) # Draw things on the PDF. Here's where the PDF generation happens. # See the ReportLab documentation for the full list of functionality. p.drawString(100, 100,</p>
-                <a class="readmore" href="/generating-pdfs-with-django.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/building-seo-optimised-django-web-applications.html" rel="bookmark"
-                           title="Permalink to Building SEO optimised Django web applications">Building SEO optimised Django web applications</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-10-07T11:59:44+05:30">
-                Published: Tue 07 October 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-10-07T22:29:44+05:30">
-                Updated: Tue 07 October 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/seo.html">seo</a> </p>
-</footer><!-- /.post-info -->                <p>This is an article about building <a href="http://www.seobook.com/glossary/#seo">SEO</a>, optmised web applications with Django. I assume you already have an idea how Seo works. We will take the example of a hypothetical Blog app to explain the suggestions made. Without further ado, here are the tips. Basic 1. Use beautiful URLs. 2. Learn the difference between HTTP 301 and HTTP 302 redirects. 3. Layout content in a SEO friendly way. 4. Create a sitmaps. Not so obvious 1. Use the Admin to allow end users to update fields. 2. Do not get your Url structures too deep. 3. Create a robots.txt file.</p>
-                <a class="readmore" href="/building-seo-optimised-django-web-applications.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/an-interview-with-adrian-holovaty-creator-of-djang.html" rel="bookmark"
-                           title="Permalink to An Interview with Adrian Holovaty - Creator of Django">An Interview with Adrian Holovaty - Creator of Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-06-23T17:06:06+05:30">
-                Published: Mon 23 June 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-06-24T03:36:06+05:30">
-                Updated: Tue 24 June 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/interviews.html">interviews</a> </p>
-</footer><!-- /.post-info -->                <p><a href="http://www.holovaty.com/">Adrian Holovaty</a> is the co-creator of Django, author of the Django book and is currently the BDFL of Django along with Jacob Kaplan-Moss. He studied journalism at <a href="http://www.missouri.edu/about/mufacts.php">University of Missouriâ€“Columbia</a> and has worked with many news sites including <a href="http://www2.ljworld.com/">Lawrence Journal World</a> and <a href="http://www.washingtonpost.com/">Washington Post</a>. He currently works at <a href="http://everyblock.com/">EveryBlock</a>, a startup he founded. ----------------------------------------------------------------------------- <strong>Shabda:</strong> Would you tell a little about yourself? You majored in Journalism, how did you move to Programming? <strong>Adrian:</strong> Sure! I have a dual background in journalism and computer science. I intended to get a degree in journalism and a minor in computer science, but things</p>
-                <a class="readmore" href="/an-interview-with-adrian-holovaty-creator-of-djang.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/an-interview-with-jacob-kaplan-moss-creator-of-dja.html" rel="bookmark"
-                           title="Permalink to An Interview with Jacob Kaplan-Moss - Creator of Django">An Interview with Jacob Kaplan-Moss - Creator of Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-05-30T01:33:18+05:30">
-                Published: Fri 30 May 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-05-30T12:03:18+05:30">
-                Updated: Fri 30 May 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <p><img src="http://uswaretech.com/blog/wp-content/uploads/2008/05/jacob_headshot2.png" alt="Jacob Kaplan-Moss" title="jacob_headshot2" width="225" height="232" class="right frame" /> <a href="http://djangopeople.net/jacobian/">Jacob Kaplan-Moss</a> is the co-creator of Django along with Adrian Holovaty, as well as the author of <a href="http://www.amazon.com/Definitive-Guide-Django-Development-Right/dp/1590597257">the Django Book</a>. He has been involved with Django since before it was called Django. He is currently employed at Whiskey Media where his job is hacking at Django. He blogs on <a href="http://www.jacobian.org/">Jacobian.org</a>. He graciously agreed to be interviewed at the 42topics blog. -------------------------------- <strong>Shabda:</strong> Would you tell a little about yourself? How did you get started with Django? What other software/applications have you worked with. (Both OSS and otherwise)? <strong>Jacob:</strong> So a</p>
-                <a class="readmore" href="/an-interview-with-jacob-kaplan-moss-creator-of-dja.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/an-idea-a-day-a-geographical-wiki.html" rel="bookmark"
-                           title="Permalink to An idea a day - A geographical wiki">An idea a day - A geographical wiki</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-05-14T10:40:22+05:30">
-                Published: Wed 14 May 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-05-14T21:10:22+05:30">
-                Updated: Wed 14 May 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/startup.html">startup</a> </p>
-</footer><!-- /.post-info -->                <p>This is an article in the <strong>Five Startup Ideas</strong> series at <a href="http://42topics.com/">the 42topics blog</a>. In his essay, <a href="http://www.paulgraham.com/ideas.html">Ideas for Startups</a>, Paul Graham argues that ideas are not a critical factor for success of startups. Although I do not believe that ideas are worthless, as many people do, I believe that they are not any where near as important as execution. So to prove my point, I am giving away 5 startup ideas in next five days. All of them describe a problem, its solution, the technology involved, the competition and market size. If you are not a hacker, and want</p>
-                <a class="readmore" href="/an-idea-a-day-a-geographical-wiki.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/an-idea-a-day-alternative-to-gae.html" rel="bookmark"
-                           title="Permalink to An idea a day - Alternative to GAE">An idea a day - Alternative to GAE</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-05-13T10:25:39+05:30">
-                Published: Tue 13 May 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-05-13T20:55:39+05:30">
-                Updated: Tue 13 May 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/startup.html">startup</a> </p>
-</footer><!-- /.post-info -->                <p>This is an article in the <strong>Five Startup Ideas</strong> series at <a href="http://42topics.com/">the 42topics blog</a>. In his essay, <a href="http://www.paulgraham.com/ideas.html">Ideas for Startups</a>, Paul Graham argues that ideas are not a critical factor for success of startups. Although I do not believe that ideas are worthless, as many people do, I believe that they are not any where near as important as execution. So to prove my point, I am giving away 5 startup ideas in next five days. All of them describe a problem, its solution, the technology involved, the competition and market size. If you are not a hacker, and want</p>
-                <a class="readmore" href="/an-idea-a-day-alternative-to-gae.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/an-idea-a-day-remotely-hosted-analytics-solution.html" rel="bookmark"
-                           title="Permalink to An idea a day - Remotely hosted Analytics solution">An idea a day - Remotely hosted Analytics solution</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2008-05-12T10:22:39+05:30">
-                Published: Mon 12 May 2008
-        </abbr>
-		<br />
-        <abbr class="modified" title="2008-05-12T20:52:39+05:30">
-                Updated: Mon 12 May 2008
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/startup.html">startup</a> </p>
-</footer><!-- /.post-info -->                <p>This is an article in the <strong>Five Startup Ideas</strong> series at <a href="http://42topics.com/">the 42topics blog</a>. In his essay, <a href="http://www.paulgraham.com/ideas.html">Ideas for Startups</a>, Paul Graham argues that ideas are not a critical factor for success of startups. Although I do not believe that ideas are worthless, as many people do, I believe that they are not any where near as important as execution. So to prove my point, I am giving away 5 startup ideas in next five days. All of them describe a problem, its solution, the technology involved, the competition and market size. If you are not a hacker, and want</p>
-                <a class="readmore" href="/an-idea-a-day-remotely-hosted-analytics-solution.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-<p class="paginator">
-        <a href="/index19.html">&laquo;</a>
-    Page 20 / 23
-        <a href="/index21.html">&raquo;</a>
-</p>
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+<meta property="og:title" content="agiliq_blog"/>
+<meta name="twitter:title" content="agiliq_blog">
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="agiliq" />
+        <title>agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li  class="active"><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
                         </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<div class="row-fluid">
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+    <div class="row-fluid">
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+    </div>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    <div class="row-fluid">
+        <div class="span8 offset2">
+            <header>
+            <h1 id="recent-posts">Recent Posts <a id="allposts" href="/archives.html">all posts</a></h1>
+            </header>
+        <div class="recent-posts">
+            <article>
+                <a href="/prime-number-binary-trex.html">Finding a prime number whose binary representation is a giraffe (or a T-Rex)  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2018-01-21T08:11:32+05:30">Sun 21 January 2018</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-listview.html">When and how to use Django ListView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:06:39+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-templateview.html">When and how to use Django TemplateView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:00:27+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/adventures-in-advanced-django-orm-with-hyperloglog.html">Adventures in advanced Django ORM with HyperLogLog  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-11T11:24:38+05:30">Mon 11 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/django-20-window-expressions-tutorial.html">Django 2.0 Window expressions tutorial  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#rst-ref">rst</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-06T05:22:38+05:30">Wed 06 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/configure-django-log-exceptions-production.html">Configure Django to log exceptions in production  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-02T00:49:18+05:30">Sat 02 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-performant-your-python-web-application.html">How performant is your Python web application  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-15T08:56:01+05:30">Wed 15 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-python-generators-are-similar-iterators.html">How Python generators are similar to iterators  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-01T00:59:47+05:30">Wed 01 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/real-world-usage-iterators-and-iterables.html">Real world usage of __iter__ and next  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-18T00:23:28+05:30">Wed 18 October 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/iterators-and-iterables.html">Iterators and Iterables  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-12T08:06:19+05:30">Thu 12 October 2017</time>
+                </div>
+                </section>
+            </article>
+        </div>
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

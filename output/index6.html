@@ -1,320 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>agiliq_blog</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="agiliq" />
+        <meta name="copyright" content="agiliq" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li><a href="/category/markdown.html">markdown</a></li>
-                    <li><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-
-                <section id="content" class="body">
-                    <ol id="posts-list" class="hfeed" start="9">
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/django-backward-relationship-lookup.html" rel="bookmark"
-                           title="Permalink to Django backward relationship lookup">Django backward relationship lookup</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-04-28T00:00:01+05:30">
-                Published: Mon 28 April 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-04-28T10:30:01+05:30">
-                Updated: Mon 28 April 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/django.html">django</a> </p>
-</footer><!-- /.post-info -->                <h2>Django backward relationship lookup I will discuss the intuitive way which most non-advanced Django users use and a slightly unintuitive way which many of us are not aware about. Consider the following relationship: class Group(models.Model): name = models.CharField(max_length=100) class Student(models.Model): name = models.CharField(max_length=100) group = models.ForeignKey(Group) A group can have many students. We want to get the groups based on certain conditions on model <code>Student</code>. If you can get it using model <code>Group</code>, you can skip this post. In such a scenario, we tend to use <code>Student</code> model. It's more intuitive because the Foreign Key relationship exists from Student</h2>
-                <a class="readmore" href="/django-backward-relationship-lookup.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/writing-styled-forms-with-absolutely-minimal-html-.html" rel="bookmark"
-                           title="Permalink to Writing styled forms with absolutely minimal HTML (Part-1)">Writing styled forms with absolutely minimal HTML (Part-1)</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-04-24T09:05:34+05:30">
-                Published: Thu 24 April 2014
-        </abbr>
-		<br />
-        <abbr class="modified" title="2014-04-24T19:35:34+05:30">
-                Updated: Thu 24 April 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/rakesh.html">Rakesh</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/django-crispy-forms.html">Django-crispy-forms</a> </p>
-</footer><!-- /.post-info -->                <p>When controlling the form rendering, we all know that we can use the three pre-baked output format of the forms namely: as_u, as_p and as_table. For example: if we use: {{ registration_form.as_ul}} The output template would be: <li> <label for="id_uname">Userame:</label> <input type="text" name="username" id="id_uname"> <li> <li> <label for="id_email">Email:</lable> <input type="text" name="email" id="id_email"> <li> And so on... Here are some questions that come into the picture: ----------------------------------------------------- 1. What if we to want deal with divs? 2. What if we want to reorder the fields? and what if I have 100 such fields? 3. And what if I want to deal</p>
-                <a class="readmore" href="/writing-styled-forms-with-absolutely-minimal-html-.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/producer-consumer-problem-in-python.html" rel="bookmark"
-                           title="Permalink to Producer-consumer problem in Python">Producer-consumer problem in Python</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-10-17T00:16:37+05:30">
-                Published: Thu 17 October 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-10-17T10:46:37+05:30">
-                Updated: Thu 17 October 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/threads.html">threads</a> </p>
-</footer><!-- /.post-info -->                <p>We will solve Producer Consumer problem in Python using Python threads. This problem is nowhere as hard as they make it sound in colleges. This blog will make more sense if you have some idea about <a href="http://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem">Producer Consumer problem</a>. Why care about Producer Consumer problem: * Will help you understand more about concurrency and different concepts of concurrency. * The concept of Producer Consumer problem is used to some extent in implementing a message queue. And you will surely need message queue at some point of time. While we use threads, you will learn about the following thread topics: *</p>
-                <a class="readmore" href="/producer-consumer-problem-in-python.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/state-pattern-with-ui-code.html" rel="bookmark"
-                           title="Permalink to State pattern with UI Code">State pattern with UI Code</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-10-14T06:09:27+05:30">
-                Published: Mon 14 October 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-10-14T16:39:27+05:30">
-                Updated: Mon 14 October 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/design-pattern.html">design pattern</a> </p>
-</footer><!-- /.post-info -->                <p>This blog tells how I used state pattern in my UI code, and explains state pattern with JavaScript and jQuery. Disclaimer: * This blog will not talk much about benefits of State pattern as there is a already a lot written about it. It only gives a practical example of using state pattern with UI code. * I am not much confident about difference between State pattern and Strategy pattern. Let's discuss if I misunderstood State pattern. ###Use case: * I have a page with two input fields. * Page initially has one title field and one body field. *</p>
-                <a class="readmore" href="/state-pattern-with-ui-code.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/understanding-threads-in-python.html" rel="bookmark"
-                           title="Permalink to Understanding Threads in Python">Understanding Threads in Python</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-09-17T13:23:01+05:30">
-                Published: Tue 17 September 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-09-17T23:53:01+05:30">
-                Updated: Tue 17 September 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/threads.html">threads</a> </p>
-</footer><!-- /.post-info -->                <p>We will see some examples of using threads in Python and how to avoid race conditions: You should run each example several times to notice that threads are unpredictable and that your results differ every time. Disclaimer: Forget anything you heard about GIL for now, because GIL is not going to mess up with scenarios I want to show. ###Example 1: We want to fetch five different urls: ####Single threaded way: def get_responses(): urls = ['http://www.google.com', 'http://www.amazon.com', 'http://www.ebay.com', 'http://www.alibaba.com', 'http://www.reddit.com'] start = time.time() for each in urls: print each resp = urllib2.urlopen(each) print resp.getcode() print "Elapsed time: %s" % (time.time()-start)</p>
-                <a class="readmore" href="/understanding-threads-in-python.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/process-and-threads-for-beginners.html" rel="bookmark"
-                           title="Permalink to Process and Threads for Beginners">Process and Threads for Beginners</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-09-11T02:03:39+05:30">
-                Published: Wed 11 September 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-09-11T12:33:39+05:30">
-                Updated: Wed 11 September 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/process.html">process</a> </p>
-</footer><!-- /.post-info -->                <p>We will cover this post in following sequence: * Process and multiprocessing * Threads and multithreading ###Process and multiprocessing A process is an executable instance of a program. ####example: You write a java program and save it as <code>abcd.java</code> and run it with <code>java abcd</code>. While this program is executing it is a process. File <code>abcd.java</code> is not a process, but when it's executing it is a process. You write a Python program and save it as <code>abcd.py</code> and run it with <code>python abcd.py</code>. So, while this program is executing it is a process. Once the program terminates, the process</p>
-                <a class="readmore" href="/process-and-threads-for-beginners.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/minimal-nginx-and-gunicorn-configuration-for-djang.html" rel="bookmark"
-                           title="Permalink to Minimal Nginx and Gunicorn configuration for Django projects">Minimal Nginx and Gunicorn configuration for Django projects</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-08-26T19:35:50+05:30">
-                Published: Mon 26 August 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-08-26T18:05:50+05:30">
-                Updated: Mon 26 August 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/nginx.html">nginx</a> </p>
-</footer><!-- /.post-info -->                <p>We will see how to deploy a Django project with nginx and gunicorn. It was much easier for me to understand nginx and gunicorn on development machine and then move to a publicly accessible server. We will cover this post in the following sequence: * Use django's <code>runserver</code> to serve the site. * Stop <code>runserver</code> and start using gunicorn instead. * Add nginx to this configuration. * Deploy the project on a publicly accessible server using same stack. ###Project Structure We will use a minimal project with two apps and few static files. You can view this project at <a href="https://github.com/akshar-raaj/static-files-in-django">github</a>.</p>
-                <a class="readmore" href="/minimal-nginx-and-gunicorn-configuration-for-djang.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/writing-thread-safe-django-code.html" rel="bookmark"
-                           title="Permalink to Writing thread-safe django - get_or_create">Writing thread-safe django - get_or_create</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-08-21T09:04:24+05:30">
-                Published: Wed 21 August 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-08-21T19:34:24+05:30">
-                Updated: Wed 21 August 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/threads.html">threads</a> </p>
-</footer><!-- /.post-info -->                <p>In this blog post, we'll discuss thread-safety, why it's important and how to write thread-safe django code, especially for bulk operations like management commands. Thread-safety: -------------- Thread-safety means that our code can be run in multiple threads and behave as expected. The reason that code can be unsafe with regard to threads is because we'll be manipulating shared memory (e.g. database) from the threads and there's a chance of a race-condition which will produce unexpected results. To avoid this, we have the option of using read-write locks, transactions etc. We'll look at some simple examples and try to understand these</p>
-                <a class="readmore" href="/writing-thread-safe-django-code.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/accept-bitcoins-using-python.html" rel="bookmark"
-                           title="Permalink to Accept bitcoins using python">Accept bitcoins using python</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-07-12T08:02:44+05:30">
-                Published: Fri 12 July 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-07-12T18:32:44+05:30">
-                Updated: Fri 12 July 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/javed.html">Javed</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <p>In this blog post we'll talk about bitcoins and look at an overview of how to accept them from your python app. Bitcoin: -------- Bitcoin is crypto-currency whose protocol allows fast, anonymous and secure digital transactions. To know more about bitcoin and to install it, go to the <a href="http://bitcoin.org/en/bitcoin-for-developers">"Developer Guide"</a> guide. Here I'll discuss how we can implement a simple bitcoin payment processing app in python. Getting started: ---------------- To get started, install bitcoin (assuming Ubuntu): &gt; sudo apt-get install bitcoind Now edit <code>~/.bitcoin/bitcoin.conf</code> and add: testnet=1 This will allow us to run bitcoin in test mode. Now start the</p>
-                <a class="readmore" href="/accept-bitcoins-using-python.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/basics-wsgi.html" rel="bookmark"
-                           title="Permalink to Basics of WSGI">Basics of WSGI</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2013-07-01T01:15:22+05:30">
-                Published: Mon 01 July 2013
-        </abbr>
-		<br />
-        <abbr class="modified" title="2013-07-01T11:45:22+05:30">
-                Updated: Mon 01 July 2013
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
-        </address>
-<p>In <a href="/category/markdown.html">markdown</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <p>In this post we will write a web app which will serve few urls. We will not use any Python framework for it. It's only to illustrate how things work under the hood.</p>
-                <a class="readmore" href="/basics-wsgi.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-<p class="paginator">
-        <a href="/index5.html">&laquo;</a>
-    Page 6 / 23
-        <a href="/index7.html">&raquo;</a>
-</p>
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
+<meta property="og:title" content="agiliq_blog"/>
+<meta name="twitter:title" content="agiliq_blog">
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="agiliq" />
+        <title>agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li  class="active"><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
                         </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<div class="row-fluid">
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+    <div class="row-fluid">
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+    </div>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    <div class="row-fluid">
+        <div class="span8 offset2">
+            <header>
+            <h1 id="recent-posts">Recent Posts <a id="allposts" href="/archives.html">all posts</a></h1>
+            </header>
+        <div class="recent-posts">
+            <article>
+                <a href="/prime-number-binary-trex.html">Finding a prime number whose binary representation is a giraffe (or a T-Rex)  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2018-01-21T08:11:32+05:30">Sun 21 January 2018</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-listview.html">When and how to use Django ListView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:06:39+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/when-and-how-use-django-templateview.html">When and how to use Django TemplateView  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-29T00:00:27+05:30">Fri 29 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/adventures-in-advanced-django-orm-with-hyperloglog.html">Adventures in advanced Django ORM with HyperLogLog  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-11T11:24:38+05:30">Mon 11 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/django-20-window-expressions-tutorial.html">Django 2.0 Window expressions tutorial  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#rst-ref">rst</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-06T05:22:38+05:30">Wed 06 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/configure-django-log-exceptions-production.html">Configure Django to log exceptions in production  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-12-02T00:49:18+05:30">Sat 02 December 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-performant-your-python-web-application.html">How performant is your Python web application  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-15T08:56:01+05:30">Wed 15 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/how-python-generators-are-similar-iterators.html">How Python generators are similar to iterators  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-11-01T00:59:47+05:30">Wed 01 November 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/real-world-usage-iterators-and-iterables.html">Real world usage of __iter__ and next  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-18T00:23:28+05:30">Wed 18 October 2017</time>
+                </div>
+                </section>
+            </article>
+            <article>
+                <a href="/iterators-and-iterables.html">Iterators and Iterables  </a>
+                <section>
+                    posted in
+                <a href="/categories.html#markdown-ref">markdown</a>
+                <div class="recent-posts-time">
+                <time pubdate="pubdate" datetime="2017-10-12T08:06:19+05:30">Thu 12 October 2017</time>
+                </div>
+                </section>
+            </article>
+        </div>
+        </div>
+    </div>
+</div>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>

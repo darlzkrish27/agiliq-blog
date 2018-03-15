@@ -1,48 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>Django emacs setup</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="thejaswi" />
+        <meta name="copyright" content="thejaswi" />
 
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">agiliq_blog </a></h1>
-                <nav><ul>
-                    <li><a href="/category/html.html">html</a></li>
-                    <li><a href="/category/markdown.html">markdown</a></li>
-                    <li class="active"><a href="/category/rst.html">rst</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/django-emacs-setup.html" rel="bookmark"
-           title="Permalink to Django emacs setup">Django emacs setup</a></h1>
+<meta name="keywords" content="emacs, rst, " />
+
+<meta property="og:title" content="Django emacs setup "/>
+<meta property="og:url" content="/django-emacs-setup.html" />
+<meta property="og:description" content="My colleague Javed had written an article a short while back on &#34;Seven reasons why you should switch to Vim&#34;. One of the coolest things at Agiliq is that we are free to use the development tools we are comfortable with. As a case to explain the point, everyone at team agiliq uses a different editor and if someday a flame war would escalate to the third world war, I assure you it would start from Agiliq ;-) Though I have been using emacs for more than two years now, I still consider myself an amateur. In this post, I" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="thejaswi" />
+<meta property="og:article:published_time" content="2010-12-26T23:11:25+05:30" />
+<meta property="" content="2010-12-27T10:41:25+05:30" />
+<meta name="twitter:title" content="Django emacs setup ">
+<meta name="twitter:description" content="My colleague Javed had written an article a short while back on &#34;Seven reasons why you should switch to Vim&#34;. One of the coolest things at Agiliq is that we are free to use the development tools we are comfortable with. As a case to explain the point, everyone at team agiliq uses a different editor and if someday a flame war would escalate to the third world war, I assure you it would start from Agiliq ;-) Though I have been using emacs for more than two years now, I still consider myself an amateur. In this post, I">
+
+        <title>Django emacs setup  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/django-emacs-setup.html"> Django emacs setup  </a></h1>
     </header>
+</div>
 
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2010-12-26T23:11:25+05:30">
-                Published: Sun 26 December 2010
-        </abbr>
-		<br />
-        <abbr class="modified" title="2010-12-27T10:41:25+05:30">
-                Updated: Mon 27 December 2010
-        </abbr>
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
-        </address>
-<p>In <a href="/category/rst.html">rst</a>.</p>
-<p>tags: <a href="/tag/emacs.html">emacs</a> </p>
-</footer><!-- /.post-info -->      <p>My colleague Javed had written a fantastic article a short while back on <a class="reference external" href="http://agiliq.com/blog/2010/11/seven-reasons-why-you-should-switch-to-vim-for-dja/">&quot;Seven reasons why you should switch to Vim&quot;</a> and as an <a class="reference external" href="http://en.wikipedia.org/wiki/emacs">emacs</a> user I thought I should share my setup too. One of the coolest things at <a class="reference external" href="http://agiliq.com/">Agiliq</a> is that we are free to use the development tools of our choice. As a case to explain the point, everyone at agiliq uses a different editor and if someday a flame war would escalate to the third world war, I assure you it would start from Agiliq ;-)</p>
+            
+            <p>My colleague Javed had written a fantastic article a short while back on <a class="reference external" href="http://agiliq.com/blog/2010/11/seven-reasons-why-you-should-switch-to-vim-for-dja/">&quot;Seven reasons why you should switch to Vim&quot;</a> and as an <a class="reference external" href="http://en.wikipedia.org/wiki/emacs">emacs</a> user I thought I should share my setup too. One of the coolest things at <a class="reference external" href="http://agiliq.com/">Agiliq</a> is that we are free to use the development tools of our choice. As a case to explain the point, everyone at agiliq uses a different editor and if someday a flame war would escalate to the third world war, I assure you it would start from Agiliq ;-)</p>
 <p>Though I have been using <a class="reference external" href="http://en.wikipedia.org/wiki/emacs">emacs</a> for more than two years now, I still am an amateur. In this post, I am not going to exhort you to switch to emacs but explain my setup.</p>
 <p>If you are planning to give emacs a try, I would suggest you start with the inbuilt emacs tutorial (C-h t). After you've gone through the tutorial, start using emacs while noting your most repetitive actions. Later, bind these repetitive actions to suitable shortcuts so that you can maximize your productivity and reduce keystrokes. Whenever in doubt, refer to <a class="reference external" href="http://emacswiki.org">emacswiki</a> for clarifications. Another wonderful reference would be <a class="reference external" href="http://duckduckgo.com/?q=steve+yegge+emacs">Steve Yegge's</a> articles on emacs.</p>
 <p>Before I explain my setup, let me make it clear that most editors already have a lot of the functionality and I am not being judgemental in this post. If you've come here to see me bash other editors or proclaim that emacs is the best editor, you are going to be disappointed. Emacs has worked for me and a lot of other people and may work for you. Give a couple of editors out there in the market a try (atleast for a fortnight for each editor) and decide the one that you are most comfortable with.</p>
@@ -104,37 +131,58 @@
 <p>Apart from these elisp packages, I run <a class="reference external" href="http://www.emacswiki.org/emacs/ERC">erc</a> (an IRC client written for emacs) occasionally to lurk on <a class="reference external" href="irc://irc.freenode.net/django">#django</a>. I manage my tasks using the <a class="reference external" href="http://orgmode.org/org.html">org-mode</a> and synchronize these tasks with my home workstation using the <a class="reference external" href="http://mobileorg.ncogni.to/">mobileorg</a> android app and <a class="reference external" href="http://www.dropbox.com">dropbox</a>.</p>
 <p>As you would've observed my emacs setup is fairly minimal but suffices most of my django and python development. If you are an emacs user and have tips for me and other users, leave your comments. There's always a lot to learn in emacs :)</p>
 
-    </div><!-- /.entry-content -->
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2010-12-26T23:11:25+05:30">Dec 26, 2010</time>
 
-  </article>
-</section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+<h4>Last Updated</h4>
+<time datetime="2010-12-27T10:41:25+05:30">Dec 27, 2010</time>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#rst-ref">rst</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#emacs-ref">emacs
+                    <span>1</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
 </html>
