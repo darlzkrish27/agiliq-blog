@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - akshar</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/state-pattern-with-ui-code.html" rel="bookmark"
+                           title="Permalink to State pattern with UI Code">State pattern with UI Code</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-10-14T06:09:27+05:30">
+                Published: Mon 14 October 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-10-14T16:39:27+05:30">
+                Updated: Mon 14 October 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/design-pattern.html">design pattern</a> </p>
+</footer><!-- /.post-info -->                <p>This blog tells how I used state pattern in my UI code, and explains state pattern with JavaScript and jQuery. Disclaimer: * This blog will not talk much about benefits of State pattern as there is a already a lot written about it. It only gives a practical example of using state pattern with UI code. * I am not much confident about difference between State pattern and Strategy pattern. Let's discuss if I misunderstood State pattern. ###Use case: * I have a page with two input fields. * Page initially has one title field and one body field. *</p>
+                <a class="readmore" href="/state-pattern-with-ui-code.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/understanding-threads-in-python.html" rel="bookmark"
+                           title="Permalink to Understanding Threads in Python">Understanding Threads in Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-17T13:23:01+05:30">
+                Published: Tue 17 September 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-09-17T23:53:01+05:30">
+                Updated: Tue 17 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/threads.html">threads</a> </p>
+</footer><!-- /.post-info -->                <p>We will see some examples of using threads in Python and how to avoid race conditions: You should run each example several times to notice that threads are unpredictable and that your results differ every time. Disclaimer: Forget anything you heard about GIL for now, because GIL is not going to mess up with scenarios I want to show. ###Example 1: We want to fetch five different urls: ####Single threaded way: def get_responses(): urls = ['http://www.google.com', 'http://www.amazon.com', 'http://www.ebay.com', 'http://www.alibaba.com', 'http://www.reddit.com'] start = time.time() for each in urls: print each resp = urllib2.urlopen(each) print resp.getcode() print "Elapsed time: %s" % (time.time()-start)</p>
+                <a class="readmore" href="/understanding-threads-in-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/process-and-threads-for-beginners.html" rel="bookmark"
+                           title="Permalink to Process and Threads for Beginners">Process and Threads for Beginners</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-09-11T02:03:39+05:30">
+                Published: Wed 11 September 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-09-11T12:33:39+05:30">
+                Updated: Wed 11 September 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/process.html">process</a> </p>
+</footer><!-- /.post-info -->                <p>We will cover this post in following sequence: * Process and multiprocessing * Threads and multithreading ###Process and multiprocessing A process is an executable instance of a program. ####example: You write a java program and save it as <code>abcd.java</code> and run it with <code>java abcd</code>. While this program is executing it is a process. File <code>abcd.java</code> is not a process, but when it's executing it is a process. You write a Python program and save it as <code>abcd.py</code> and run it with <code>python abcd.py</code>. So, while this program is executing it is a process. Once the program terminates, the process</p>
+                <a class="readmore" href="/process-and-threads-for-beginners.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/minimal-nginx-and-gunicorn-configuration-for-djang.html" rel="bookmark"
+                           title="Permalink to Minimal Nginx and Gunicorn configuration for Django projects">Minimal Nginx and Gunicorn configuration for Django projects</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-26T19:35:50+05:30">
+                Published: Mon 26 August 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-08-26T18:05:50+05:30">
+                Updated: Mon 26 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/nginx.html">nginx</a> </p>
+</footer><!-- /.post-info -->                <p>We will see how to deploy a Django project with nginx and gunicorn. It was much easier for me to understand nginx and gunicorn on development machine and then move to a publicly accessible server. We will cover this post in the following sequence: * Use django's <code>runserver</code> to serve the site. * Stop <code>runserver</code> and start using gunicorn instead. * Add nginx to this configuration. * Deploy the project on a publicly accessible server using same stack. ###Project Structure We will use a minimal project with two apps and few static files. You can view this project at <a href="https://github.com/akshar-raaj/static-files-in-django">github</a>.</p>
+                <a class="readmore" href="/minimal-nginx-and-gunicorn-configuration-for-djang.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basics-wsgi.html" rel="bookmark"
+                           title="Permalink to Basics of WSGI">Basics of WSGI</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-07-01T01:15:22+05:30">
+                Published: Mon 01 July 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-07-01T11:45:22+05:30">
+                Updated: Mon 01 July 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>In this post we will write a web app which will serve few urls. We will not use any Python framework for it. It's only to illustrate how things work under the hood.</p>
+                <a class="readmore" href="/basics-wsgi.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/common-testing-scenarios-for-django-app.html" rel="bookmark"
+                           title="Permalink to Common testing scenarios for Django app.">Common testing scenarios for Django app.</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-04-28T10:03:38+05:30">
+                Published: Sun 28 April 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-04-28T20:33:38+05:30">
+                Updated: Sun 28 April 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/testing.html">testing</a> </p>
+</footer><!-- /.post-info -->                <p>People are often confused regarding what tests to write. Let's look into some scenarios for which tests can be written. ##Setting up the project We start a Django project inside a virtual environment. In this post we would be using django 1.4. (dj)~/play/dj$ django-admin.py startproject testcases Let's start an app named <code>blog</code>. (dj)~/play/dj/testcases$ python manage.py startapp blog We will have the following model in <code>blog/models.py</code>: class BlogEntry(models.Model): title = models.CharField(max_length=100) text = models.TextField() is_published = models.BooleanField(default=True) user = models.ForeignKey(User) We will do test driven development which requires: * Thinking about our assumption. * Writing the test to satisfy that assumption.</p>
+                <a class="readmore" href="/common-testing-scenarios-for-django-app.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/serving-static-files-in-django.html" rel="bookmark"
+                           title="Permalink to Serving static files in Django">Serving static files in Django</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-03-21T00:00:01+05:30">
+                Published: Thu 21 March 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-03-21T10:30:01+05:30">
+                Updated: Thu 21 March 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/static.html">static</a> </p>
+</footer><!-- /.post-info -->                <p>Many a times I started a Django project, I had difficulty setting up how static files should be served. And everytime this happened, I read Django documentation for serving static files, tried changing some values in settings.py and after some changes here and there it worked. I guess there are many like me who find themself in a similar situation. In this blog post, I intend to lessen the confusion about serving static files. We will see what settings need to be there for serving static files in development and what directory structure we should be using for static files.</p>
+                <a class="readmore" href="/serving-static-files-in-django.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/understanding-decorators-2.html" rel="bookmark"
+                           title="Permalink to Understanding decorators">Understanding decorators</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-11-17T13:13:53+05:30">
+                Published: Sat 17 November 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-11-17T14:43:53+05:30">
+                Updated: Sat 17 November 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/function-as-objects.html">Function as objects</a> </p>
+</footer><!-- /.post-info -->                <p>Understanding decorators in Python</p>
+                <a class="readmore" href="/understanding-decorators-2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/metaclass-python.html" rel="bookmark"
+                           title="Permalink to Metaclass in Python">Metaclass in Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-01T21:41:46+05:30">
+                Published: Sun 01 July 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-07-02T08:11:46+05:30">
+                Updated: Mon 02 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/metaclass.html">Metaclass</a> </p>
+</footer><!-- /.post-info -->                <p>In this post we will be talking about Metaclass in python. If you are reading some code which uses metaclass, you will probably come across <code>__new__</code>. If you are not familiar with what <code>__new__</code> does, i suggest you first read about <code>__new__</code>.</p>
+                <a class="readmore" href="/metaclass-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/__new__-python.html" rel="bookmark"
+                           title="Permalink to __new__() in python">__new__() in python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-06-10T00:35:20+05:30">
+                Published: Sun 10 June 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-06-10T10:30:02+05:30">
+                Updated: Sun 10 June 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/__new__.html">__new__</a> </p>
+</footer><!-- /.post-info -->                <p>Lately I started looking into Django code and wish to write about internals of Django. I started with Django models and will be writing about it soon.</p>
+                <a class="readmore" href="/__new__-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="/author/akshar3.html">&laquo;</a>
+    Page 4 / 5
+        <a href="/author/akshar5.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

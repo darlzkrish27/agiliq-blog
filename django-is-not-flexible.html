@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Django is not flexible</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/django-is-not-flexible.html" rel="bookmark"
+           title="Permalink to Django is not flexible">Django is not flexible</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-10-17T10:17:46+05:30">
+                Published: Sun 17 October 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-10-17T20:47:46+05:30">
+                Updated: Sun 17 October 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/opinion.html">opinion</a> </p>
+</footer><!-- /.post-info -->      <p>Django is not flexible at all because you can not do simple
+things like.   </p>
+<ul>
+<li>
+<p>Using various authentication mechanisms.<br>
+You can authenticate via <a href="http://docs.djangoproject.com/en/dev/topics/auth/#authentication-in-web-requests">Username</a>,
+<a href="http://www.davidcramer.net/code/224/logging-in-with-email-addresses-in-django.html">emails</a>,
+<a href="http://github.com/agiliq/Django-Socialauth">Facebook, Twitter</a> or any combination of these.</p>
+</li>
+<li>
+<p>Using different database backends.<br>
+Use MySQL, PostgreSQL,
+<a href="http://www.allbuttonspressed.com/projects/djangoappengine">Non-relational databases</a>,
+<a href="http://docs.djangoproject.com/en/dev/ref/databases/#using-a-3rd-party-database-backend">more</a>
+or a <a href="http://docs.djangoproject.com/en/dev/topics/db/multi-db/">combination</a>.</p>
+</li>
+<li>
+<p>Use different mail sending strategies.<br>
+Send mail via <a href="http://docs.djangoproject.com/en/dev/topics/email/#smtp-backend">smtp</a>,
+<a href="http://github.com/jtauber/django-mailer">queue to database</a>,
+<a href="http://docs.djangoproject.com/en/dev/topics/email/#file-backend">log to files</a>
+and more.</p>
+</li>
+<li>
+<p>Different file storage method.<br>
+Store locally, <a href="http://djangosnippets.org/snippets/1269/">FTP</a>,
+<a href="http://code.welldev.org/django-storages/wiki/S3Storage">Amazon S3</a>
+or <a href="http://docs.djangoproject.com/en/dev/howto/custom-file-storage/">write your own</a>.</p>
+</li>
+<li>
+<p>Store messages in <a href="http://docs.djangoproject.com/en/dev/ref/contrib/messages/#storage-backends">Sessions, cookies or others</a>.</p>
+</li>
+<li>
+<p>Cache things in <a href="http://docs.djangoproject.com/en/dev/topics/cache/#filesystem-caching">Files</a>,
+<a href="http://docs.djangoproject.com/en/dev/topics/cache/#database-caching">DB</a>,
+<a href="http://docs.djangoproject.com/en/dev/topics/cache/#memcached">Memcache</a>
+or <a href="http://docs.djangoproject.com/en/dev/topics/cache/#dummy-caching-for-development">just fake it</a>.</p>
+</li>
+<li>
+<p>Save sessions in files, DB, Memcache or cookies.</p>
+</li>
+<li>
+<p>Use <a href="http://www.davidcramer.net/code/479/using-jinja2-with-django.html">Jinja</a>,
+<a href="http://djangosnippets.org/snippets/97/">Mako or Gensi</a> as templating library.</p>
+</li>
+</ul>
+<hr>
+<p>One of the most lingering criticisms of Django has been
+that it is not flexible. People have criticised its design
+as too-tightly coupled, hard to extend, and inflexible.
+As a result, people have recommended to roll their own
+using SQLchemy, Jinja or web.py.  </p>
+<p>I think this view is unfounded and wrong. You would be hard
+pressed to get the choices and flexibility which Django offers.
+Eg, while development I run with Sqlite, Dummy caching, and emails
+on console, while on production I switch to PostgreSQL, Memcache, and
+queued emails.  </p>
+<p>Many apps use this backend pattern themselves.
+<a href="http://docs.b-list.org/django-registration/0.8/backend-api.html">Django registeration</a>,
+<a href="http://ask.github.com/celery/getting-started/first-steps-with-django.html">Django-celery</a>
+and our own <a href="http://github.com/agiliq/merchant">merchant</a>.  </p>
+<p>I have always been annoyed at Django is inflexible meme, and the recent 
+<a href="http://charlesleifer.com/blog/django-patterns-pluggable-backends/">Charles Leifer's post</a>
+put various Django plug points to make writing this too post easy to not do it.  </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

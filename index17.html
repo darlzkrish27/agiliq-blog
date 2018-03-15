@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/a-response-to-dropping-django.html" rel="bookmark"
+                           title="Permalink to A response to Dropping Django">A response to Dropping Django</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-08-20T06:58:37+05:30">
+                Published: Thu 20 August 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-08-20T17:28:37+05:30">
+                Updated: Thu 20 August 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/rambling.html">rambling</a> </p>
+</footer><!-- /.post-info -->                <p><a href="http://blog.brandonbloom.name/2009/08/dropping-django.html">Brandon Bloom</a> yesterday wrote an interesting post titled dropping Django. Despite a lot of hand waving(We needed a pragmatic template language to replace Django's idealistic one.), it raises some valid questions, so here is a solution to some of them. #### No support for hierarchical url creation. The simplest representation of nested urls I can think of is a nested tuple. Lets represent, the urls for a simple app by, &gt;&gt;&gt; tree_urls = ('', 'list', ... ('edit/', 'edit', ('auto/', 'edit_auto')), ... ('^add/', 'add'), ... ('delete/', 'delete', ('hard/', 'delete_hard')) ... ) Guess what, urls.py is *just a python module which excepts</p>
+                <a class="readmore" href="/a-response-to-dropping-django.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-aggregation-tutorial.html" rel="bookmark"
+                           title="Permalink to Django aggregation tutorial">Django aggregation tutorial</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-08-18T07:38:29+05:30">
+                Published: Tue 18 August 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-08-18T18:08:29+05:30">
+                Updated: Tue 18 August 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/aggreagtion.html">aggreagtion</a> </p>
+</footer><!-- /.post-info -->                <p>One of the new and most awaited features with Django 1.1 was aggregation. As usual, Django comes with a very <a href="http://docs.djangoproject.com/en/dev/topics/db/aggregation/">comprehensive documentation</a> for this. Here, I have tried to put this in how-to form. <a href="#howtos">Jump to howtos</a> or <a href="http://github.com/uswaretech/Shiny-New-Django-1.1/tree/master">Get source on Github</a>. Essentially, aggregations are nothing but a way to perform an operation on group of rows. In databases, they are represented by operators as <code>sum</code>, <code>avg</code> etc. To do these operations Django added two new methods to querysets. 1. <code>aggregate</code> 2. <code>annotate</code> When you are have a queryset you can do two operations on it, 1. Operate</p>
+                <a class="readmore" href="/django-aggregation-tutorial.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/on-captcha.html" rel="bookmark"
+                           title="Permalink to On Captcha">On Captcha</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-07-16T03:35:35+05:30">
+                Published: Thu 16 July 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-07-16T14:05:35+05:30">
+                Updated: Thu 16 July 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tips.html">tips</a> </p>
+</footer><!-- /.post-info -->                <p>When building public facing websites, spam is a real problem. Captcha has been teated as the first line of defence aginst this problem. If you must use captcha, here are some best practices working with them. ### Can you do without one? A lot of places captcha's are put to filter spam in user generated comment. One of the largest sources of UGC is comments on wordpress blogs. They do not use a captcha, and instead pass all comments through Akismet to verify which comments are spam, and reject the spams. In many cases, such a system would work for</p>
+                <a class="readmore" href="/on-captcha.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/fun-with-none.html" rel="bookmark"
+                           title="Permalink to Fun with none">Fun with none</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-07-16T02:07:45+05:30">
+                Published: Thu 16 July 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-07-16T12:37:45+05:30">
+                Updated: Thu 16 July 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rohit.html">rohit</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->                (If you are in a hurry, <a href=
+                <a class="readmore" href="/fun-with-none.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-design-patterns.html" rel="bookmark"
+                           title="Permalink to Django design patterns">Django design patterns</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-07-03T09:11:46+05:30">
+                Published: Fri 03 July 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-07-03T19:41:46+05:30">
+                Updated: Fri 03 July 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/book.html">book</a> </p>
+</footer><!-- /.post-info -->                <p>This is announcement about our new work, <a href="http://djangodesignpatterns.uswaretech.net/">Django design patterns</a>, a ebook about, well, Django design patterns. (Well imagine that!). Here is the readme copied from there. ------- [Edit] Syntax highlighting and indentation preservation were totally brroken. Fixed now. ------- Django design patterns is a book about commonly occuring patterns in Django. Not patterns in Gof sense, but patterns in the sense, we work this way, and it works for us. For us it is a ~pattern of work~ sense. At this point this is just a lot of brain dump from us. The latest sources are always available from</p>
+                <a class="readmore" href="/django-design-patterns.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/remote-debugging-debugging-pesky-server-only-bugs.html" rel="bookmark"
+                           title="Permalink to Remote debugging - debugging pesky server only bugs">Remote debugging - debugging pesky server only bugs</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-07-02T13:07:02+05:30">
+                Published: Thu 02 July 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-07-02T23:37:02+05:30">
+                Updated: Thu 02 July 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>Here is a quick tip. (Obvious if you work with Django for any length of time, but I have seen a few people who are not aware) You can put debug trace <code>import pdb; pdb.set_trace()</code> in your code, and put it on the server. When you access this view from your local browser, the debug is still hit and you have a debug shell on your server where you can step through. (Obviously this works only if you ran the code via <code>manage.py runserver</code>. But <code>manage.py runserver</code> start the server to listen only on local connections. If you want to</p>
+                <a class="readmore" href="/remote-debugging-debugging-pesky-server-only-bugs.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-request-response-processing.html" rel="bookmark"
+                           title="Permalink to Django Request Response processing">Django Request Response processing</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-24T23:29:56+05:30">
+                Published: Wed 24 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-25T09:59:56+05:30">
+                Updated: Thu 25 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>Have you wondered the steps a users request goes through before being responded to by Django? The answer lies in reading <code>django.core.handlers.base</code> and <code>django.core.handlers.wsgi</code>. Here is a diagram explaining what happens. (<a href="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle.png">Click to enlarge</a>.) <a href="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle.png"><img src="http://uswaretech.com/blog/wp-content/uploads/2009/06/django_request_response_lifecycle-300x207.png" alt="" title="django_request_response_lifecycle" width="300" height="207" class="alignnone size-medium wp-image-587" /></a> The steps are. (With Apache/Mod_wsgi, similar steps for other setup.) 1. User's request comes to Apache etc. 2. Apache sends request to <code>django.core.handlers.wsgi</code> via <code>mod_wsgi</code>. 3. A list of request and response middleware callables is created. 4. Request middleware is applied. If it sends a response, it is returned to the user. 5. <code>urlresolvers.resolve</code> finds</p>
+                <a class="readmore" href="/django-request-response-processing.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/better-python-package-management-using-source-and-.html" rel="bookmark"
+                           title="Permalink to Better Python package management using source and version control systems">Better Python package management using source and version control systems</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-24T11:46:13+05:30">
+                Published: Wed 24 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-24T22:16:13+05:30">
+                Updated: Wed 24 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>Thanks to awesome <a href="http://www.djangoproject.com/community/">django community</a>, there is plenty of open source <a href="http://code.google.com/hosting/search?q=django&amp;projectsearch=Search+projects">django</a> <a href="http://bitbucket.org/repo/all/?name=django">code</a> <a href="http://github.com/search?q=django&amp;type=Everything&amp;repo=&amp;langOverride=&amp;start_value=1">around</a>. These packages get updated quite often and if you use it often like we do, you'd have possibly realized the need to manage these packages better. Thankfully, all python ever needs is the source, and all you need to do is to place the source in the python path. Most projects use Distributed Version Control Systems like Mercurial and Git, and they come locally with the entire history of the source which provides a lot of control to use any version of the code. For code</p>
+                <a class="readmore" href="/better-python-package-management-using-source-and-.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/understanding-decorators.html" rel="bookmark"
+                           title="Permalink to Understanding decorators">Understanding decorators</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-23T09:04:57+05:30">
+                Published: Tue 23 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-23T19:34:57+05:30">
+                Updated: Tue 23 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>If you used Django for any length of time, you would have come across the <code>login_required</code> decorator. You write <code>@login_required</code> before a view, and it magically becomes accessible only to authenticated users. Decorators were introduced in python 2.4. <a href="http://www.python.org/dev/peps/pep-0318/">PEP 318</a> is the <a href="http://www.python.org/dev/peps/">PEP</a> describing it. At the simplest decorators are nothing but callables returning other callables, and the decorator syntax <code>@decorator</code> is nothing but <code>foo = bar(foo)</code>, where both <code>bar</code> and <code>foo</code> are callables. Let us see some decorators in action. In [1]: def good_function(): ...: print 'I am a good function' ...: ...: In [2]: def decorator(orig_func): ...: def</p>
+                <a class="readmore" href="/understanding-decorators.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/generating-pseudo-random-text-with-markov-chains-u.html" rel="bookmark"
+                           title="Permalink to Generating pseudo random text with Markov chains using Python">Generating pseudo random text with Markov chains using Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-16T00:07:16+05:30">
+                Published: Tue 16 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-16T11:54:11+05:30">
+                Updated: Tue 16 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->                <p>First the definition from <a href="http://mathworld.wolfram.com/MarkovChain.html">Wolfram</a> <blockquote> A Markov chain is collection of random variables {X_t} (where the index t runs through 0, 1, ...) having the property that, given the present, the future is conditionally independent of the past. </blockquote> <a href="http://en.wikipedia.org/wiki/Transition_probabilities">Wikipedia</a> is a little clearer <blockquote> ...Markov chain is a stochastic process with markov property ... [Which means] state changes are probabilistic, and future state depend on current state only. </blockquote> Markov chains have various uses, but now let's see how it can be used to generate gibberish, which might look legit. The algorithm is, 0. Have a text which</p>
+                <a class="readmore" href="/generating-pseudo-random-text-with-markov-chains-u.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="/index16.html">&laquo;</a>
+    Page 17 / 23
+        <a href="/index18.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

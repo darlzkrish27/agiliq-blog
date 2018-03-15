@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Finding keywords using Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/finding-keywords-using-python.html" rel="bookmark"
+           title="Permalink to Finding keywords using Python">Finding keywords using Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-09T13:19:56+05:30">
+                Published: Mon 09 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-09T23:49:56+05:30">
+                Updated: Mon 09 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->      <hr>
+<p>Finding keywords in a given snippet of text has many uses. From classifying web pages to fighting spam mails, keyword recognition is the first step
+in many algorithms.</p>
+<p>We here show the naive Bayesian filter to find keywords, which was popularised by <a href="http://www.paulgraham.com/spam.html">Paul Graham</a> to discover spam mails.</p>
+<h3>Steps to find keywords.</h3>
+<ol>
+<li>Have a large corpus of text against which we will compare.</li>
+<li>Find the relative frequency of words in corpus. Eg if your corpus is "the green way is very green way green".
+Relative frequency is..
+[
+(the, 1/8),
+(green, 3/8),
+(way, 2/8),
+(is, 1/8),
+(very, 1/8),
+]</li>
+<li>Get the relative frequency of words in search string.</li>
+<li>Divide frequency of search string by corpus, taking care of cases like when a word is not in corpus.</li>
+<li>Sort by answer in 4, the top n words are keyword.</li>
+</ol>
+<h3>Why does this work?</h3>
+<p>The relative frequency in corpus string is a measure of how frequently the word occurs generally. Dividing search frequency word by
+relative corpus frequency gets a measure of how frequently the word occurs relative to normal. Sorting on this gives us the keywords.</p>
+<h3>The code</h3>
+<p>The code is longer than it needs to be make every step as clear as possible</p>
+<div class="highlight"><pre><span></span>def find_keyword(test_string = &#39;Hacker news is a good site while Techcrunch not so much&#39;):
+    key_file = open(&#39;keywords2.txt&#39;)
+    data = key_file.read()
+    words = data.split()
+    word_freq = {}
+    for word in words:
+        if word in word_freq:
+        word_freq[word]+=1
+        else:
+        word_freq[word] = 1
+    word_prob_dict = {}
+    size_corpus = len(words)
+    for word in word_freq:
+        word_prob_dict[word] = float(word_freq[word])/size_corpus
+
+    prob_list = []
+    for word, prob in word_prob_dict.items():
+         prob_list.append(prob)
+    non_exist_prob = min(prob_list)/2
+
+    words = test_string.split()
+    test_word_freq = {}
+    for word in words:
+        if word in test_word_freq:
+        test_word_freq[word]+=1
+        else:
+        test_word_freq[word] = 1
+
+    test_words_ba = {}
+    for word, freq in test_word_freq.items():
+        if word in word_prob_dict:
+        test_words_ba[word] = freq/word_prob_dict[word]
+        else:
+        test_words_ba[word] = freq/non_exist_prob
+
+    test_word_ba_list = []
+    for word, ba in test_words_ba.items():
+         test_word_ba_list.append((word, ba))
+
+    def sort_func(a, b):
+        if a[1] &gt; b[1]:
+           return -1
+        elif a[1] &lt; b[1]:
+        return 1
+        return 0
+
+    test_word_ba_list.sort(sort_func)
+    return test_word_ba_list[:2]
+</pre></div>
+
+
+<h3>Output</h3>
+<p>Here is some sample output.</p>
+<div class="highlight"><pre><span></span>In [59]: ff.find_keyword
+Out[59]: &lt;function find_keyword at 0x92b7e9c&gt;
+
+In [60]: ff.find_keyword()
+Out[60]: [(&#39;Hacker&#39;, 249160.0), (&#39;Techcrunch&#39;, 249160.0)]
+
+In [61]: ff.find_keyword(&#39;&#39;)
+Out[61]: []
+
+In [62]: ff.find_keyword(&#39;Java is an island and a programming language&#39;)
+Out[62]: [(&#39;Java&#39;, 249160.0), (&#39;island&#39;, 249160.0)]
+
+In [63]: ff.find_keyword(&#39;Java is an island and a programming language. Python is a snake and a programming&#39;)
+Out[63]: [(&#39;programming&#39;, 498320.0), (&#39;Java&#39;, 249160.0)]
+
+In [64]: ff.find_keyword(&#39;Java is an island and a programming language&#39;)
+Out[64]: [(&#39;Java&#39;, 249160.0), (&#39;island&#39;, 249160.0)]
+
+In [65]: ff.find_keyword(&#39;Java is an island and a programming  programming language&#39;)
+Out[65]: [(&#39;programming&#39;, 498320.0), (&#39;Java&#39;, 249160.0)]
+</pre></div>
+
+
+<hr>
+<p>Need to build a web app which does more than read from a database? Contact us at sales@uswaretech.com, to discuss further.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

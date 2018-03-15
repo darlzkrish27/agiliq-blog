@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Minimal Gunicorn configuration</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/minimal-gunicorn-configuration.html" rel="bookmark"
+           title="Permalink to Minimal Gunicorn configuration">Minimal Gunicorn configuration</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-05T00:47:33+05:30">
+                Published: Thu 05 June 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-06-05T11:17:33+05:30">
+                Updated: Thu 05 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/gunicorn.html">gunicorn</a> </p>
+</footer><!-- /.post-info -->      <p><a href="http://gunicorn.org/" target="_blank">Gunicorn</a> is an http server written in Python. It is a WSGI compliant server and can serve web applications which are compliant with WSGI. <a href="http://agiliq.com/blog/2013/07/basics-wsgi/" target="_blank">This would help</a> if you aren't comfortable with WSGI.</p>
+<p>We will serve a basic web application using Gunicorn. And see the minimal and must configuration settings you should set while using gunicorn. We will specify the configuration variables in an external file and will direct gunicorn to use that configuration file. </p>
+<h3>Web application</h3>
+<p>We are working in directory /tmp and have activated a virtual environment called PythonEnv</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $
+</pre></div>
+
+
+<p>Let's write the web application which we will serve using gunicorn.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ vim web_application.py
+
+#web_application.py
+def application(environ, start_response):
+    path = environ.get(&#39;PATH_INFO&#39;)
+    if path == &#39;/&#39;:
+        response_body = &quot;Index&quot;
+    else:
+        response_body = &quot;Hello&quot;
+    status = &quot;200 OK&quot;
+    response_headers = [(&quot;Content-Length&quot;, str(len(response_body)))]
+    start_response(status, response_headers)
+    return [response_body]
+</pre></div>
+
+
+<h3>Serve application with gunicorn</h3>
+<p>Make sure to install gunicorn.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ pip install gunicorn
+</pre></div>
+
+
+<p>Serve this application.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ gunicorn -b localhost:8001 web_application:application
+</pre></div>
+
+
+<p>Make sure you can access http://localhost:8001/</p>
+<p>With this, gunicorn is serving the application on localhost port 8001. We had to use <code>-b</code> flag to instruct gunicorn to <strong>bind</strong> on a particular port and host. There are tons of other options that can be set. Setting all of them on command line is a tedious task. So, we should have a configuration file.</p>
+<h3>Adding a configuration file</h3>
+<p>Let's create a configuration file.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ vim gunicorn_cfg.py
+</pre></div>
+
+
+<h4>Bind on host and port</h4>
+<p>And add the following content in file gunicorn_cfg.py</p>
+<div class="highlight"><pre><span></span>bind=&#39;localhost:8001&#39;
+</pre></div>
+
+
+<p>Now run gunicorn using this configuration file. Make sure to <code>Ctrl+c</code> the running gunicorn before proceeding with this.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ gunicorn -c gunicorn_cfg.py web_application:application
+</pre></div>
+
+
+<p>Still gunicorn is running in the foreground, which we usually would not like on a production server. So, make it daemonized. Make sure to <code>Ctrl+c</code> the existing gunicorn process</p>
+<p>But at some point we would like to kill the existing gunicorn process and restart gunicorn. Since it would be daemonized, we wouldn't be able to kill with <code>Ctrl+c</code>. We would require the process id of running gunicorn process for killing it. So let's keep track of process id of gunicorn before we make it daemonized.</p>
+<h4>Keep track of process id</h4>
+<p>Add following to gunicorn_cfg.py</p>
+<div class="highlight"><pre><span></span>pidfile=&#39;gunicorn_pid&#39;
+</pre></div>
+
+
+<p>Run gunicorn</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ gunicorn -c gunicorn_cfg.py web_application:application
+</pre></div>
+
+
+<p>Open another terminal and <strong>ls</strong>. You'll see that a file callled gunicorn_pid is created. <strong>cat gunicorn_pid</strong> and you will see a number. This number is the process id of gunicorn. Kill gunicorn with <code>Ctrl+c</code> again.</p>
+<h4>Make it daemonized</h4>
+<p>Add the following to gunicorn_cfg.py</p>
+<div class="highlight"><pre><span></span>daemon = True
+</pre></div>
+
+
+<p>Run gunicorn</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ gunicorn -c gunicorn_cfg.py web_application:application
+</pre></div>
+
+
+<p>Gunicorn is running as a daemon now. Make sure you can access <code>http://localhost:8001/</code></p>
+<p>Check process id of gunicorn</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ cat gunicorn_pid 
+19558
+</pre></div>
+
+
+<p>Kill existing gunicorn process and restart gunicorn.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ kill 19558
+(PythonEnv)/tmp $ gunicorn -c gunicorn_cfg.py web_application:application
+</pre></div>
+
+
+<p>This would establish that gunicorn_pid is working properly.</p>
+<h4>Add access loggging</h4>
+<p>At some point of time, your site will start behaving strangely and you would like to verify that requests are infact coming to gunicorn. So, there should be a file to log the requests.</p>
+<p>Edit gunicorn_cfg.py and add:</p>
+<div class="highlight"><pre><span></span>accesslog=&#39;gunicorn_access.log&#39;
+</pre></div>
+
+
+<p>Restart gunicorn for this change to take effect. You'll have to read the gunicorn_pid file to read the process id of gunicorn for killing it, as we did earlier. Once you restart gunicorn, you will find a file named <code>gunicorn_access.log</code> created in the same directory as gunicorn_config.py</p>
+<p>As you make requests to <code>http://localhost:8001/</code>, you will see more lines being logged to file gunicorn_access.log. Read about Linux <strong>tail</strong> command to know how to monitor a log file.</p>
+<h4>Add error logging</h4>
+<p>Let's insert an error in our code. Add <code>a = a + 1</code> as first line of function <code>application</code> in file <code>web_application.py</code>. 'a' is an undefined variable being used.</p>
+<p>Restart gunicorn and try to access localhost:8001/</p>
+<p>You get 'Internal Server Error' and you don't have a way of knowing which line caused the error.</p>
+<p>Add following line to gunicorn_cfg.py</p>
+<div class="highlight"><pre><span></span>errorlog=&#39;gunicorn_error.log&#39;
+</pre></div>
+
+
+<p>Restart gunicorn for this change to take effect. You'll find a file named <code>gunicorn_error.log</code> is added at the same level as gunicorn_cfg.py</p>
+<p>We'll again try to access <code>localhost:8001/</code>. But before that, let's monitor the errorlog file using tail.</p>
+<p>On terminal.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ tail -f gunicorn_error.log
+</pre></div>
+
+
+<p>Now access http://localhost:8001/. Look at the terminal where <code>tail</code> is running. You'll notice error logged on the terminal.</p>
+<div class="highlight"><pre><span></span>File &quot;/tmp/web_application.py&quot;, line 3, in application
+    a = a + 1
+UnboundLocalError: local variable &#39;a&#39; referenced before assignment
+</pre></div>
+
+
+<p>So with an errorlog file, you can easily find out the cause of error. Undo the error we injected in code and restart gunicorn. Your application should start behaving properly again.</p>
+<p>Read <a href="http://gunicorn-docs.readthedocs.org/en/latest/settings.html#config-file" target="_blank">Gunicorn config file docs</a> to know about more config options.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

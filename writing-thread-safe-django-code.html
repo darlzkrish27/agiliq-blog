@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Writing thread-safe django - get_or_create</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/writing-thread-safe-django-code.html" rel="bookmark"
+           title="Permalink to Writing thread-safe django - get_or_create">Writing thread-safe django - get_or_create</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-21T09:04:24+05:30">
+                Published: Wed 21 August 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-08-21T19:34:24+05:30">
+                Updated: Wed 21 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/threads.html">threads</a> </p>
+</footer><!-- /.post-info -->      <p>In this blog post, we'll discuss thread-safety, why it's important and how to
+write thread-safe django code, especially for bulk operations like management
+commands. We'll take a simple example - get or create.</p>
+<h2>Thread-safety:</h2>
+<p>Thread-safety means that our code can be run in multiple threads and behave as
+expected. The reason that code can be unsafe with regard to threads is because
+we'll be manipulating shared memory (e.g. database) from the threads and there's
+a chance of a race-condition which will produce unexpected results.</p>
+<p>To avoid this, we have the option of using read-write locks, transactions etc.</p>
+<p>We'll look at some simple examples and try to understand these options.</p>
+<h2>The usual way:</h2>
+<p>Let's consider a management command that syncs data from another source (e.g. API,
+remote database etc.. The correct way to do this would be to use the built-in
+django utility - <code>get_or_create</code>:</p>
+<p><strong>Update</strong>: Updated the command to run each arg in a thread</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">MyThread</span><span class="p">(</span><span class="nx">Thread</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">my_id</span><span class="p">)</span><span class="o">:</span>
+        <span class="kr">super</span><span class="p">(</span><span class="nx">MyThread</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">__init__</span><span class="p">(</span><span class="nx">name</span><span class="o">=</span><span class="nx">my_id</span><span class="p">)</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">my_id</span> <span class="o">=</span> <span class="nx">my_id</span>
+
+    <span class="nx">def</span> <span class="nx">run</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">instance</span><span class="p">,</span> <span class="nx">created</span> <span class="o">=</span> <span class="nx">MyModel</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get_or_create</span><span class="p">(</span><span class="nx">my_id</span><span class="o">=</span><span class="nx">my_id</span><span class="p">)</span>
+        <span class="nx">print</span> <span class="s1">&#39;%s %s&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">created</span><span class="p">)</span>
+        <span class="nx">instance</span><span class="p">.</span><span class="k">delete</span><span class="p">()</span>
+        <span class="k">return</span>
+
+
+<span class="kr">class</span> <span class="nx">Command</span><span class="p">(</span><span class="nx">BaseCommand</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">args</span> <span class="o">=</span> <span class="s1">&#39;&lt;my_id my_id ...&gt;&#39;</span>
+    <span class="nx">help</span> <span class="o">=</span> <span class="s1">&#39;Get or create instace of mymodel with my_id&#39;</span>
+
+    <span class="nx">def</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">options</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">for</span> <span class="nx">my_id</span> <span class="k">in</span> <span class="nx">args</span>:
+            <span class="kt">thread</span> <span class="o">=</span> <span class="nx">MyThread</span><span class="p">(</span><span class="nx">my_id</span><span class="o">=</span><span class="nx">my_id</span><span class="p">)</span>
+            <span class="nx">thread</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+</pre></div>
+
+
+<p>In this command, we'll be using the command line arg my_id get a MyModel
+instance if it exists, else, we create one.</p>
+<p>Note: we'll be discarding the object for simplicity.</p>
+<p>Now, this management command (let's call it sync_myapp) is thread-safe because
+we're just using the built-in <code>get_or_create</code> to do our database call.</p>
+<p>To test this, run the command with same arg repeated multiple times:</p>
+<div class="highlight"><pre><span></span>$&gt; python manage.py sync_myapp 1 1 1 1 1
+</pre></div>
+
+
+<p>This will create five threads which will simultaneously try to get or create an instance
+with my_id = 1</p>
+<div class="highlight"><pre><span></span>$&gt; 1 True
+$&gt; 1 False
+$&gt; 1 False
+$&gt; 1 False
+</pre></div>
+
+
+<p>Note that all the threads are successful, even though they were working on the
+same database at the same time.</p>
+<p>Now, even though get_or_create is the way to go, we might need to customize a
+few things which are outside the scope of <code>get_or_create</code>. For example, let's
+say we need to do something special just before creating a new instance.</p>
+<h2>The problem:</h2>
+<p>Let's assume our code was:</p>
+<div class="highlight"><pre><span></span>def run(self):
+    created = False
+    try:
+        instance = MyModel.objects.get(my_id=my_id)
+    except MyModel.DoesNotExist:
+        something_special()
+        instance = MyModel.objects.create(my_id=my_id)
+        created = True
+    instance.delete()
+    return
+</pre></div>
+
+
+<p>If we try to test it with the above command, you'll probably get:</p>
+<div class="highlight"><pre><span></span>Exception in thread 1:
+Traceback (most recent call last):
+....
+IntegrityError: duplicate key value violates unique constraint &quot;myapp_mymodel_my_id_key&quot;
+DETAIL:  Key (my_id)=(1) already exists.
+</pre></div>
+
+
+<p>This indicates that the try except block isn't thread-safe.</p>
+<p>Let's try to fix this problem.</p>
+<p><strong>Update</strong>: I've removed the section dealing with locks since it's only useful when
+dealing with shared memory in python processes, it's not applicable to
+databases.</p>
+<h2>Using database transactions:</h2>
+<p>We use django's built-in <code>transactions</code> module as follows:</p>
+<p><strong>Update</strong>: We only need to wrap the create command in a transaction</p>
+<div class="highlight"><pre><span></span>def run(self):
+    created = False
+    try:
+        instance = MyModel.objects.get(my_id=self.my_id)
+    except MyModel.DoesNotExist:
+            try:
+                something_special()
+                with transaction.commit_on_success():
+                    instance = MyModel.objects.create(my_id=self.my_id)
+                created = True
+            except IntegrityError:
+                instance = MyModel.objects.get(my_id=self.my_id)
+    print &#39;%s %s&#39; % (instance.id, created)
+    instance.delete()
+    return
+</pre></div>
+
+
+<p>Now, the transaction will be committed only if there's no error within the
+context block, so we can be sure that only one thread gets the go-ahead for
+<code>create</code> call.</p>
+<p>In addition to the context manager, django also has options for using savepoints,
+manually commits, rollbacks etc.</p>
+<p><a href="https://docs.djangoproject.com/en/1.5/topics/db/transactions">https://docs.djangoproject.com/en/1.5/topics/db/transactions</a></p>
+<h2>Caveats:</h2>
+<p>If you're using MySQL, refer to this open issue on problem with <code>get_or_create</code>:</p>
+<p><a href="https://code.djangoproject.com/ticket/13906">https://code.djangoproject.com/ticket/13906</a></p>
+<h2>Conclusion:</h2>
+<p>Using database transactions, we can avoid data integrity issues and write
+thread-safe code which can be run in parallel without any
+issues.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

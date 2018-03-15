@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Constraint programming in Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/constraint-programming-in-python.html" rel="bookmark"
+           title="Permalink to Constraint programming in Python">Constraint programming in Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-06T07:17:53+05:30">
+                Published: Fri 06 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-06T18:47:53+05:30">
+                Updated: Fri 06 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->      <p>Imagine this, you want to solve a problem, the algorithm for which you do not know. You just know the problem.</p>
+<p>From wikipedia,<br>
+<code>Constraints differ from the common primitives of imperative programming languages in that they do not specify a step or sequence of steps to execute, but rather the properties of a solution to be found.</code></p>
+<p>Assume that there exists an alternate world where you only need to specify the problem, the computer will find out 
+an algorithm to find it, even better if could you write it in Python.</p>
+<p>Stop assuming it hapens every day, and this is the magic of constraint programming.</p>
+<p>Example to solve  a + b = 5, a*b=6, don't explain algebra, just tell the relations between variables. Here is the complete program.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">constraint</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="p">()</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addVariable</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addVariable</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">getSolutions</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Don't worry if this doesn't make sense yet, we will explain it in a lot of detail. Also we cheated a little, by assuming that the solutions are positive integers.</p>
+<h2>Files required</h2>
+<p>You need a constraint library, which allows ypu to do constraint programming. <a href="http://labix.org/python-constraint">python-constraints</a> from <a href="http://labix.org/">Gustavo Niemeyer</a> is an excellent library to do constraint programming, which we will use here. Download and install python-constraint from <a href="http://labix.org/python-constraint">here</a>.</p>
+<p>After you setup, you should be able to do <code>import constraint</code> on a python shell</p>
+<h2>On to our program</h2>
+<p>Ok lets see the same program with cpomments.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">constraint</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1">#imports</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="p">()</span>  <span class="c1">#Create a blank problem where we can add solutions.</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addVariable</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="c1">#Add a variable named a, and specify its domain. Since a+b=5, a is a positive integer less than 5</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addVariable</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="c1">#Same thing with b</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># Tell the computer that a+b=5</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">addConstraint</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span> <span class="c1">#tell the computer that a*b=6</span>
+<span class="k">print</span> <span class="n">problem</span><span class="o">.</span><span class="n">getSolutions</span><span class="p">()</span> <span class="c1">#We are done, get the solutions.</span>
+</pre></div>
+
+
+<p>Not much to explain after you see it with comments. We created two variables, and relation between them and got the answer.</p>
+<h2>Ok something better</h2>
+<p>Ok so the last example was cute, but can constraint programming can solve any harder problems? Lets try something harder, like umm, magic square. (How, original!)</p>
+<p>So lets think, how can we represent our problem.</p>
+<ol>
+<li>We have a n*n board. Start with 3, So our board is [(0,0), (0,1) ...., (2,1), (2,2)</li>
+<li>Rows have a sum of sum(1 .... n*n+1)/size</li>
+<li>Cols have a sum of sum(1 .... n*n+1)/size</li>
+<li>Diagonals have a sum of sum(1 .... n*n+1)/size</li>
+<li>Thats all,</li>
+</ol>
+<p>So without further ado, lets see the code.</p>
+<div class="highlight"><pre><span></span><span class="s s-Atom">from</span> <span class="s s-Atom">constraint</span> <span class="s s-Atom">import</span> <span class="o">*</span>
+
+<span class="s s-Atom">def</span> <span class="nf">solve_magic_square</span><span class="p">(</span><span class="s s-Atom">size</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span><span class="s s-Atom">:</span>
+            <span class="s2">&quot;Get the magic square solution for any numbered square.&quot;</span>
+    <span class="s s-Atom">magic</span> <span class="o">=</span> <span class="nv">Problem</span><span class="p">()</span><span class="s s-Atom">#create</span> <span class="s s-Atom">a</span> <span class="s s-Atom">blank</span> <span class="s s-Atom">problem</span>
+    <span class="s s-Atom">rows</span> <span class="o">=</span> <span class="nf">range</span><span class="p">(</span><span class="s s-Atom">size</span><span class="p">)</span><span class="s s-Atom">#</span><span class="nv">Rows</span> <span class="s s-Atom">indices</span> <span class="s s-Atom">eg</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="s s-Atom">cols</span> <span class="o">=</span> <span class="nf">range</span><span class="p">(</span><span class="s s-Atom">size</span><span class="p">)</span><span class="s s-Atom">#cols</span> <span class="s s-Atom">indices</span> <span class="s s-Atom">eg</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="s s-Atom">board_line_sum</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s s-Atom">size</span><span class="o">*</span><span class="s s-Atom">size</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="s s-Atom">size</span> <span class="s s-Atom">#</span> <span class="nv">What</span> <span class="s s-Atom">does</span> <span class="s s-Atom">each</span> <span class="s s-Atom">row</span><span class="p">,</span> <span class="s s-Atom">col</span> <span class="s s-Atom">and</span> <span class="s s-Atom">diag</span> <span class="s s-Atom">sum</span> <span class="s s-Atom">up</span> <span class="s s-Atom">to?</span> <span class="nv">Eg</span> <span class="mi">15</span><span class="p">,</span> <span class="s s-Atom">for</span> <span class="s s-Atom">size</span> <span class="mi">3</span>
+    <span class="s s-Atom">board</span> <span class="o">=</span> <span class="p">[(</span><span class="s s-Atom">row</span><span class="p">,</span> <span class="s s-Atom">col</span><span class="p">)</span> <span class="s s-Atom">for</span> <span class="s s-Atom">row</span> <span class="s s-Atom">in</span> <span class="s s-Atom">rows</span> <span class="s s-Atom">for</span> <span class="s s-Atom">col</span> <span class="s s-Atom">in</span> <span class="s s-Atom">cols</span><span class="p">]</span> <span class="s s-Atom">#</span> <span class="nv">Cartesan</span> <span class="s s-Atom">of</span> <span class="s s-Atom">rows</span> <span class="s s-Atom">and</span> <span class="s s-Atom">col</span><span class="p">,</span> <span class="s s-Atom">eg</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span> <span class="s s-Atom">for</span> <span class="s s-Atom">size</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="s s-Atom">row_set</span> <span class="o">=</span> <span class="p">[</span><span class="nf">zip</span><span class="p">([</span><span class="s s-Atom">el</span><span class="p">]</span><span class="o">*</span><span class="nf">len</span><span class="p">(</span><span class="s s-Atom">cols</span><span class="p">),</span> <span class="s s-Atom">cols</span><span class="p">)</span> <span class="s s-Atom">for</span> <span class="s s-Atom">el</span> <span class="s s-Atom">in</span> <span class="s s-Atom">rows</span><span class="p">]</span><span class="s s-Atom">#</span><span class="nv">A</span> <span class="s s-Atom">list</span> <span class="s s-Atom">of</span> <span class="s s-Atom">all</span> <span class="s s-Atom">the</span> <span class="s s-Atom">rows</span><span class="p">,</span> <span class="s s-Atom">eg</span> <span class="p">[[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]]</span>
+    <span class="s s-Atom">col_set</span> <span class="o">=</span> <span class="p">[</span><span class="nf">zip</span><span class="p">(</span><span class="s s-Atom">rows</span><span class="p">,</span> <span class="p">[</span><span class="s s-Atom">el</span><span class="p">]</span><span class="o">*</span><span class="nf">len</span><span class="p">(</span><span class="s s-Atom">rows</span><span class="p">))</span> <span class="s s-Atom">for</span> <span class="s s-Atom">el</span> <span class="s s-Atom">in</span> <span class="s s-Atom">cols</span><span class="p">]</span><span class="s s-Atom">#</span><span class="nv">A</span> <span class="s s-Atom">list</span> <span class="s s-Atom">of</span> <span class="s s-Atom">all</span> <span class="s s-Atom">the</span> <span class="s s-Atom">columns</span><span class="p">,</span> <span class="s s-Atom">eg</span> <span class="p">[[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]]</span>
+    <span class="s s-Atom">diag1</span> <span class="o">=</span> <span class="nf">zip</span><span class="p">(</span><span class="s s-Atom">rows</span><span class="p">,</span> <span class="s s-Atom">cols</span><span class="p">)</span><span class="s s-Atom">#</span><span class="nv">One</span> <span class="s s-Atom">of</span> <span class="s s-Atom">the</span> <span class="s s-Atom">diagonals</span><span class="p">,</span> <span class="s s-Atom">eg</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="s s-Atom">diag2</span> <span class="o">=</span> <span class="nf">zip</span><span class="p">(</span><span class="s s-Atom">rows</span><span class="p">,</span> <span class="s s-Atom">cols</span><span class="p">[</span><span class="s s-Atom">::-</span><span class="mi">1</span><span class="p">])</span><span class="s s-Atom">#</span><span class="nv">Other</span> <span class="s s-Atom">diagonal</span><span class="p">,</span> <span class="s s-Atom">eg</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
+
+    <span class="s s-Atom">magic</span><span class="p">.</span><span class="nf">addVariables</span><span class="p">(</span><span class="s s-Atom">board</span><span class="p">,</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s s-Atom">size</span><span class="o">*</span><span class="s s-Atom">size</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="s s-Atom">#add</span> <span class="nv">Each</span> <span class="s s-Atom">block</span> <span class="s s-Atom">of</span> <span class="s s-Atom">square</span> <span class="s s-Atom">as</span> <span class="s s-Atom">a</span> <span class="s s-Atom">variable</span><span class="p">.</span> <span class="nv">There</span> <span class="s s-Atom">range</span> <span class="o">is</span> <span class="s s-Atom">between</span> <span class="p">[</span><span class="mf">1.</span><span class="p">.</span><span class="s s-Atom">n</span><span class="o">*</span><span class="s s-Atom">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="s s-Atom">magic</span><span class="p">.</span><span class="nf">addConstraint</span><span class="p">(</span><span class="nv">ExactSumConstraint</span><span class="p">(</span><span class="s s-Atom">board_line_sum</span><span class="p">),</span> <span class="s s-Atom">diag1</span><span class="p">)</span><span class="s s-Atom">#</span><span class="nv">Add</span> <span class="s s-Atom">diagonals</span> <span class="s s-Atom">as</span> <span class="s s-Atom">a</span> <span class="s s-Atom">constraint</span><span class="p">,</span> <span class="s s-Atom">they</span> <span class="s s-Atom">must</span> <span class="s s-Atom">sum</span> <span class="s s-Atom">to</span> <span class="s s-Atom">board_line_sum</span>
+    <span class="s s-Atom">magic</span><span class="p">.</span><span class="nf">addConstraint</span><span class="p">(</span><span class="nv">ExactSumConstraint</span><span class="p">(</span><span class="s s-Atom">board_line_sum</span><span class="p">),</span> <span class="s s-Atom">diag2</span><span class="p">)</span><span class="s s-Atom">#</span><span class="nv">Add</span> <span class="s s-Atom">other</span> <span class="s s-Atom">diagonal</span> <span class="s s-Atom">as</span> <span class="s s-Atom">constraint</span><span class="p">.</span>
+    <span class="s s-Atom">for</span> <span class="s s-Atom">row</span> <span class="s s-Atom">in</span> <span class="s s-Atom">row_set:</span>
+        <span class="s s-Atom">magic</span><span class="p">.</span><span class="nf">addConstraint</span><span class="p">(</span><span class="nv">ExactSumConstraint</span><span class="p">(</span><span class="s s-Atom">board_line_sum</span><span class="p">),</span> <span class="s s-Atom">row</span><span class="p">)</span><span class="s s-Atom">#</span><span class="nv">Add</span> <span class="s s-Atom">each</span> <span class="s s-Atom">row</span> <span class="s s-Atom">as</span> <span class="s s-Atom">constraint</span><span class="p">,</span> <span class="s s-Atom">they</span> <span class="s s-Atom">must</span> <span class="s s-Atom">sum</span> <span class="s s-Atom">to</span> <span class="s s-Atom">board_line_sum</span>
+    <span class="s s-Atom">for</span> <span class="s s-Atom">col</span> <span class="s s-Atom">in</span> <span class="s s-Atom">col_set:</span>
+        <span class="s s-Atom">magic</span><span class="p">.</span><span class="nf">addConstraint</span><span class="p">(</span><span class="nv">ExactSumConstraint</span><span class="p">(</span><span class="s s-Atom">board_line_sum</span><span class="p">),</span> <span class="s s-Atom">col</span><span class="p">)</span><span class="s s-Atom">#</span><span class="nv">Similarly</span> <span class="s s-Atom">add</span> <span class="s s-Atom">each</span> <span class="s s-Atom">column</span> <span class="s s-Atom">as</span> <span class="s s-Atom">constraint</span><span class="p">.</span>
+    <span class="s s-Atom">magic</span><span class="p">.</span><span class="nf">addConstraint</span><span class="p">(</span><span class="nv">AllDifferentConstraint</span><span class="p">(),</span> <span class="s s-Atom">board</span><span class="p">)</span><span class="s s-Atom">#</span><span class="nv">Every</span> <span class="s s-Atom">block</span> <span class="s s-Atom">has</span> <span class="s s-Atom">a</span> <span class="s s-Atom">different</span> <span class="s s-Atom">number</span><span class="p">.</span>
+    <span class="s s-Atom">return</span> <span class="s s-Atom">magic</span><span class="p">.</span><span class="nf">getSolution</span><span class="p">()</span><span class="nv">Retutn</span> <span class="s s-Atom">the</span> <span class="s s-Atom">solution</span><span class="p">.</span>
+
+<span class="s s-Atom">if</span> <span class="k">__</span><span class="s s-Atom">name__</span> <span class="o">==</span> <span class="s s-Atom">&#39;__main__&#39;:</span>
+    <span class="s s-Atom">print</span> <span class="nf">solve_magic_square</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Not much to explain again after you see the commented code. We created a board, added constraints and got solution.</p>
+<p><a href="http://labix.org/python-constraint">Labix</a> has a different implementation if how to solve the magic square.</p>
+<h2>What more can I do?</h2>
+<p>Constraint programming has a wide application, wherever you can specify the problem as relation between variables you can use constraint programming. Next step for you is to write a function, which takes a Sudoku board as input and returns a solved Sudoku board. SO get cracking.</p>
+<hr>
+<p>Want to build an <a href="http://www.uswaretech.com/">Amazing Web application</a>? We can help? <a href="http://www.uswaretech.com/contact/">Contact us today</a>!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Deploy Django App in 5 Easy Steps</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/deploy-django-app-5-easy-steps.html" rel="bookmark"
+           title="Permalink to Deploy Django App in 5 Easy Steps">Deploy Django App in 5 Easy Steps</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-02-22T17:29:50+05:30">
+                Published: Wed 22 February 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-02-23T04:59:50+05:30">
+                Updated: Thu 23 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/saket.html">saket</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/vps.html">vps</a> </p>
+</footer><!-- /.post-info -->      <p>We shall get your app, up and running in 5 easy steps, using best(arguably) of tools available. 
+The post is targeted to audience who are new to deployment arena, but assumes you are comfortable with developing basic django apps. We shall be using gunicorn as our server and nginx to proxy the static content.
+So you just bought a new VPS, have installed <a href="http://www.ubuntu.com/">Ubuntu</a> and want to deploy
+your <a href="www.djangoproject.com">django</a> app, GREAT!! We shall get your app, up and running in 5 easy steps, using best(arguably) of tools available. The post is targeted to audience who are new to deployment arena, but assumes you are comfortable with developing basic django apps. We shall be using <a href="http://gunicorn.org/">gunicorn</a> as our server and <a href="http://nginx.org/en/">nginx</a> nginx as our reverse proxy and static hanlder. Here we go:</p>
+<h3>1. Login and OS Updation:</h3>
+<div class="highlight"><pre><span></span>$ ssh root@<span class="o">{</span>your_ip<span class="o">}</span>
+
+<span class="c1"># apt-get update</span>
+
+<span class="c1"># apt-get upgrade</span>
+
+<span class="c1"># apt-get dist-upgrade</span>
+
+<span class="c1"># dpkg-reconfigure tzdata #choose your time zone</span>
+</pre></div>
+
+
+<h3>2. Setup Users and Permissions:</h3>
+<div class="highlight"><pre><span></span># useradd agiliq
+
+# mkdir /home/agiliq
+
+# chown agiliq:agiliq /home/agiliq
+
+# passwd agiliq  #choose a password
+
+# chsh agiliq -s /bin/bash  #choose a shell
+
+# visudo #lets give sudo access to the user agiliq
+
+    root     ALL=(ALL) ALL 
+    agiliq   ALL=(ALL) ALL
+
+# su agiliq # switch from root to agiliq
+</pre></div>
+
+
+<h3>3. Install necessary stuff and create a dev environment:</h3>
+<div class="highlight"><pre><span></span>$ sudo apt-get install python-pip git mysql-client mysql-server
+
+$ python-mysqldb nginx emacs<span class="o">(</span>you might choose vim or stick to default vi/nano<span class="o">)</span>
+
+$ pip install virtualenv <span class="c1">#please refer to documentation of virtualenv</span>
+
+$ virtualenv projhq <span class="c1"># creates a project directory,</span>
+
+$ <span class="nb">cd</span> projhq
+
+$ projhq <span class="nb">source</span> /bin/activate
+
+<span class="o">(</span>projhq<span class="o">)</span>$ pip install django gunicorn
+</pre></div>
+
+
+<h3>4. Deploy some code for test</h3>
+<p>you may clone this polls application for the sake of testing</p>
+<div class="highlight"><pre><span></span>    $ cd ~/projhq #your project directory
+    (projhq)$ git clone git://github.com/bitaVersion/Hello-Django.git
+</pre></div>
+
+
+<h3>5. Necessary Configurations</h3>
+<h5>i) nginx</h5>
+<div class="highlight"><pre><span></span>    $ cd /etc/nginx/sites-enabled/
+    $ touch nginx.conf
+</pre></div>
+
+
+<p>and inside the file place the following snippet, make sure to change your 
+servername, username and static files directory. </p>
+<div class="highlight"><pre><span></span><span class="nt">server</span> <span class="p">{</span>
+        <span class="err">listen</span> <span class="err">80</span><span class="p">;</span>
+        <span class="err">server_name</span> <span class="err">“your</span> <span class="err">server</span> <span class="err">name”</span><span class="p">;</span>
+        <span class="err">access_log</span> <span class="err">/home/username/access.log</span><span class="p">;</span>
+        <span class="err">error_log</span> <span class="err">/home/username/error.log</span><span class="p">;</span>
+        <span class="err">location</span> <span class="err">/static</span> <span class="err">{</span>
+            <span class="err">root</span> <span class="err">/home/path_to_proj_directory_containing</span> <span class="err">static_files</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nt">location</span> <span class="o">/</span> <span class="p">{</span>
+            <span class="err">proxy_pass</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">8000</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<h5>ii)gunicorn configuration</h5>
+<p>cd into project directory/app 
+touch gunicorn_cfg.py 
+place the following snippet:</p>
+<div class="highlight"><pre><span></span>bind = &quot;127.0.0.1:8000&quot;
+logfile = &quot;/var/log/gunicorn.log&quot;
+workers = 3
+pid = projhq/pid/gunicorn.pid
+</pre></div>
+
+
+<h5>iii)server restart script</h5>
+<p>make a directory called scripts parallel to project root
+and place the following snippet in some file(i name start.sh):</p>
+<div class="highlight"><pre><span></span>PROJDIR=&quot;/path/to/proj/&quot; #directory which contains settings.py
+PIDFILE=&quot;$PROJDIR/pid/gunicorn.pid&quot; #create a directory called pid inside projdir
+cd $PROJDIR
+source /path/to/bin/activate
+if [ -f $PIDFILE ]; then
+    kill `cat -- $PIDFILE`
+    rm -f -- $PIDFILE
+fi
+gunicorn_django -c path_to_gunicorn_file/gunicorn_cfg.py
+</pre></div>
+
+
+<p>Few checks if you have missed them:</p>
+<h5>create mysql db:</h5>
+<div class="highlight"><pre><span></span>   create a database with the name matching your settings.py
+</pre></div>
+
+
+<h5>Start nginx:</h5>
+<div class="highlight"><pre><span></span>  sudo service nginx restart
+</pre></div>
+
+
+<h5>Start server:</h5>
+<div class="highlight"><pre><span></span>go to scripts directory: 
+chmod +x start.sh(only for the first time)
+bash start.sh
+</pre></div>
+
+
+<p>The above post was a general introduction of how you can begin using lightweight yet scalable tools, in the next post we shall be talking about tools as <a href="http://docs.fabfile.org/en/1.4.0/index.html">fabric</a>, <a href="http://pypi.python.org/pypi/supervisor">supervisor</a> and <a href="http://pypi.python.org/pypi/MonitManager">Monit</a>, which makes things far easier and more secure. Experienced admins can point out flaws in the approach and suggest improvements.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

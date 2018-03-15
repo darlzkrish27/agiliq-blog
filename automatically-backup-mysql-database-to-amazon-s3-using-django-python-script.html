@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Automatically backup mysql database to Amazon S3 using django (Python) script</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/automatically-backup-mysql-database-to-amazon-s3-using-django-python-script.html" rel="bookmark"
+           title="Permalink to Automatically backup mysql database to Amazon S3 using django (Python) script">Automatically backup mysql database to Amazon S3 using django (Python) script</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-02-23T06:48:31+05:30">
+                Published: Mon 23 February 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-02-23T18:18:31+05:30">
+                Updated: Mon 23 February 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->      Automatically backup mysql database to Amazon S3 using django (Python) script
+  
+Many of us use Amazon S3 to backup&nbsp; their mysql databases.As we do it so often we thought of writing an automated script which does this task of taking the backup of a mysql database and then moving it to the Amazon S3 .&nbsp; Below is the django script .               1: def upload_db_to_Amazons3():
+
+   2: """ function which uploadd mysql database to amazon s3"""
+
+   3:&nbsp; 
+
+   4: AWS_ACCESS_KEY_ID = settings.AWS_ACCESS_KEY_ID
+
+   5: AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY
+
+   6: BUCKET_NAME = settings.BUCKET_NAME
+
+   7: MYSQL_DUMP_PATH = settings.MYSQL_DUMP_PATH
+
+    8: DATABASE_NAME = settings.DATABASE_NAME
+
+   9: ARCHIVE_NAME = settings.ARCHIVE_NAME
+
+  10: .....
+
+  11:&nbsp; 
+
+  12: proc1 = subprocess.Popen(settings.MYSQL_DUMP_PATH+" --no-data  -u root -pwelcome   -x  --databases  doloto",shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+
+  13: #create data file
+
+  14: proc3 = subprocess.Popen(settings.MYSQL_DUMP_PATH+" --no-create-info  -u root -pwelcome   -x  --databases  doloto",shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+
+  15: ...
+
+  16:&nbsp; 
+
+  17: t1.write(proc1.communicate()[0])
+
+  18: t2.write(proc3.communicate()[0])
+
+  19:&nbsp; 
+
+  20: #create  tar.gz for the above two files
+
+  21: tar = tarfile.open( (os.path.join(os.curdir, settings.ARCHIVE_NAME+"_archive.tar.gz")), "w|gz")
+
+  22: tar.add(t1.name,ARCHIVE_NAME+"_struct.sql")
+
+  23: tar.add(t2.name,ARCHIVE_NAME+"_data.sql")
+
+  24: ........
+
+  25: #upload file to Amazon S3
+
+  26: tardata = open(os.path.join(os.curdir, settings.ARCHIVE_NAME+"_archive.tar.gz") , "rb").read()
+
+  27: response = conn.put(BUCKET_NAME,settings.ARCHIVE_NAME+"_archive.tar.gz",S3.S3Object(tardata))
+
+  28:&nbsp; 
+
+  29: upload_db_to_Amazons3()
+  
+
+
+Download the script by using the below link
+
+1) http://uswaretech.com/blog/wp-content/uploads/2009/02/mysql_to_amazons3.zip
+
+Things to do before using the script:
+
+1) You need to put down Amazon S3 library for python in the sys.path .you can download the python S3 library by following the below link.(http://developer.amazonwebservices.com/connect/entry.jspa?externalID=134)
+
+2)For a given project keep the script mysql_to_amazons3.py&nbsp; at the&nbsp; same level as that of settings.py.
+
+3) Define the following variables in settings.py 
+
+
+  
+       1: #MySQL information
+
+       2: #MYSQL_DUMP_PATH should be the path to the mysqldump executable file
+
+       3: #To know where  mysqldump executable is present in your local system
+
+       4: #use the command "which mysqldump".
+
+       5: #database name, user_name and password will be taken from settings.DATABASE_NAME,DATABASE_USER etc...
+
+       6: MYSQL_DUMP_PATH = "/usr/bin/mysqldump"
+
+       7:&nbsp; 
+
+       8:&nbsp; 
+
+       9: #Amazon S3 credentials
+
+      10: #Bucket_Name The name of the bucket in Amazon S3
+
+      11: AWS_ACCESS_KEY_ID = ''
+
+      12: AWS_SECRET_ACCESS_KEY = ''
+
+      13: BUCKET_NAME = 'tempstore'
+
+      14:&nbsp; 
+
+      15: #Archive name with out any extension (i.e):
+
+      16: #what name do you want for the file which is uploaded to AMazon S3
+
+      17: #please give the name  without any extension
+
+      18: #Also note that a copy of this file will be stored in the directory where the script resides
+
+      19: ARCHIVE_NAME = "" 
+  
+
+
+a.MYSQL_DUMP_PATH=&nbsp; â€œ/usr/bin/mysqldumpâ€
+
+&nbsp;&nbsp;&nbsp; mysqldump is the command using which we take database backup.Here you should mention path to this mysqldump executable.Read the comments above that variable for more details.
+
+b.AWS_ACCESS_KEY_ID = ''
+
+Amazon access key which amazon will provide after signing up for their webservices.
+
+c.AWS_SECRET_ACCESS_KEY = ''
+
+Amazon secret key which amazon will provide after&nbsp; signing up for their webservices.
+
+d.BUCKET_NAME = 'tempstore'
+
+Bucket name to which to which you want to store the database archive.More details about what a bucket means at http://tinyurl.com/5nlrkz
+
+e.ARCHIVE_NAME = " " 
+
+Name of archive file.What name do you want to give to this archive?.
+
+f.Please note that the script will take the database name, database user,database password from already existing settings variables DATABASE_NAME , DATABASE_USER&nbsp; and DATABASE_PASSWORD
+
+Running the script:
+
+1) python mysql_to_amazons3.py to upload the database archive of settings.DATABASE_NAME to Amazon S3 into the respective bucket.
+
+2) It also places the archive in the&nbsp; directory where the script resides for your convenience.
+
+3)The archive contains two files&nbsp; ***_data.sql which contains database data, ***_struct.sql which contains database structure.We intentionally separate the data and structure as it is a good practice.
+
+4) if you want to run this script as a cron job use crontab â€“e for setting up the cron job. 
+
+How to run this script in python?
+
+if you want to run this script in python then do the following steps
+
+1)Remove the top 4 lines of code in above script.
+
+2) In upload_db_to_Amazons3()&nbsp; function replace all the capital variables with their corresponding values.
+
+3)Run the script.
+
+How does the script work?
+
+1.It uses subprocess.Popen (pipe open) functions to first execute the commands (mysqldump -&nbsp; -&nbsp; - ).
+
+2.It&nbsp; then reads the output from the pipes to create a .tar.gz archive.
+
+3.It then uses&nbsp; Amazon S3 web services API to upload the above file to Amazon S3.
+
+Do you have any problems with the script?
+
+if you have any problems with the script or any other feedback please let me know in comments.
+
+Resources:
+
+1)http://tinyurl.com/5nlrkz
+
+2)http://developer.amazonwebservices.com/connect/entry.jspa?externalID=134
+
+3)http://www.holovaty.com/code/update_s3.py
+
+4)http://www.djangosnippets.org/snippets/580/
+
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

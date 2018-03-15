@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/prime-number-binary-trex.html">Finding a prime number whose binary representation is a giraffe (or a T-Rex)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2018-01-21T08:11:32+05:30">
+                Published: Sun 21 January 2018
+        </abbr>
+		<br />
+        <abbr class="modified" title="2018-01-21T19:41:32+05:30">
+                Updated: Sun 21 January 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info --><p><img alt="Odd Number Theorists" src="https://raw.githubusercontent.com/shabda/experiments/master/prime_dinos/odd-number-theorists.jpg"></p>
+<p>First, here is a prime number whose binary representation is a T-Rex.</p>
+<script src="https://gist.github.com/shabda/a3fce10a702f9a48c0e7989ac5802739.js"></script>
+
+<p>Math with bad drawings <a href="https://mathwithbaddrawings.com/2017/10/09/insatiable-for-updates/">asked</a> for a prime number whose binary representation is a giraffe. This lead to discussion on <a href="https://www.reddit.com/r/math/comments/7qpfls/does_there_exist_a_prime_number_whose/">Math.reddit</a> and <a href="https://news.ycombinator.com/item?id=16192608">Hacker news</a> which led to finding such a prime number.</p>
+<p>342581792649127676198127791406119644054852809184750511204770992210601825938383173228625368612512343524580568135765381129832784929140287102447656231670490278371618738040053550924844754083137995849927287014555199009052294292243605111352278964229602623894816760629354416193979550552423279842373621548435137856781153105076831681645952473068169294190544029391463758663828828100567003458546392021905815042131115480711892076216081858013250696070743624005842779807059777397154653840706692288630135185563366228931093496037459868457738024280865863648682544327375771172685872176976999577303715645442779935499071380556380855234358517399907184246818275843840363379983214925406281243183361618849192180391506653641933784053451121171160334712857092937535606122822893204604775038632348974223351004456787673186165100098223897371450275291114458983950607846718107603195397991880820766444935587675531082421404505700110617860358142315360174185418283092141238404865012380329781867103175076882601367389664213176688432343205501275425887396821357210158983064167712232404771958406106398750988506833703615072967113838953</p>
+<p>You can see the binary representation on reddit. </p>
+<p>As Nathaniel Borenstein <a href="https://en.wikiquote.org/wiki/Nathaniel_Borenstein">said</a> <code>It should be noted that no ethically-trained software engineer would ever consent to write a DestroyBaghdad procedure. Basic professional ethics would instead require him to write a DestroyCity procedure, to which Baghdad could be given as a parameter.</code></p>
+<p>So the obvious next step is to generalize this is to program which can take an image and find a primary number whose binary representation is the image.</p>
+<p>We run this for an Argentinosaurus image</p>
+<div class="highlight"><pre><span></span>python prime_dinosaur.py -f ~/Downloads/argentinosaurus.jpg -s 40
+</pre></div>
+
+
+<p>Which gives us</p>
+<script src="https://gist.github.com/shabda/ccf7f224df92a1484b46d2d7c28bd37f.js"></script>
+
+<h3>How does this work?</h3>
+<ul>
+<li>We read the image and convert to desired size</li>
+<li>The image data is converted to monochrome and pixels darker (lower) than a threshold are converted 1, rest pixels are zero.</li>
+<li>This data is read in in a numpy array</li>
+<li>This 2d array is flattened, and treated as a bitarray to get a number</li>
+<li>We then start incrementing the number until we get a prime.</li>
+<li>The primality is tested using the Miller Rabin test.</li>
+<li>When such a number is found the number is converted to its binary representation, and displayed in a square grid.</li>
+</ul>
+<p>The full code is:</p>
+<script src="https://gist.github.com/shabda/20dc8dd2665920f857f24b8b224c63ea.js"></script>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/when-and-how-use-django-listview.html" rel="bookmark"
+                           title="Permalink to When and how to use Django ListView">When and how to use Django ListView</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-29T00:06:39+05:30">
+                Published: Fri 29 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-29T11:36:39+05:30">
+                Updated: Fri 29 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>When and how to use Django ListView</p>
+                <a class="readmore" href="/when-and-how-use-django-listview.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/when-and-how-use-django-templateview.html" rel="bookmark"
+                           title="Permalink to When and how to use Django TemplateView">When and how to use Django TemplateView</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-29T00:00:27+05:30">
+                Published: Fri 29 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-29T11:30:27+05:30">
+                Updated: Fri 29 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>When and how to use Django TemplateView</p>
+                <a class="readmore" href="/when-and-how-use-django-templateview.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/adventures-in-advanced-django-orm-with-hyperloglog.html" rel="bookmark"
+                           title="Permalink to Adventures in advanced Django ORM with HyperLogLog">Adventures in advanced Django ORM with HyperLogLog</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-11T11:24:38+05:30">
+                Published: Mon 11 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-11T22:54:38+05:30">
+                Updated: Mon 11 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>Counting distinct object is a common operation. Most databases and Django make its quite simple to do so. Given appropriate tables or models you would be doing something like select event_type, count(distinct user_id) from github_events group by 1; With appropriateley defined Django model you would do GithubEvents.objects.values( "event_type" ).annotate( distinct_user_count=Count( "user_id", distinct=True ) ) Count distinct is however <a href="https://en.wikipedia.org/wiki/Count-distinct_problem">quite slow on large datasets</a>. There are a few faster methods which give an approximate count in much less time. HyperLogLog is one of the most common methods. We will try implemnting that in Django ORM without going to raw SQL and</p>
+                <a class="readmore" href="/adventures-in-advanced-django-orm-with-hyperloglog.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-20-window-expressions-tutorial.html" rel="bookmark"
+                           title="Permalink to Django 2.0 Window expressions tutorial">Django 2.0 Window expressions tutorial</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-06T05:22:38+05:30">
+                Published: Wed 06 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-06T16:52:38+05:30">
+                Updated: Wed 06 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p class="first last"><tt class="docutils literal">`python from django.db.models import Avg, F, Window from django.db.models.functions import DenseRank, CumeDist from django_commits.models import Committer import pandas `</tt> <tt class="docutils literal">`python def as_table(values_queryset): pandas.options.display.max_rows=20 return pandas.DataFrame(list(values_queryset)) `</tt> <tt class="docutils literal">`python # Find out who have been the most prolific contributors since the years <span class="pre">2010-2017</span> dense_rank_by_year = Window( <span class="pre">expression=DenseRank(),</span> <span class="pre">partition_by=F(&quot;commit_year&quot;),</span> <span class="pre">order_by=F(&quot;commits_count&quot;).desc()</span> ) commiters_with_rank = Committer.objects.filter( commit_year__gte=2010, commits_count__gte=10 ).annotate( the_rank=dense_rank_by_year ).order_by( <span class="pre">&quot;-commit_year&quot;,</span> &quot;the_rank&quot; ).values( &quot;author&quot;, &quot;commit_year&quot;, &quot;commits_count&quot;, &quot;the_rank&quot; ) as_table(commiters_with_rank) `</tt> &lt;div&gt; &lt;style scoped&gt; .dataframe tbody tr th:only-of-type { vertical-align: middle; } .dataframe tbody tr th { vertical-align: top; } .dataframe thead th { text-align: right; } &lt;/style&gt; &lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt; &lt;thead&gt; &lt;tr style=&quot;text-align: right;&quot;&gt;</p>
+
+                <a class="readmore" href="/django-20-window-expressions-tutorial.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/configure-django-log-exceptions-production.html" rel="bookmark"
+                           title="Permalink to Configure Django to log exceptions in production">Configure Django to log exceptions in production</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-02T00:49:18+05:30">
+                Published: Sat 02 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-02T08:19:18+05:30">
+                Updated: Sat 02 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->                <p>Configure Django to log exceptions in production</p>
+                <a class="readmore" href="/configure-django-log-exceptions-production.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/how-performant-your-python-web-application.html" rel="bookmark"
+                           title="Permalink to How performant is your Python web application">How performant is your Python web application</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-11-15T08:56:01+05:30">
+                Published: Wed 15 November 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-11-15T12:26:01+05:30">
+                Updated: Wed 15 November 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/gunicorn.html">gunicorn</a> </p>
+</footer><!-- /.post-info -->                <p>How-performant-your-python-web-application</p>
+                <a class="readmore" href="/how-performant-your-python-web-application.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/how-python-generators-are-similar-iterators.html" rel="bookmark"
+                           title="Permalink to How Python generators are similar to iterators">How Python generators are similar to iterators</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-11-01T00:59:47+05:30">
+                Published: Wed 01 November 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-11-01T11:29:47+05:30">
+                Updated: Wed 01 November 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>How Python generators relate to iterators and iterables.</p>
+                <a class="readmore" href="/how-python-generators-are-similar-iterators.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/real-world-usage-iterators-and-iterables.html" rel="bookmark"
+                           title="Permalink to Real world usage of __iter__ and next">Real world usage of __iter__ and next</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-10-18T00:23:28+05:30">
+                Published: Wed 18 October 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-10-18T10:53:28+05:30">
+                Updated: Wed 18 October 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>Real world usage of iterators and iterables</p>
+                <a class="readmore" href="/real-world-usage-iterators-and-iterables.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/iterators-and-iterables.html" rel="bookmark"
+                           title="Permalink to Iterators and Iterables">Iterators and Iterables</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-10-12T08:06:19+05:30">
+                Published: Thu 12 October 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-10-12T11:36:19+05:30">
+                Updated: Thu 12 October 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>Iterators and Iterables</p>
+                <a class="readmore" href="/iterators-and-iterables.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 23
+        <a href="/index2.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

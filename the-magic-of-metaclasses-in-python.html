@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>The magic of metaclasses in Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/the-magic-of-metaclasses-in-python.html" rel="bookmark"
+           title="Permalink to The magic of metaclasses in Python">The magic of metaclasses in Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-11-21T06:37:59+05:30">
+                Published: Sat 21 November 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-11-21T18:07:59+05:30">
+                Updated: Sat 21 November 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/uncategorized.html">Uncategorized</a> </p>
+</footer><!-- /.post-info -->      <p>Metaclasses are a way for you to have a class act as the template for another class. They are simlar to a classfactory,
+in that they create new classes. In words of Tim Peters <code>Metaclasses are deeper magic than 99% of people are going to need</code>.</p>
+<p>However, in right hands they can be a potent tool, in particular Django uses metaclasses beautifully to create
+very beautiful declarative models. Without further ado, here is a very simple (and very wrong) metaclass example.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Z</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">__new__</span><span class="p">(</span><span class="nx">cls</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">bases</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">,</span> <span class="p">)</span><span class="o">:</span>
+        <span class="nx">print</span> <span class="nx">cls</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">bases</span><span class="p">,</span> <span class="nx">attrs</span>
+
+<span class="kr">class</span> <span class="nx">A</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">__metaclass__</span> <span class="o">=</span> <span class="nx">Z</span>
+
+
+<span class="nx">print</span> <span class="nx">A</span>
+<span class="nx">print</span> <span class="nx">A</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Running this gives this output.</p>
+<div class="highlight"><pre><span></span>shabda@shabda-laptop ~/docs&gt; python testmetaclass.py 
+&lt;class &#39;__main__.Z&#39;&gt; A (&lt;type &#39;object&#39;&gt;,) {&#39;__module__&#39;: &#39;__main__&#39;, &#39;__metaclass__&#39;: &lt;class &#39;__main__.Z&#39;&gt;}
+None
+Traceback (most recent call last):
+  File &quot;testmetaclass.py&quot;, line 14, in &lt;module&gt;
+    print A()
+TypeError: &#39;NoneType&#39; object is not callable
+</pre></div>
+
+
+<p>Let what happened,</p>
+<ol>
+<li><code>print cls, name, bases, attrs</code> got executed, even though we are not creating <code>Z</code> or calling it anywhere.</li>
+<li><code>print A</code> printed <code>None</code></li>
+<li><code>print A()</code> failed with a traceback</li>
+</ol>
+<p>Lets try a slightly modified file,http://uswaretech.com/blog/2009/11/the-magic-of-metaclasses-in-python/</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Z</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">__new__</span><span class="p">(</span><span class="nx">cls</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">bases</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">,</span> <span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="nx">str</span>
+
+<span class="kr">class</span> <span class="nx">A</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">__metaclass__</span> <span class="o">=</span> <span class="nx">Z</span>
+</pre></div>
+
+
+<p>This gives me,</p>
+<div class="highlight"><pre><span></span>print A
+print A(&#39;Hello&#39;)
+
+shabda@shabda-laptop ~/docs&gt; python testmetaclass.py 
+&lt;type &#39;str&#39;&gt;
+Hello
+shabda@shabda-laptop ~/docs&gt;
+</pre></div>
+
+
+<p>The output suggests that <code>A</code> is behaving like <code>str</code>. This should lead us to a few conclusions,</p>
+<ol>
+<li>If a class has a <code>__metaclass__</code>, it is replaced by another class.</li>
+<li>The function called for creating the new class is <code>__new__</code>, it takes 4 parameters.</li>
+<li>cls is the metaclass being called, name is the name of the original class, bases are bases for original class, and attrs are attributes from original class.</li>
+<li>The old class is set to the value returned from <code>__metaclass__.__new__</code></li>
+<li>As we returned nothing in the first snippet, <code>A</code> was set to None. In second snippet it was set to <code>str</code>.</li>
+</ol>
+<p>Here is an actual metaclass being used by Django.</p>
+<script src="http://gist.github.com/240103.js"></script>
+
+<ol>
+<li>In line 24, <code>Form. __metaclass__</code> is set to <code>DeclarativeFieldsMetaclass</code></li>
+<li><code>DeclarativeFieldsMetaclass</code> is a subclass of <code>type</code>.</li>
+<li>It defines a method called as <code>__new__</code> which returns the newly created class.</li>
+</ol>
+<p>And that is all there is to metaclasses!</p>
+<hr>
+<p>This is the first in the series of <code>short and sweet</code> Django posts we are going to do. You are interested, right. Do follow us on <a href="http://twitter.com/uswaretech">twitter</a> or <a href="http://feeds.feedburner.com/uswarearticles">subscribe to our feed</a>.</p>
+<hr>
+<p>We build <em>Amazing We Apps</em>. <a href="http://uswaretech.com/contact/">Talk to us</a> or email us at sales@uswaretech.com .</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

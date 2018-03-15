@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Deploying django using docker</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/deploying-django-using-docker.html" rel="bookmark"
+           title="Permalink to Deploying django using docker">Deploying django using docker</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-14T08:46:51+05:30">
+                Published: Fri 14 June 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-06-14T19:16:51+05:30">
+                Updated: Fri 14 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/docker.html">docker</a> </p>
+</footer><!-- /.post-info -->      <p>In this blog post we'll take a look at <a href="http://docker.io">Docker</a> and
+discuss ways to deploy django using docker.</p>
+<h2>About Docker:</h2>
+<p>Docker is a tool that helps you manage lxc containers and images. You can
+create an image, launch container from the existing image, attach to a running
+container, and generally play around with the containers.</p>
+<p>The most important benefit of using docker and containers in general is that
+you have a clean, hygeinic and portable runtime enivorment for your app. This
+means you don't have to worry about missing dependecies, packages and other
+pain points during subsequent deployments. You can take a snapshot of a running
+container and restore it again when required. Plus, each app runs in it's own
+isolated container so you can have various versions of libraries and other
+dependecies for each app without worrying about it's effect on other apps.
+Coming from the python world where virtualenv is ubiqitous, it's a huge relief
+to me that there's such a better and cleaner solution.</p>
+<blockquote>
+<p>Note: Docker is still under heavy development. It should not yet be used in
+ production. Check the repo for recent progress.</p>
+</blockquote>
+<p>To know more about docker and install it, go to the <a href="http://www.docker.io/gettingstarted/">"Getting Started"</a> guide.</p>
+<p>Here I'll discuss two ways of deploying django using docker:</p>
+<h2>Vanilla deployment:</h2>
+<p>Nothing fancy here, we just instantiate a container image and open up an ssh
+port and a web port, then we can use our usual fabfile script to deploy it to
+the container. Here I'll use the container image "dhrp/sshd" which I found by
+searching <a href="https://index.docker.io/search?q=ssh">the container index</a>.</p>
+<div class="highlight"><pre><span></span>&gt; docker pull dhrp/sshd
+</pre></div>
+
+
+<p>This will fetch the container image dhrp/sshd</p>
+<p>Now let's run the container <code>-d</code> for daemonize, <code>-p 22 -p 8000</code> for telling docker
+to open port 22 and 8000, dhrp/sshd is the image we want to use, and <code>/usr/sbin/sshd -D</code>
+is the command we want to run inside the container - here we want to run the sshd daemon</p>
+<div class="highlight"><pre><span></span>&gt; docker run -d -p 22 -p 8000 dhrp/sshd /usr/sbin/sshd -D
+&gt;&gt; c4cee8e86fa0
+</pre></div>
+
+
+<p>The above command will give an hash by which you can refer to the running
+container instance in the future.</p>
+<p>Now you can query for the NATed ports associated with our newly launched
+container using:</p>
+<div class="highlight"><pre><span></span>&gt; docker port c4cee8e86fa0 22
+&gt;&gt; 49185
+
+&gt; docker port c4cee8e86fa0 8000
+&gt;&gt; 49186
+</pre></div>
+
+
+<p>or you can also use the generic <code>docker ps</code> command for a human readable and
+prettier output:</p>
+<div class="highlight"><pre><span></span>&gt; docker ps
+</pre></div>
+
+
+<p>Now, we can ssh into our container through the NATed port - the password for
+this container is <code>screencast</code>:</p>
+<div class="highlight"><pre><span></span>&gt; ssh root@localhost -p 49185
+&gt;&gt; root@c4cee8e86fa0:/#
+</pre></div>
+
+
+<p>Note that the password - <code>screencast</code> was set by the container image author.
+For better security, you should login, change the password and commit your
+changes immediately:</p>
+<div class="highlight"><pre><span></span>&gt; docker commit c4cee8e86fa0 dhrp/sshd
+</pre></div>
+
+
+<p>Now, you can use this container just like any other server. You'll just need to
+make sure to proxy the NATed web port through nginx. You can update your
+fabfile to point to the container by updating the ssh port number and deploy as
+usual.</p>
+<h2>Heroku-like deployment:</h2>
+<p>A few days back I came across <a href="https://github.com/progrium/dokku">dokku</a> and
+decided to give it a try by deploying a small django app. You'll need to clone
+the dokku repository and use a buildpack like
+<a href="https://github.com/jiaaro/heroku-buildpack-django">heroku-buildpack-django</a> as described
+in the <a href="https://github.com/progrium/buildstep#adding-buildpacks">dokku docs</a>. The
+django buildpack I found worked quite well, except that it requires python-dev to be installed.
+Luckily, it's quite easy to modify the buildstep script to handle this. Once I had this set-up,
+I just had to create a tarball of my code and build it:</p>
+<div class="highlight"><pre><span></span>cat django-pastebin.tar | ./buildstep django-pastebin
+</pre></div>
+
+
+<p>This will build a container from scratch and install all dependecies required
+for the buildpack and prepare the container for deployment.</p>
+<p>Here are the repos I've used for this example:</p>
+<ul>
+<li><a href="https://github.com/tuxcanfly/buildstep">https://github.com/tuxcanfly/buildstep</a></li>
+<li><a href="https://github.com/tuxcanfly/heroku-buildpack-django">https://github.com/tuxcanfly/heroku-buildpack-django</a></li>
+<li><a href="https://github.com/agiliq/django-pastebin">https://github.com/agiliq/django-pastebin</a></li>
+</ul>
+<p>Verify that it works:</p>
+<div class="highlight"><pre><span></span>&gt; docker run -p 8000 django-pastebin /start web
+&gt;&gt; 2013-06-14 13:31:22 [9] [INFO] Starting gunicorn 0.17.4
+&gt;&gt; 2013-06-14 13:31:22 [9] [INFO] Listening at: http://127.0.0.1:8000 (9)
+&gt;&gt; 2013-06-14 13:31:22 [9] [INFO] Using worker: sync
+&gt;&gt; 2013-06-14 13:31:22 [14] [INFO] Booting worker with pid: 14
+</pre></div>
+
+
+<p>Now, you can daemonize it and let it run in the background:</p>
+<div class="highlight"><pre><span></span>&gt; docker run -d -p 8000 django-pastebin /start web
+&gt;&gt; 4dc243483b56
+</pre></div>
+
+
+<h2>Conclusion:</h2>
+<p>I've found docker and containers very useful in managing multiple apps on a
+single server even if it's a little rough around the edges. Tools like
+<a href="https://index.docker.io/">container index</a> are a great way of sharing
+development enviroments and avoid getting bogged down by installation
+processes. I'm eagerly looking forward to future versions and upcoming features
+in docker.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Accept bitcoins using python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/accept-bitcoins-using-python.html" rel="bookmark"
+           title="Permalink to Accept bitcoins using python">Accept bitcoins using python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-07-12T08:02:44+05:30">
+                Published: Fri 12 July 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-07-12T18:32:44+05:30">
+                Updated: Fri 12 July 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->      <p>In this blog post we'll talk about bitcoins and look at an overview of how to
+accept them from your python app.</p>
+<h2>Bitcoin:</h2>
+<p>Bitcoin is crypto-currency whose protocol allows fast, anonymous and secure
+digital transactions.</p>
+<p>To know more about bitcoin and to install it, go to the <a href="http://bitcoin.org/en/bitcoin-for-developers">"Developer
+Guide"</a> guide.</p>
+<h2>Getting started:</h2>
+<p>To get started, install bitcoin (assuming Ubuntu):</p>
+<div class="highlight"><pre><span></span>$ sudo apt-get install bitcoind
+</pre></div>
+
+
+<p>Now edit <code>~/.bitcoin/bitcoin.conf</code> and add:</p>
+<div class="highlight"><pre><span></span>testnet=1
+</pre></div>
+
+
+<p>This will allow us to run bitcoin in test mode.</p>
+<p>Now start the <code>bitcoind</code> daemon using:</p>
+<div class="highlight"><pre><span></span>$ bitcoind -daemon
+</pre></div>
+
+
+<p>To check that it's working, do:</p>
+<div class="highlight"><pre><span></span>$ bitcoind getinfo
+</pre></div>
+
+
+<p>If you see a JSON output, you should be good to go.</p>
+<h2>Using JSON RPC:</h2>
+<p>Bitcoin includes a JSON RPC server as a part of the daemon.</p>
+<p>Using a client library like
+<a href="https://github.com/laanwj/bitcoin-python">"bitcoin-python"</a>, we can invoke
+bitcoin calls from python like so:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">bitcoinrpc</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bitcoin</span> <span class="o">=</span> <span class="n">bitcoinrpc</span><span class="o">.</span><span class="n">connect_to_local</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bitcoin</span><span class="o">.</span><span class="n">getinfo</span><span class="p">()</span>
+</pre></div>
+
+
+<h2>Payment Flow:</h2>
+<p>In a standard payment flow, the steps involved would be:</p>
+<ul>
+<li>User checks out a shopping cart. Transaction starts.</li>
+<li>Generate a new bitcoin addres and ask the user to pay.</li>
+<li>Verify that payment is made, wait for confirmations if required.</li>
+<li>Generate invoice. Transaction ends.</li>
+</ul>
+<p>Let's see how to do each of this step using the python client:</p>
+<p>Generate a new bitcoin address:</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; add = bitcoin.getnewaddress()
+</pre></div>
+
+
+<p>Verify payment is made:</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; bitcoin.getreceivedbyaddress(add)
+</pre></div>
+
+
+<p>Get transcation info:</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; bitcoin.listtransactions(address=add)
+</pre></div>
+
+
+<p>Note: By default the RPC client waits for 1 confirmation, you can increase
+this using the <code>minconf</code> argument to most API calls.</p>
+<p>You can use a testnet faucet for testing:</p>
+<p><a href="http://tpfaucet.appspot.com/">http://tpfaucet.appspot.com/</a></p>
+<p><a href="http://testnet.mojocoin.com/">http://testnet.mojocoin.com/</a></p>
+<p>When you're ready, you can switch the testnet mode in your bitcoinf.conf.</p>
+<h2>Security:</h2>
+<p>You need to take precautions to make sure that your bitcoin wallet is secured
+to prevent wallet theft, this is out of the scope of this tutorial, so please
+refer to:</p>
+<p><a href="https://en.bitcoin.it/wiki/Securing_your_wallet">https://en.bitcoin.it/wiki/Securing_your_wallet</a></p>
+<h2>References:</h2>
+<p><a href="https://en.bitcoin.it/wiki/Bitcoin-python">https://en.bitcoin.it/wiki/Bitcoin-python</a></p>
+<p><a href="https://en.bitcoin.it/wiki/Merchant_Howto">https://en.bitcoin.it/wiki/Merchant_Howto</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

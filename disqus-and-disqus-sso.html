@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Disqus and Disqus SSO</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/disqus-and-disqus-sso.html" rel="bookmark"
+           title="Permalink to Disqus and Disqus SSO">Disqus and Disqus SSO</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-11-17T08:30:29+05:30">
+                Published: Mon 17 November 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-11-17T20:00:29+05:30">
+                Updated: Mon 17 November 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rakesh.html">Rakesh</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/disqus.html">Disqus</a> </p>
+</footer><!-- /.post-info -->      <p>Outsourcing the comments and discussions part to a third party widget always helps us to save a lot of effort. When you feel that if it is okay to share your thoughts and discussions with someone out there who serves the capabilities of social integration and spam detection won't it be a cake walk?</p>
+<p>Disqus is such a kind of blog comment hosting service which is platform-agnostic and URL-agnostic. It is built with javascript and backend technology, Python using Django. Let us get to know how to add this to our Django app.</p>
+<p>Adding Disqus widget to a site is pretty straight forward and effortless. Here are the steps to follow:</p>
+<ol>
+<li>Create an account on Disqus and fill the details at https://disqus.com/admin/create/</li>
+<li>Once you finish registration, access the universal code</li>
+<li>In the next following page, get the script and use it wherever we want to display comments</li>
+<li>Update the settings file with DISQUS_SHORTNAME</li>
+</ol>
+<p>The first step includes signing up in to Disqus and getting an account. Once we are done with it, we will be heading to a home page where we can find "Add disqus to your site" on top left. If we click it, we will be redirected to site profile page where we should fill the details like the site name and unique Disqus URL which we call it as "disqus_shortname". Once the registration is completed it will show up the general settings page where we can select the platform i.e univeral code, wordpress, blogger, Tumblr, square space and so on. As we are planning to add Disqus to Django app we should select Universal code. The Universal code is a script which looks like this:</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;disqus_thread&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = &#39;try1&#39;; // required: replace example with your forum shortname
+
+    /* * * DON&#39;T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement(&#39;script&#39;); dsq.type = &#39;text/javascript&#39;; dsq.async = true;
+        dsq.src = &#39;//&#39; + disqus_shortname + &#39;.disqus.com/embed.js&#39;;
+        (document.getElementsByTagName(&#39;head&#39;)[0] || document.getElementsByTagName(&#39;body&#39;)[0]).appendChild(dsq);
+    })();
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;noscript&gt;</span>Please enable JavaScript to view the <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://disqus.com/?ref_noscript&quot;</span><span class="nt">&gt;</span>comments powered by Disqus.<span class="nt">&lt;/a&gt;&lt;/noscript&gt;</span>
+</pre></div>
+
+
+<p>The script can be used in the template wherever we want our comments section to show up. That delivers us the comments section in our app with one step remaining. Access the "disqus_shortname" i.e. the unique Disqus URL that we specified in the process of registration and add it in the settings file of the Django app.</p>
+<p>eg.
+    DISQUS_WEBSITE_SHORTNAME = "mydjangoapp"</p>
+<h2>Disqus SSO</h2>
+<p>Commenting on a thread requires a person to log in with their social accounts. It would be an extra step for the people to log in again for commenting after logging in to the app. To abate this fatigue of logging in again we can use the "single sign on".</p>
+<p>As of now SSO is available to Disqus as a free add on. To add to our app we should request the support team of Disqus through a contact form. Once we send a request to support team it takes like 24 hours to get the access to SSO console.</p>
+<p>Steps to register Disqus application</p>
+<ol>
+<li>Register the application at https://disqus.com/api/applications/register/</li>
+<li>Once the registration is completed the secret keys and the public keys can be accessed at https://disqus.com/api/applications/</li>
+<li>Add the keys to settings file as DISQUS_PUBLIC_KEY and DISQUS_SECRET_KEY</li>
+<li>To avail console, SSO and stuff we can go to https://disqus.com/api/applications/</li>
+<li>Pass existing user data</li>
+</ol>
+<p>The first part to start using it is creating a Remote Domain which can be used as a reference between Disqus and the user accounts. We can do it right away at https://disqus.com/api/sso/. Add the public key and secret key of the application in the settings. We can access the keys at https://disqus.com/api/applications/ under the app name. Use HMAC-SHA1 to pass the user details to the Disqus to authenticate. The message that we pass should contain id, username and email. We can generate the HMAC-SHA1 the following way:</p>
+<div class="highlight"><pre><span></span>HMAC-&gt;SHA1(secret_key, message + &#39; &#39; + timestamp)
+</pre></div>
+
+
+<p>Once the message is generated the following script need to be used in the page where we want the Disqus to show up.</p>
+<div class="highlight"><pre><span></span>var disqus_config = function () 
+{
+    // The generated payload which authenticates users with Disqus
+    this.page.remote_auth_s3 = &#39;&lt;message&gt; &lt;hmac&gt; &lt;timestamp&gt;&#39;;
+    this.page.api_key = &#39;public_api_key&#39;;
+}
+</pre></div>
+
+
+<p>In Django we can accomplish this by registering a simple tag with function to generate the HMAC-SHA1 and using that tag in the template where we are displaying the Disqus comments. The flow moves on the following way:</p>
+<p>Firstly, we should access the value of the DISQUS_SECRET key from the settings. In the next step we should create a json packet of the data attributes, i.e 'id', 'username', 'email'. Then we should encode the json packet to base64 and we should generate a time stamp for signing the message. To pass the secret key and the user details we should generate the HMAC signature. Thus acquired HMAC signature should be returned as a script tag to insert the SSO message. At the end the function appears as in the following code. Check out the <a href="https://gist.github.com/krvc/9afc17db9eb8d01b7655">Disqus SSO Example</a></p>
+<p>The template tag should be used in the place where we want the Disqus comments to appear. </p>
+<p>And that ends up the process of adding SSO to Disqus.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - S3 Upload</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/trsfer-files-amzon-s3-using-browser-instead-server.html">Transfer files to amazon s3 using browser instead of server</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-04-25T15:59:55+05:30">
+                Published: Tue 25 April 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-04-26T02:29:55+05:30">
+                Updated: Wed 26 April 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shiva.html">shiva</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/s3-upload.html">S3 Upload</a> </p>
+</footer><!-- /.post-info --><ol>
+<li>Getting the file from frontend</li>
+<li>Passing it to server</li>
+<li>Make a connection to amazon s3 using python code</li>
+<li>Upload file to amazon s3</li>
+</ol>
+<p>But you should also know that, we have a way of uploading directly from browser to s3 instead of server</p>
+<p>So basically when we try to upload a file to amazon s3, we will do it in a regular way of </p>
+<ol>
+<li>Getting the file from frontend</li>
+<li>Passing it to server</li>
+<li>Make a connection to amazon s3 using python code</li>
+<li>Upload file to amazon s3</li>
+</ol>
+<p>But you should also know that, we have a way of uploading directly from browser to s3 instead of server</p>
+<p>We are going to show that how to do it, and we are using django, boto, html, jquery, ajax to achieve this</p>
+<p>Hope all the above requirements are already installed and your django site is up and running</p>
+<h3>Concept of uploading to s3</h3>
+<ol>
+<li>In order to upload a file to amazon s3 we need to generate a signed url using amazon's python boto package.</li>
+<li>Next step is to make the uploaded file public in order for to access it.</li>
+</ol>
+<p><strong>Lets start designing it</strong></p>
+<h3>Create a template called <strong>upload_s3.html</strong> in your tempalte directory</h3>
+<div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;amazon&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;#&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span> <span class="na">enctype</span><span class="o">=</span><span class="s">&quot;multipart/form-data&quot;</span><span class="p">&gt;</span>
+        Select image to upload:
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;file&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;fileToUpload&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;fileToUpload&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;amazon_upload&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Upload File&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;submit&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{% static &#39;js/amazon/amazon.js&#39; %}&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+
+
+<h3>Create django urls to generate the signed url and make them public</h3>
+<p><strong>project/urls.py</strong></p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span><span class="p">,</span> <span class="n">include</span>
+<span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">GetS3SignedUrl</span><span class="p">,</span> <span class="n">Makes3VideoPublic</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^generate_signed_url/$&#39;</span><span class="p">,</span> <span class="n">GetS3SignedUrl</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;generate_signed_url&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^make_video_public/$&#39;</span><span class="p">,</span> <span class="n">Makes3VideoPublic</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;make_video_public&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+
+
+<h3>Create django views to generate the signed url and make them public</h3>
+<p>You need to copy your <strong>AWS_ACCESS_KEY_ID</strong>, <strong>AWS_SECRET_ACCESS_KEY</strong>, <strong>S3_BUCKET_NAME</strong> in to your settings.py file</p>
+<p><strong>project/views.py</strong></p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">boto</span>
+<span class="kn">from</span> <span class="nn">boto.s3.connection</span> <span class="kn">import</span> <span class="n">S3Connection</span>
+
+<span class="k">def</span> <span class="nf">get_s3_connection</span><span class="p">(</span><span class="n">use_host</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;AWS_ACCESS_KEY_ID&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">secret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;AWS_SECRET_ACCESS_KEY&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">secret</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">use_host</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">S3Connection</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;s3.amazonaws.com&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">S3Connection</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">secret</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">GetS3SignedUrl</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate Signed url for s3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;S3_USE_SIGV4&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">get_s3_connection</span><span class="p">(</span><span class="n">use_host</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file_name&#39;</span><span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span>
+        <span class="n">final_file_name</span> <span class="o">=</span> <span class="s1">&#39;videos/{0}/{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+        <span class="n">secondsPerDay</span> <span class="o">=</span> <span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">generate_url_sigv4</span><span class="p">(</span>
+            <span class="n">secondsPerDay</span><span class="p">,</span> <span class="s2">&quot;PUT&quot;</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">S3_BUCKET_NAME</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">final_file_name</span><span class="p">,</span> <span class="n">force_http</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">out_url</span> <span class="o">=</span> <span class="s1">&#39;https://</span><span class="si">%s</span><span class="s1">.s3.amazonaws.com/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">S3_BUCKET_NAME</span><span class="p">,</span> <span class="n">final_file_name</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;S3_USE_SIGV4&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">({</span><span class="s1">&#39;signed_request&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">out_url</span><span class="p">,</span> <span class="s1">&#39;s3_key&#39;</span><span class="p">:</span> <span class="n">final_file_name</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">})</span>
+
+<span class="k">class</span> <span class="nc">Makes3VideoPublic</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make s3 video public</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">post_data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span>
+        <span class="n">aws_access_key_id</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">AWS_ACCESS_KEY_ID</span>
+        <span class="n">aws_secret_access_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">AWS_SECRET_ACCESS_KEY</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">boto</span><span class="o">.</span><span class="n">connect_s3</span><span class="p">(</span><span class="n">aws_access_key_id</span><span class="p">,</span> <span class="n">aws_secret_access_key</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">S3_BUCKET_NAME</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">S3ResponseError</span><span class="p">:</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">S3_BUCKET_NAME</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;s3_key&#39;</span><span class="p">))</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">make_public</span><span class="p">()</span>
+        <span class="k">print</span> <span class="n">post_data</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">post_data</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>Let's create js file 'js/amazon/amazon.js' in your js directory to make calls to the endpoints</h3>
+<div class="highlight"><pre><span></span>$( document ).ready(function() {
+   $(&#39;.amazon_upload&#39;).click(function(){
+    // Get the file from frontend
+    var myFile = $(&#39;#fileToUpload&#39;).prop(&#39;files&#39;);
+    // Send a get request to generate signed url
+    var config = {
+         params: {
+            file_name : myFile.name,
+            username : &#39;Username&#39;
+         },
+         headers : {&#39;Accept&#39; : &#39;application/json&#39;}
+        };
+
+    $http.get(&#39;generate_signed_url/&#39;, config).then(
+        function(response) {
+            self.signed_data = response.data
+            var url = response.data.signed_request
+
+            // Upload file directly to amazon s3
+            var xhr = new XMLHttpRequest();
+            xhr.open(&quot;PUT&quot;, url);
+            xhr.setRequestHeader(&#39;Access-Control-Allow-Headers&#39;, &#39;*&#39;);
+            xhr.upload.onprogress = updateProgress;
+            xhr.onerror = function() {
+                alert(&quot;Could not upload file.&quot;);
+            };
+            xhr.send(self.video);
+
+            function updateProgress (ev) {
+                    if (ev.lengthComputable) {
+                        var percentComplete = Math.round((ev.loaded / ev.total) * 100);
+                        console.log(percentComplete);
+                    }
+                }
+
+            // Make posted url / video as public
+            var s3_config = {
+                params : response.data,
+                headers : {&#39;Accept&#39; : &#39;application/json&#39;}
+            }
+            var data = {
+                signed_request : response.data.signed_request,
+                s3_key : response.data.s3_key,
+                status : response.data.status,
+                url : response.data.url,
+            }
+            $.ajax({
+              type: &quot;POST&quot;,
+              url: &#39;make_video_public/&#39;,
+              data: data,
+              success: function(response){
+                console.log(response);
+              },
+            });
+
+         },function(response) {}
+         );
+
+   })
+
+})
+</pre></div>
+
+
+<p>So from the above js code we are making two ajax calls, one is for generating the signed request with below response data</p>
+<div class="highlight"><pre><span></span>{
+    signed_request: &quot;https://xxxxxxxx.s3.amazonaws.com/videos/xxxxxx…EKQLHA%2F20170425%2Fus-east-1%2Fs3%2Faws4_request&quot;, 
+    url: &quot;https://xxxxxxx.s3.amazonaws.com/videos/shivaagiliq/FunnyCat.mp4&quot;, 
+    s3_key: &quot;videos/shivaagiliq/FunnyCat.mp4&quot;, 
+    status: &quot;ok&quot;
+}
+</pre></div>
+
+
+<p>and another is to make the video public</p>
+<p>After this when you navigate to amazon file/video url you can able to access it</p>
+<p>Finally we achieved posting the file from browser to amazon s3 directly</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

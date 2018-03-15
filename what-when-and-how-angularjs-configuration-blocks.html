@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>What, when and how of AngularJS configuration blocks</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/what-when-and-how-angularjs-configuration-blocks.html" rel="bookmark"
+           title="Permalink to What, when and how of AngularJS configuration blocks">What, when and how of AngularJS configuration blocks</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-04-27T06:45:03+05:30">
+                Published: Thu 27 April 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-04-27T17:15:03+05:30">
+                Updated: Thu 27 April 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/angularjs.html">angularjs</a> </p>
+</footer><!-- /.post-info -->      <p>Two blocks of modules run during bootstrap process. By bootstrap process we mean that they are run before any directive code or before any controller code. They essentially run before any developer written code. The two blocks are:</p>
+<ul>
+<li>Configuration blocks</li>
+<li>Run blocks</li>
+</ul>
+<p>Configuration blocks are added by using <code>.config()</code> on module. Example:</p>
+<div class="highlight"><pre><span></span>angular
+    .module(&quot;home&quot;)
+    .config(function () {
+    });
+</pre></div>
+
+
+<p>So the function which is passed to .config() is the configuration block.</p>
+<p>Run blocks are added by using <code>.run()</code> on module. Example:</p>
+<div class="highlight"><pre><span></span>angular
+    .module(&quot;home&quot;)
+    .run(function () {
+    });
+</pre></div>
+
+
+<p>In this post, we will try answering the following:</p>
+<ul>
+<li>What is .config() and configuration block</li>
+<li>When can config() be avoided and same functionality be achieved with constant(), service() etc.</li>
+<li>When configuration block and config() is needed</li>
+<li>What is injectable in configuration blocks</li>
+<li>When does config() execute</li>
+</ul>
+<h3>Configuration blocks</h3>
+<p>In configuration blocks, we can inject any provider. </p>
+<div class="highlight"><pre><span></span>angular
+    .module(&quot;home&quot;)
+    .config([&quot;$provide&quot;, function ($provide) {
+        // This will add a provider to providerCache which can be used to get a service.
+        $provide.provider();
+        // This will add a provider to providerCache which can be used to get a service.
+        // Service code will be encapsulated in a provider
+        $provide.service();
+    }]);
+</pre></div>
+
+
+<p>Some other providers we can inject to .config() are <code>$locationProvider</code>, <code>$compileProvider</code>, <code>$filterProvider</code> etc. Essentially you can inject any provider.</p>
+<h4>Cannot inject services into configuration blocks</h4>
+<p>You cannot inject services into configuration blocks. Configuration blocks are meant for configuring your modules. And services are meant for writing business logic. There shouldn't be use of any business logic during configuration phase.</p>
+<p>Try injecting a service into configuration block and it will fail.</p>
+<div class="highlight"><pre><span></span>// This will fail because $http is a service
+angular
+    .module(&quot;home&quot;)
+    .config([&quot;$http&quot;, function ($http) {
+    }]);
+
+// This will fail because $compile is a service
+angular
+    .module(&quot;home&quot;)
+    .config([&quot;$compile&quot;, function ($compile) {
+    }]);
+</pre></div>
+
+
+<h3>When do we not need configuration blocks</h3>
+<p>In several applications you wrote, you might not have needed configuration blocks. Angular provides some helpers which avoids the need of explicit configuration blocks.</p>
+<p>Providers, services and constants are registered during configuration phase, which is part of bootstrap phase. AngularJS provides following helper functions to register providers, services and constants:</p>
+<ul>
+<li>angular.module("somemodule").provider()</li>
+<li>angular.module("somemodule").service()</li>
+<li>angular.module("somemodule").constant()</li>
+</ul>
+<p>Had these methods not been there on moduleInstance, then we would have needed configuration blocks.</p>
+<p>Suppose we want to keep a constant in our application. This constant tells the project name which will be shown on various screens of the app. The usualy way to achieving it would be:</p>
+<div class="highlight"><pre><span></span>angular.module(&quot;core&quot;, []);
+angular
+    .module(&quot;core&quot;)
+    .constant(&quot;APP_NAME&quot;, &quot;Vizbi: The most powerful BI tool&quot;)
+</pre></div>
+
+
+<p>And then this constant can be used in any controller and can be made available on scope.</p>
+<div class="highlight"><pre><span></span>angular.module(&quot;visualization&quot;, [&quot;core&quot;]);
+angular
+    .module(&quot;visualization&quot;)
+    .controller([&quot;APP_NAME&quot;, function (APP_NAME) {
+        console.log(APP_NAME);
+    }]);
+</pre></div>
+
+
+<p>Let's try the same thing with configuration block instead of using <code>.constant()</code>.
+Ensure that you delete the old code which was using <code>.constant()</code>.</p>
+<div class="highlight"><pre><span></span>angular.module(&quot;core&quot;, []);
+angular
+    .module(&quot;core&quot;)
+    .config([&quot;$provide&quot;, function ($provide) {
+        $provide.constant(&quot;APP_NAME&quot;, &quot;Vizbi: The most powerful BI tool&quot;)
+    }]);
+</pre></div>
+
+
+<p>APP_NAME would still be injectable in controller.</p>
+<p>Similarly we usually add a service using angular.module().service(). But the same thing can usually be achieved using $provide.service().</p>
+<p>Under the hood angular.module().constant() uses $provide.constant(). Similarly angular.module().service() uses $provide.service().</p>
+<p>So most of the times you aren't having to use configuration block because there are helper methods like <code>.constant()</code>, <code>.provider()</code>, <code>.service()</code>, <code>.directive()</code>, <code>.controller()</code> etc.</p>
+<h3>When will you definitely need configuration block</h3>
+<p>Services are provided by providers. eg: $http is provided by $httpProvider. At low level serives are encapsulated into providers. It is possible that providers have some properties and the functionality of the service depends on a particular property. Usually all the properties of the provider has sane default configurations and services use these defaults. But if we want services to behave differently we need to overrirde these defaults. An example would make it clear.</p>
+<p>A very commonly used service is $http. $http is provided by $httpProvider and you can see code for it <a href="https://github.com/angular/angular.js/blob/e23782b8c23fc766efb29a87a25bc054af3159fd/src/ng/http.js#L257" target="_blank">here</a>.</p>
+<p>By default after every http response, the digest cycle runs which brings the view in sync with model. But digest cycle take a while to run. If you want performance improvements, you can tell $http to combine processing of multiple http responses and run a single digest cycle after several responses.</p>
+<p>This can be achieved by setting a <a href="https://github.com/angular/angular.js/blob/e23782b8c23fc766efb29a87a25bc054af3159fd/src/ng/http.js#L358" target="_blank">configuration property</a> on $httpProvider.</p>
+<p>So you would inject $httpProvider in your code and change this default.</p>
+<div class="highlight"><pre><span></span>angular.module(&quot;core&quot;, []);
+angular
+    .module(&quot;core&quot;)
+    .config(&quot;$httpProvider&quot;, function ($httpProvider) {
+        $httpProvider.useApplyAsync(true);
+    });
+</pre></div>
+
+
+<p>So you would have to use .config() when you want to change configuration of a ngCore module which has already been written in angular.js or if you want to change configuration of a third party library which your app uses.</p>
+<p>You would rarely have to write configuration block for modules or providers which you define.</p>
+<h3>When is configuration block executed</h3>
+<p>Configuration block is executed during bootstrap process which is before any controller or directive code. Once bootstrap is done, configuration blocks can't execute. Once boostrap is done, providers aren't injectable any more. So property or method on providers can't be called after boostrap phase. This essentially means that property or methods of providers can't be called outside of configuration phase.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

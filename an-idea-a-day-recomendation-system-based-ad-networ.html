@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>An idea a day - Recomendation system based ad network</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/an-idea-a-day-recomendation-system-based-ad-networ.html" rel="bookmark"
+           title="Permalink to An idea a day - Recomendation system based ad network">An idea a day - Recomendation system based ad network</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2008-05-11T10:10:51+05:30">
+                Published: Sun 11 May 2008
+        </abbr>
+		<br />
+        <abbr class="modified" title="2008-05-11T20:40:51+05:30">
+                Updated: Sun 11 May 2008
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/startup.html">startup</a> </p>
+</footer><!-- /.post-info -->      <p>This is an article in the <strong>Five Startup Ideas</strong> series at <a href="http://42topics.com/">the 42topics blog</a>. In his essay, <a href="http://www.paulgraham.com/ideas.html">Ideas for Startups</a>, Paul Graham argues that ideas are not a critical factor for success of startups. Although I do not believe that ideas are worthless, as many people do, I believe that they are not any where near as important as execution. So to prove my point, I am giving away 5 startup ideas in next five days. All of them describe a problem, its solution, the technology involved, the competition and market size. If you are not a hacker, and want to build any of these things may I suggest <a href="http://uswaretech.com/">Uswaretech</a>.</p>
+<h3>Title:</h3>
+<p>Ad network which takes into account user feedback.</p>
+<h3>The problem:</h3>
+<p>Today Adsense is the default Ad network. If a person has a website they just slap an adsense ad unit on the page, and try to get a few bucks.</p>
+<p>Adsense is a contextual advertising solution. It read the page and tries to find the area the page is about. For example, try <a href="http://www.frihost.com/forums/">this site</a>. From reading this site, google decided that this is about web hosting, and showed ads about web hosting.</p>
+<p>The problem with this is that this site is about free web hosting. So no person on that site is clicking on paid web hosting ads, and the site owner in not making any money. Assume now that the demographic of this site is gamers. So if you showed ads about games, the ad revenue for the site owner can be potentially much higher.</p>
+<p>Of course you need to do this algorithmically. So you need to take users feedback into account. See solution for how this can be done.</p>
+<h3>The solution:</h3>
+<p>There are a few ways to find out what ads will convert for a given webpage. When the ad unit is put up on the page, show a random collection of ads. After a few clicks have happened, you can pin down with reasonable accuracy the niches from which these clicks happened. Now start showing ads from that niche, and keep track of which subniches convert best. Soon you can find out which niches, and ads are best performing and show them.</p>
+<p>When you are just starting you would not have large inventory of ads to show on all pages. So you need to show ads from other networks as well. <a href="http://www.amazon.com/E-Commerce-Service-AWS-home-page/b?ie=UTF8&amp;node=12738641">Amazon</a> has an API, so does <a href="http://developer.ebay.com/common/api/">Ebay</a>, <a href="http://code.google.com/apis/adsense/">Adsense</a> has one too, though I am not sure it has what you would be looking for. You can use these to show ads your members would be interested in.</p>
+<h3>Technologies involved:</h3>
+<p>Use any server side technology ROR, <a href="http://uswaretech.com/">Django</a>, or if your feeling adventurous J2EE. All of the services mentioned above have SOAP or REST api. So any programming language won't be a problem.</p>
+<h3>Existing Competition:</h3>
+<p>You are essentially trying to mix Recommendation System with Ad networks. There is no ad network which I know which does this. There have been a few ad networks which have used the Ebay shopping API to create such an ad network, most notably <a href="http://shoppingads.com/">Shopping Ads</a>, but you still need to tell the system which area your site targets, and then it shows ads from this area.
+This system of asking which ads work best for a site cab be automated away, or can be used  to make a first guess, but an automated system can perform much better than asking humans for each page in site about this.</p>
+<h3>Market Size:</h3>
+<p>As in my previous post, I am unable to find the exact size of market here, but Google's financial information is <a href="http://finance.google.com/finance?fstype=ii&amp;q=NASDAQ:GOOG">here</a>. Also the whole internet is based on advertising, so the market size is big.</p>
+<h3>Others:</h3>
+<p>None</p>
+<hr>
+<p>This was part 2 of the series of 5 startup ideas. For next five days we will publish a new idea a day. If you want to read all of them, please <a href="http://42topics.com/blog/feed/">subscribe</a>. Oh and have you seen the <a href="http://42topics.com/startups/">42topics startup</a>  section? Or if you want you can <a href="http://42topics.com/create/">create</a> your own topic.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

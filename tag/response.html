@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - response</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/behind-the-scenes-request-to-response.html">Behind the Scenes: Request to Response</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2012-01-02T18:00:00+05:30">
+                Published: Mon 02 January 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-01-03T02:30:00+05:30">
+                Updated: Tue 03 January 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/response.html">response</a> </p>
+</footer><!-- /.post-info --><p>In the previous installment of &quot;Behind the Scenes&quot;, we saw how the control flows from <a class="reference external" href="http://agiliq.com/blog/2011/09/behind-the-scenes-from-html-form-to-storage/">Form to File Storage</a>. Today, we are going to see how the application reacts from request to response.</p>
+<p>In this post, we are going to assume that we are using django's inbuilt <tt class="docutils literal">runserver</tt>. The flow doesn't change much for other WSGI servers available.</p>
+<p>When you invoke the <tt class="docutils literal">runserver</tt> management command, the command line options are validated and an instance of <a class="reference external" href="https://code.djangoproject.com/browser/django/trunk/django/core/servers/basehttp.py#L113">WSGIServer</a> is created and passed the <a class="reference external" href="https://code.djangoproject.com/browser/django/trunk/django/core/servers/basehttp.py#L130">WSGIRequestHandler</a>, which is used to create the request object (<a class="reference external" href="https://code.djangoproject.com/browser/django/trunk/django/core/handlers/wsgi.py#L128">WSGIRequest</a>). After the request object is created and the request started signal is fired, the response is fetched through the <a class="reference external" href="https://code.djangoproject.com/browser/django/trunk/django/core/handlers/base.py#L72">WSGIRequestHandler.get_response(request)</a>.</p>
+<p>In the <tt class="docutils literal">get_response</tt> method of the request handler, first the urlconf location (by default the <tt class="docutils literal">urls.py</tt>) is setup based on the <tt class="docutils literal">settings.ROOT_URLCONF</tt>. Then a <a class="reference external" href="https://code.djangoproject.com/browser/django/trunk/django/core/urlresolvers.py#L219">RegexURLResolver</a> compiles the regular expressions in the urlconf file. Next, the request middlewares are called in the order specified in the <tt class="docutils literal">settings.MIDDLEWARE_CLASSES</tt> followed by the view middlewares after matching the view (<tt class="docutils literal">callback</tt>) function against the compiled regular expressions from the urlconf. Then the view (<tt class="docutils literal">callback</tt>) is invoked and verified that it does not return <tt class="docutils literal">None</tt> before calling the response middlewares.</p>
+<p>You can see the pictorial representation of the flow below:</p>
+<a class="reference external image-reference" href="http://agiliq.com/static/dumps/images/20120102/request_to_response.png"><img alt="Request to Response Flow" class="align-center" src="http://agiliq.com/static/dumps/images/20120102/request_to_response.png" style="width: 543px; height: 792px;" /></a>
+                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

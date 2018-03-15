@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Python Wrapper on Bing API</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/python-wrapper-on-bing-api.html" rel="bookmark"
+           title="Permalink to Python Wrapper on Bing API">Python Wrapper on Bing API</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-10T01:39:33+05:30">
+                Published: Wed 10 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-10T12:09:33+05:30">
+                Updated: Wed 10 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/api.html">API</a> </p>
+</footer><!-- /.post-info -->      <p>The newly launched search engine <a href="http://www.bing.com/">Bing</a> has a simple restful API. We have created a thin Python wrapper over this API, which allows to query the Bing servers in a very pythonic way.</p>
+<p>Installing this is as easy as <code>easy_install bingapi</code>.</p>
+<p>[Or get it <a href="https://svn.uswaretech.com/bingapi/">here</a> or <a href="http://pypi.python.org/pypi/bingapi/0.01">here</a> ]</p>
+<p>Using</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bingapi</span> <span class="kn">import</span> <span class="n">bingapi</span>
+<span class="n">bing</span> <span class="o">=</span> <span class="n">bingapi</span><span class="o">.</span><span class="n">Bing</span><span class="p">(</span><span class="o">&lt;</span><span class="n">appid</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">bing</span><span class="o">.</span><span class="n">do_web_search</span><span class="p">(</span><span class="s1">&#39;Usware Technologies&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<hr>
+<p>The README from the project is posted below, which provides more details on using this.</p>
+<p>bingapi.py is a very thin python wrapper over the Bing API.
+Bing provides a very simple Restful interface to their search engine
+and provides results in JSON and XML interface.</p>
+<p>With bingapi.py, we query the rest urls to get the JSON response,
+which is parsed with simplejson.py. bingapi.py just adds simple niceties
+like logging and error handling.</p>
+<h3>Installing bingapi.py</h3>
+<div class="highlight"><pre><span></span>easy_install bingapi
+</pre></div>
+
+
+<p>or Svn it from <code>https://svn.uswaretech.com/bingapi/</code></p>
+<h3>Using bingapi.py</h3>
+<p>To use this library, you need to have an Appid from Bing. You can get it from
+http://www.bing.com/developers/createapp.aspx</p>
+<p>The meat of bingapi.py is <code>talk_to_bing</code> function. It takes a query(eg. salsa)
+and a sources(eg. web) and other optional parameters in extra_args
+(eg. {'web.offset': 40}) and returns the dictionary of Bing's response.</p>
+<p>eg</p>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">bingapi</span> <span class="kn">import</span> <span class="n">bingapi</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">bing</span> <span class="o">=</span> <span class="n">bingapi</span><span class="o">.</span><span class="n">Bing</span><span class="p">(</span><span class="s1">&#39;&lt;Your Appid&gt;&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">bing</span><span class="o">.</span><span class="n">talk_to_bing</span><span class="p">(</span><span class="s1">&#39;salsa&#39;</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="s1">&#39;web&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> 
+<span class="o">..........</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">bing</span><span class="o">.</span><span class="n">talk_to_bing</span><span class="p">(</span><span class="s1">&#39;salsa&#39;</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="s1">&#39;web&#39;</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;web.offset&#39;</span><span class="p">:</span><span class="mi">40</span><span class="p">})</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> 
+<span class="o">..........</span>
+</pre></div>
+
+
+<p>Class <code>Bing</code> also provides utility functions to do the various types of seraches
+so you dont have to remember the source type.</p>
+<p>The various functions available are,</p>
+<div class="highlight"><pre><span></span>do_web_search
+do_image_search
+do_news_search
+do_spell_search
+do_related_search
+do_phonebook_search
+do_answers_search
+</pre></div>
+
+
+<p>All of them are used similarly.</p>
+<div class="highlight"><pre><span></span>In [6]: bing.do_web_search(&#39;salsa&#39;)
+Out[6]: 
+..........
+
+In [7]: bing.do_image_search(&#39;salsa&#39;)
+Out[7]: 
+..............
+
+In [8]: bing.do_answers_search(&#39;what is salsa&#39;)
+Out[8]: 
+...............
+</pre></div>
+
+
+<p>If you want to use multiple sources in one call you can use <code>talk_to_bing</code>
+directly as</p>
+<div class="highlight"><pre><span></span>In [10]: bing.talk_to_bing(query=&#39;salsa&#39;, sources=&#39;web news&#39;)
+Out[10]:
+............
+</pre></div>
+
+
+<p>But, but.. Why bing? you ask. Well, other than the fact that bing search is indeed better in some areas, particularly multimedia, bing has fairer <a href="http://www.bing.com/community/blogs/developer/archive/2009/05/28/announcing-the-new-live-search-api-version-2-0-beta.aspx">usage quota and API restrictions</a>. </p>
+<h3>Resources</h3>
+<ul>
+<li><a href="http://www.bing.com/developers/">http://www.bing.com/developers/</a></li>
+<li><a href="http://pypi.python.org/pypi/bingapi/0.01">http://pypi.python.org/pypi/bingapi/0.01</a></li>
+</ul>
+<hr>
+<p>Developing a search mashup? Bing API? <a href="http://uswaretech.com/blog/2008/04/new-tutorial-building-a-search-engine-with-appengine-and-yahoo/">Yahoo</a>, Google APIs? <a href="http://uswaretech.com/contact/">We can help</a>.</p>
+<p>t/).</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

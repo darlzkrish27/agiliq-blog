@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Starting Android app developement: From zero to app</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/starting-android-app-developement-from-zero-to-app.html" rel="bookmark"
+           title="Permalink to Starting Android app developement: From zero to app">Starting Android app developement: From zero to app</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-02-06T06:00:21+05:30">
+                Published: Sun 06 February 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-02-06T17:30:21+05:30">
+                Updated: Sun 06 February 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/java.html">java</a> </p>
+</footer><!-- /.post-info -->      <p>We recently started with Mobile Application development. I am learning Android using the <a href="http://Commonsware.com/">Commonsware book</a>, and highly recommend it.
+This is a very short guide to getting you running your first Android app.</p>
+<h2>What will we build</h2>
+<p>We will build a simple tax calculator for India, per the rules <a href="http://en.wikipedia.org/wiki/Income_tax_in_India">given here</a> for tax calculation. In this app, we need to gets users
+income and various tax deductible expenses. After that we need to update the UI to show the tax. You can see <a href="https://market.android.com/details?id=com.agiliq.taxcalc">the final app</a>
+and <a href="https://github.com/agiliq/TaxCalculatorAndroid">code on github</a> here.</p>
+<h2>Setting up</h2>
+<ol>
+<li>Install Java and Eclipse </li>
+<li>Install Android SDK and add ons.</li>
+<li>Instal ADT for eclipse.</li>
+<li>Create a Android project from within Eclipse.</li>
+</ol>
+<h2>What the project contains:</h2>
+<ol>
+<li>AndroidManifest.xml: This is the entry point for the app. It decides the properties including which Java file will start the App.</li>
+<li>YourApp.java: This is a java class which extends <code>Activity</code> and has the <code>onCreate</code> method, which decides where to get the Layout from.</li>
+<li>main.xml: By default <code>YourApp.java</code> will look for Layout in the files res/layout/main.java</li>
+<li>strings.xml: While not necessary you will have your strings in an external xml file here.</li>
+</ol>
+<p>There are a lot of other files, but these are the ones you are going to need for our App.</p>
+<h2>How does the Layout go to the Java file</h2>
+<p>You will need to modify the Layout in your Java code, but you defined your layout in main.xml. How does Java get it?
+Eclipse auto-generates a file called R.java, which will get your layout and all declared fields in Java. R.java, <em>should not</em>
+be edited directly, it is automatically generated. (As is everything in the gen folder.)</p>
+<h2>Lets write the layout.</h2>
+<p>You can build the Layout in a GUI tool provided by Eclipse, but I found it <em>very</em> underpowered. I preferred to write it directly in XML.</p>
+<p>There are a lot of widgets available, but for this app we are going to need three.</p>
+<ol>
+<li>A Uneditable text field. Its called a TextView.</li>
+<li>I Editable text view. Its called a EditText</li>
+<li>A button. Its called a Button.</li>
+<li>Make it scrollable. Its called a ScrollView</li>
+</ol>
+<p>Layout your app in the preferred order. I added 5 EditText to get the income and tax deductible values. We will read these values and display them in
+a TextView. We need a button to know when to calculate the tax.</p>
+<p>You will notice that instead of setting the text values via normal strings we are doing it via <code>android:text="@string/income_tax_init"</code>. This references
+values from the Strings.xml file which looks like this.</p>
+<p>You can set a lot of values on your UI elements for setting things like color. The import one is <code>android:id</code>. You must set a value here if you want to make
+the widget available in your Java code.</p>
+<p><a href="https://github.com/agiliq/TaxCalculatorAndroid/blob/master/res/layout/main.xml">Your code will look like this after you are done.</a></p>
+<h2>Let write the Java code</h2>
+<p>In our Java code we ned to do,</p>
+<ol>
+<li>Get the Input value for the fields.</li>
+<li>Calculate tax using these values.</li>
+<li>Update the UI to show the tax.</li>
+</ol>
+<p>All of this needs to be handled after a click, so your public class needs to <code>implements Button.OnClickListener</code>
+and implement the <code>onClick</code>.</p>
+<p>You can get the fields you declared in XML this way:</p>
+<div class="highlight"><pre><span></span>(EditText)findViewById(R.id.income);
+</pre></div>
+
+
+<p>And the values from them as,</p>
+<div class="highlight"><pre><span></span>income.getText().toString();
+</pre></div>
+
+
+<p>Now we can get the values and parse them as <code>int</code> via <code>Integer.parseInt</code>, and calculate tax via normal Java semantics.</p>
+<p>Once we have the tax, the UI can be updated via:</p>
+<div class="highlight"><pre><span></span>tax.setText(&quot;&quot;+tax);
+</pre></div>
+
+
+<p><a href="https://github.com/agiliq/TaxCalculatorAndroid/blob/master/src/com/agiliq/taxcalc/TaxCalculator.java">Your final Java code will look like this.</a> </p>
+<h2>Bridging XML and Java</h2>
+<p>Most of the Java&lt;-&gt;XML bridging is done via R.java, by making the XML widgets available in Java. You need to set the function to be
+called on button click.</p>
+<p>This is done via the <code>android:onCLick</code> property on the <code>Button</code>, in the <code>main.xml</code>.</p>
+<h2>And we are done</h2>
+<p>You can set the logo and package it for sale in the Android marketplace now. :)</p>
+<h2>Resources</h2>
+<ol>
+<li><a href="https://github.com/agiliq/TaxCalculatorAndroid">Code for this app</a></li>
+<li><a href="https://market.android.com/details?id=com.agiliq.taxcalc">This app on Android marketplace</a></li>
+<li><a href="https://github.com/agiliq/TaxCalculatorIndia">Similar code for Iphone and Objective C</a></li>
+<li><a href="http://commonsware.com/">Commonsware: The book I am reading</a></li>
+</ol>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

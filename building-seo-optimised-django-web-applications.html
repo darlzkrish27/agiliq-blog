@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Building SEO optimised Django web applications</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/building-seo-optimised-django-web-applications.html" rel="bookmark"
+           title="Permalink to Building SEO optimised Django web applications">Building SEO optimised Django web applications</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2008-10-07T11:59:44+05:30">
+                Published: Tue 07 October 2008
+        </abbr>
+		<br />
+        <abbr class="modified" title="2008-10-07T22:29:44+05:30">
+                Updated: Tue 07 October 2008
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/seo.html">seo</a> </p>
+</footer><!-- /.post-info -->      <p>This is an article about building <a href="http://www.seobook.com/glossary/#seo">SEO</a>, optmised web applications with Django. I assume you already have an idea how Seo works. We will take the example 
+of a hypothetical Blog app to explain the suggestions made.</p>
+<p>Without further ado, here are the tips.</p>
+<p>Basic</p>
+<ol>
+<li>Use beautiful URLs.</li>
+<li>Learn the difference between HTTP 301 and HTTP 302 redirects.</li>
+<li>Layout content in a SEO friendly way.</li>
+<li>Create a sitmaps.</li>
+</ol>
+<p>Not so obvious</p>
+<ol>
+<li>Use the Admin to allow end users to update fields.</li>
+<li>Do not get your Url structures too deep.</li>
+<li>Create a robots.txt file. </li>
+<li>Link to your pages wisely.</li>
+<li>Minimise duplicate content.</li>
+<li>Ping Google when your site gets updated.</li>
+</ol>
+<h2>Basic tips.</h2>
+<p>If you are building a production web app, you should really be using these techniques.</p>
+<h3>Use beautiful URLs.</h3>
+<p>Say our app has a model like, </p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Entry</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+      <span class="nx">title</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+      <span class="nx">body</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">()</span>
+</pre></div>
+
+
+<p>It would be very tempting to have Urls like /entry/15/, and map this url to the entry with PK 15. Resist this temptation. Search Engines need help to decide what a page is about, and the Urls plays a
+major part in that. Instead we want the Url to depend on the title.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Entry</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+      <span class="nx">title</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+      <span class="nx">body</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">()</span>
+      <span class="nx">slug</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">SlugField</span><span class="p">()</span>
+
+      <span class="nx">def</span> <span class="nx">save</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">slug</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">title</span><span class="p">.</span><span class="nx">split</span><span class="p">())</span><span class="err">#</span><span class="nx">And</span> <span class="nx">clean</span> <span class="nx">title</span><span class="p">,</span> <span class="nx">and</span> <span class="nx">make</span> <span class="nx">sure</span> <span class="k">this</span> <span class="nx">is</span> <span class="nx">unique</span><span class="p">.</span>
+        <span class="kr">super</span><span class="p">(</span><span class="nx">Entry</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">save</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Then we can use slug, and have Urls like /entry/seo-tips-for-django/</p>
+<p>Read more:<br>
+[1]: <a href="http://www.seomoz.org/blog/dynamic-urls-vs-static-urls-the-best-practice-for-seo-is-still-clear">Dynamic URLs vs. Static URLs</a></p>
+<h3>Learn the difference between HTTP 301 and HTTP 302 redirects.</h3>
+<p>A HTTP 301 redirects says that the url currently being accessed has moved permanenetly, while a HTTP 302 is temporary redirect which asks search engines to try the same url next time. In Django a Http 301
+maps to HttpResponsePermanenetRedirect, and a HTTP 302 maps to HttpResponseRedirect. A 301 redirect makes the search engines count the links pointing to a old Url for the new Url.</p>
+<p>Suppose our old Url was /entry/seo-tips-for-django/, and we edited the title to "Best SEO tips for Django", and want the new url to be /entry/best-seo-tips-for-django/. Now as <a href="http://www.w3.org/Provider/Style/URI">"Cool URIs Do not change"</a>, we want
+to do an redirect from  /entry/seo-tips-for-django/ to /entry/best-seo-tips-for-django/. As some people may have already linked to /entry/seo-tips-for-django/, we want a HttpResponsePermananentRedirect here.</p>
+<h3>Layout content in a SEO friendly way.</h3>
+<p>Django gives you complete control over how your Html will appear. Use this to your advantage. </p>
+<p>Search engines give more weight to the content which appears earlier in a page layout. So layout your page where the the content area appears before the footer, and then layout your pages using CSS.</p>
+<p>For example the first base template is better than second,</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;body&gt;</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">sidebar</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">footer</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="nt">&lt;/body&gt;</span>
+
+
+<span class="nt">&lt;body&gt;</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">footer</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">sidebar</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="nt">&lt;/body&gt;</span>
+</pre></div>
+
+
+<h3>Create a sitmaps.</h3>
+<p>Django comes with a wonderful <a href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/">Sitemaps framework</a>. Use this to generate a Sitemap for all our dynamic pages.</p>
+<p>Here is the all the code you need to generate the sitemap for our Entries, taken directly from <a href="(http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/)">Django Sitemaps page</a>, and it works perfectly.
+Plus this is your urls.py and you have a shiny xml sitemap ready.</p>
+<p>Read More<br>
+[1]: <a href="http://en.wikipedia.org/wiki/Site_map">Site Map</a></p>
+<h3>Use the Admin to allow end users to update fields.</h3>
+<p>Use the wonderful Admin interface to your advantage. For example, for /entry/seo-tips-for-django/ we can use the Admin to allow users to update the slug without updating the title.</p>
+<h3>Do not get your Url structures too deep.</h3>
+<p>Search Engines give more weight to pages which are closer to the root of the site. Instead of /blog/entry/2008/oct/2008/seo-tips-for-django/, prefer /entry/seo-tips-for-django/. As Django makes including urlconfs inside
+other urlconfs so easy, this can lead to deeper Url structure than needed.</p>
+<p>For example your Django project has a main urls.py,</p>
+<p>which does,</p>
+<div class="highlight"><pre><span></span>url(r&#39;^blog/&#39;, include(&#39;blog.urls&#39;)),
+</pre></div>
+
+
+<p>and blog/urls.py does</p>
+<div class="highlight"><pre><span></span>url(r&#39;^search/&#39;, include(&#39;blog.searchurls&#39;)),
+</pre></div>
+
+
+<p>and blog/urls.py does</p>
+<div class="highlight"><pre><span></span>url(r&#39;^search/$&#39;, &#39;search_view&#39;),
+</pre></div>
+
+
+<p>then your serach page will be at /blog/search/search/, when it should probably be at /search/. Include with care.</p>
+<p>which includes blog/urls.py</p>
+<h3>Create a robots.txt file.</h3>
+<p>Use <a href="http://code.google.com/p/django-robots">Django Robots</a> to create robots,txt file for your Django site.</p>
+<h3>Link to your pages wisely.</h3>
+<p>Eg. When you are linking to the the entry page from main page/other page on your site use, use descriptive anchor texts. SO the permalink for our entry pages shuld not be,</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">entry.get_absolute_url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>Read More<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<p>But rather,</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">entry.get_absolute_url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">entry.title</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<h3>Minimise duplicate content.</h3>
+<p>Search engines hate duplicate content. So try not to have the same content on multiple Urls.</p>
+<p>For example see this innocous looking url pattern </p>
+<div class="highlight"><pre><span></span>urlpatterns = patterns(&#39;&#39;,
+    (r&#39;^entry/(\w+)/&#39;, &#39;blog.view.entry&#39;),
+
+    ...
+</pre></div>
+
+
+<p>This url pattern will match for all of /entry/seo-tips-for-django/1, /entry/seo-tips-for-django/2, /entry/seo-tips-for-django/3 and similar. </p>
+<p>To make sure only /entry/seo-tips-for-django/ matches, use </p>
+<div class="highlight"><pre><span></span>urlpatterns = patterns(&#39;&#39;,
+    (r&#39;^entry/(\w+)/$&#39;, &#39;blog.view.entry&#39;),
+    ...
+</pre></div>
+
+
+<p>On a similar note, say you have commenst for your Blog, which you want permalinks for.</p>
+<p>Do not do this.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Comment</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+     <span class="nx">def</span> <span class="nx">get_absolute_url</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+      <span class="err">#</span><span class="nx">You</span> <span class="nx">would</span> <span class="nx">use</span> <span class="nx">permalink</span> <span class="nx">here</span><span class="p">.</span>
+      <span class="k">return</span> <span class="s1">&#39;/comment/%s/&#39;</span> <span class="o">%</span> <span class="nx">self</span><span class="p">.</span><span class="nx">id</span> <span class="err">#</span> <span class="nx">or</span> <span class="nx">even</span> <span class="s1">&#39;/comment/%s/&#39;</span>  <span class="o">%</span> <span class="nx">self</span><span class="p">.</span><span class="nx">slug</span>
+
+<span class="nx">Instead</span> <span class="nx">what</span> <span class="nx">you</span> <span class="nx">want</span> <span class="nx">here</span> <span class="nx">is</span><span class="p">,</span>
+
+<span class="kr">class</span> <span class="nx">Comment</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+     <span class="nx">def</span> <span class="nx">get_absolute_url</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+      <span class="k">return</span> <span class="s1">&#39;%s#%s&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">entry</span><span class="p">.</span><span class="nx">get_absolute_url</span><span class="p">(),</span> <span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+</pre></div>
+
+
+<p>And create named anchors in your entries template. This makes sure that each comment is visible at only one Url.</p>
+<h3>Ping Google when your site gets updated.</h3>
+<p>You would have created a Dynamic sitemap using the sitemaps framework. SO when your content gets updated, you sitemap would get updated too. Let Google know of this using django.contrib.sitemaps.ping_google</p>
+<p>from django.contrib.sitemaps import ping_google</p>
+<div class="highlight"><pre><span></span> <span class="k">class</span> <span class="n">Entry</span>(<span class="n">models</span>.<span class="n">Model</span>):
+     <span class="c c-Singleline"># ...</span>
+     <span class="n">def</span> <span class="n">save</span>(<span class="k">self</span>, <span class="n">force_insert</span>=<span class="nb">False</span>, <span class="n">force_update</span>=<span class="nb">False</span>):
+     <span class="n">super</span>(<span class="n">Entry</span>, <span class="k">self</span>).<span class="n">save</span>(<span class="n">force_insert</span>, <span class="n">force_update</span>)
+     <span class="n">try:</span>
+         <span class="n">ping_google</span>()
+     <span class="n">except</span> <span class="n">Exception:</span>
+         <span class="c c-Singleline"># Bare &#39;except&#39; because we could get a variety</span>
+         <span class="c c-Singleline"># of HTTP-related exceptions.</span>
+         <span class="nb">pass</span>
+</pre></div>
+
+
+<p>http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/#pinging-google</p>
+<hr>
+<p>Need a web application built? <a href="http://uswaretech.com/contact/">Talk to us</a>.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

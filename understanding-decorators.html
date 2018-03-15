@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Understanding decorators</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/understanding-decorators.html" rel="bookmark"
+           title="Permalink to Understanding decorators">Understanding decorators</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-23T09:04:57+05:30">
+                Published: Tue 23 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-23T19:34:57+05:30">
+                Updated: Tue 23 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->      <p>If you used Django for any length of time, you would have come across the
+<code>login_required</code> decorator. You write <code>@login_required</code> before a view, and it
+magically becomes accessible only to authenticated users.</p>
+<p>Decorators were introduced in python 2.4. <a href="http://www.python.org/dev/peps/pep-0318/">PEP 318</a>
+is the <a href="http://www.python.org/dev/peps/">PEP</a> describing it. At
+the simplest decorators are nothing but callables returning other callables, and
+the decorator syntax <code>@decorator</code> is nothing but <code>foo = bar(foo)</code>, where both
+<code>bar</code> and <code>foo</code> are callables.</p>
+<p>Let us see some decorators in action.</p>
+<div class="highlight"><pre><span></span>In [1]: def good_function():
+   ...:     print &#39;I am a good function&#39;
+   ...:     
+   ...:
+
+In [2]: def decorator(orig_func):
+   ...:     def bad_func():
+   ...:         print &#39;I am a bad function&#39;
+   ...:     return bad_func
+   ...:
+
+In [3]: good_function = decorator(good_function)
+
+In [4]: good_function()
+I am a bad function
+
+In [5]: @decorator
+   ....: def good_function2():
+   ....:     print &#39;I am a good function&#39;
+   ....:     
+   ....:
+
+In [6]: good_function2()
+I am a bad function
+</pre></div>
+
+
+<p>So you can see that the decorated function depended only on the value of the
+function returned by the decorator.</p>
+<p>Here we discarded the function we were passed. Any useful decorator, <em>decorates</em>
+the original function, so it would use the original function. Let us see an
+actual decorator which may be useful.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_val_positive_deco</span><span class="p">(</span><span class="n">orig_func</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">temp_func</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">orig_func</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">temp_func</span>
+
+<span class="nd">@is_val_positive_deco</span>
+<span class="k">def</span> <span class="nf">sqrt</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">math</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="k">print</span> <span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Here we defined an decorator <code>is_val_positive_deco</code> which will make functions
+return 0, if the argument passed is negative. We can use this decorator to guard
+against MathErrors.</p>
+<h2>Class based decorators</h2>
+<p>Decorators are just callables, and hence can be a class which has <code>__call__</code>
+method. Sometimes they are easier to understand and reason about(than decorators
+written as functions).
+Lets see one,</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">LogArgumentsDecorator</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">orig_func</span><span class="p">)</span><span class="o">:</span>
+                <span class="nx">self</span><span class="p">.</span><span class="nx">orig_func</span> <span class="o">=</span> <span class="nx">orig_func</span>
+                <span class="nx">print</span> <span class="s1">&#39;started logging: %s&#39;</span> <span class="o">%</span> <span class="nx">orig_func</span><span class="p">.</span><span class="nx">__name__</span>
+
+        <span class="nx">def</span> <span class="nx">__call__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span>  <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+                <span class="nx">print</span> <span class="s1">&#39;args: %s&#39;</span> <span class="o">%</span> <span class="nx">args</span>
+                <span class="nx">print</span> <span class="s1">&#39;kwargs:%s&#39;</span><span class="o">%</span> <span class="nx">kwargs</span>
+                <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">orig_func</span><span class="p">(</span><span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+
+<span class="kd">@LogArgumentsDecorator</span>      
+<span class="nx">def</span> <span class="nx">sum_of_squares</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">return</span> <span class="nx">a</span><span class="o">*</span><span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="o">*</span><span class="nx">b</span>
+
+<span class="nx">print</span> <span class="nx">sum_of_squares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nx">b</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This outputs,</p>
+<div class="highlight"><pre><span></span>started logging: sum_of_squares
+args: 3
+kwargs:{&#39;b&#39;: 4}
+25
+</pre></div>
+
+
+<p>Lets see what happens when we do,</p>
+<div class="highlight"><pre><span></span>@LogArgumentsDecorator      
+def sum_of_squares(a, b):
+</pre></div>
+
+
+<p>This is equivalent to</p>
+<div class="highlight"><pre><span></span>sum_of_squares = LogArgumentsDecorator(sum_of_squares)
+</pre></div>
+
+
+<p>At this point, we created a new LogArgumentsDecorator object, so
+<code>LogArgumentsDecorator.__init__(self, sum_of_squares)</code> gets called. Hence
+<code>print 'started logging: %s' % orig_func.__name__</code> line is executed.</p>
+<p>When we do <code>sum_of_squares(...)</code></p>
+<p><code>LogArgumentsDecorator.__call__</code> gets called with the passed values, where we
+print the arguments and call the original function.</p>
+<p>Here is one more example of a class based decorator. Here we rewrite(sort of,
+anyway) Django's login_required decorator as a class based decorator.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">LoginRequiredDecorator</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+<span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">orig_func</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">orig_func</span> <span class="o">=</span> <span class="nx">orig_func</span>
+
+<span class="nx">def</span> <span class="nx">__call__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">request</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">is_authenticated</span><span class="p">()</span><span class="o">:</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">orig_func</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="o">:</span>
+        <span class="k">return</span> <span class="nx">HttpResponseRedirect</span><span class="p">(</span><span class="nx">reverse</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Similar to above, it takes the view function, during <code>__init__</code>. When the request
+comes, <code>__call__</code> makes sure that user is authenticated, and takes action
+appropriately.</p>
+<p>Resources
+<em> <a href="http://wiki.python.org/moin/PythonDecoratorLibrary">Decorator Library</a>
+</em> <a href="http://www.python.org/dev/peps/pep-0318/">Pep 318</a></p>
+<hr>
+<p>Subscribe to <a href="http://feeds.feedburner.com/UswareBlog">The Uswaretech Blog</a> where we will be writing the next part of this tutorial explaining more complex decorators, decorators which take arguments, decorator factories and more. Or follow us on <a href="http://twitter.com/uswaretech">twitter</a>.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

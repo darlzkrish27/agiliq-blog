@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Adventures in advanced Django ORM with HyperLogLog</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/adventures-in-advanced-django-orm-with-hyperloglog.html" rel="bookmark"
+           title="Permalink to Adventures in advanced Django ORM with HyperLogLog">Adventures in advanced Django ORM with HyperLogLog</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-11T11:24:38+05:30">
+                Published: Mon 11 December 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-12-11T22:54:38+05:30">
+                Updated: Mon 11 December 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>Counting distinct object is a common operation. Most databases and Django make its quite simple to do so. Given appropriate tables or models you would be doing something like</p>
+<div class="highlight"><pre><span></span>select event_type, count(distinct user_id)
+from github_events
+group by 1;
+</pre></div>
+
+
+<p>With appropriateley defined Django model you would do</p>
+<div class="highlight"><pre><span></span>GithubEvents.objects.values(
+    &quot;event_type&quot;
+).annotate(
+    distinct_user_count=Count(
+        &quot;user_id&quot;, distinct=True
+    )
+)
+</pre></div>
+
+
+<p>Count distinct is however <a href="https://en.wikipedia.org/wiki/Count-distinct_problem">quite slow on large datasets</a>. There are a few faster methods which give an approximate count in much less time. HyperLogLog is one of the most common methods. We will try implementing that in Django ORM without going to raw SQL and see how far we can get. (Spoiler: We will go far but won't be able to do it.)</p>
+<p>We will use a table of github events. Citusdata has some interesting data sets, they have a <a href="https://examples.citusdata.com/events.csv">Github event data in CSV</a> which we will use today. We will use Postgres.</p>
+<p>Lets create the table and load the data.</p>
+<div class="highlight"><pre><span></span>CREATE TABLE github_events
+    (
+        event_id bigint,
+        event_type text,
+        event_public boolean,
+        repo_id bigint,
+        payload jsonb,
+        repo jsonb,
+        user_id bigint,
+        org jsonb,
+        created_at timestamp
+    );
+
+COPY github_events FROM events.csv CSV
+</pre></div>
+
+
+<p>We then do a insepctdb on created table to get our models.</p>
+<div class="highlight"><pre><span></span>python manage.py inspectdb github_events
+</pre></div>
+
+
+<p>This gives us</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">GithubEvents</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">event_id</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">BigIntegerField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+    <span class="nx">event_type</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+    <span class="nx">event_public</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">NullBooleanField</span><span class="p">()</span>
+    <span class="nx">repo_id</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">BigIntegerField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+    <span class="nx">payload</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>  <span class="err">#</span> <span class="nx">This</span> <span class="nx">field</span> <span class="nx">type</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">guess</span><span class="p">.</span>
+    <span class="nx">repo</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>  <span class="err">#</span> <span class="nx">This</span> <span class="nx">field</span> <span class="nx">type</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">guess</span><span class="p">.</span>
+    <span class="nx">user_id</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">BigIntegerField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+    <span class="nx">org</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>  <span class="err">#</span> <span class="nx">This</span> <span class="nx">field</span> <span class="nx">type</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">guess</span><span class="p">.</span>
+    <span class="nx">created_at</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">DateTimeField</span><span class="p">(</span><span class="nx">blank</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span> <span class="kc">null</span><span class="o">=</span><span class="nx">True</span><span class="p">)</span>
+
+    <span class="kr">class</span> <span class="nx">Meta</span>:
+        <span class="kt">managed</span> <span class="o">=</span> <span class="nx">False</span>
+        <span class="nx">db_table</span> <span class="o">=</span> <span class="s1">&#39;github_events&#39;</span>
+</pre></div>
+
+
+<p>Change the <code>event_id</code> to be the primary_key. Other fields stay as is</p>
+<div class="highlight"><pre><span></span>event_id = models.BigIntegerField(primary_key = True)
+</pre></div>
+
+
+<p>To get the HyperLogLog based distinct counts, grouped by event_type we need to the following SQL.</p>
+<div class="highlight"><pre><span></span>SELECT
+  counted_data.event_type,
+  CASE WHEN num_uniques &lt; 2.5 * 512
+  AND num_zero_buckets &gt; 0 THEN (
+    (
+      0.7213 / (1 + 1.079 / 512)
+    ) * (
+      512 * log(
+        2,
+        (512 :: numeric) / num_zero_buckets
+      )
+    )
+  ):: int ELSE num_uniques END AS approx_distinct_count
+FROM
+  (
+    SELECT
+      event_type,
+      (
+        (
+          pow(512, 2) * (
+            0.7213 / (1 + 1.079 / 512)
+          )
+        ) / (
+          (
+            512 - count(1)
+          ) + sum(
+            pow(2, -1 * bucket_hash)
+          )
+        )
+      ):: int AS num_uniques,
+      512 - count(1) AS num_zero_buckets
+    FROM
+      (
+        SELECT
+          event_type,
+          hashtext(user_id :: varchar) &amp; (512 - 1) AS bucket_num,
+          31 - floor(
+            log(
+              2,
+              min(
+                hashtext(user_id :: varchar) &amp; ~(1 &lt;&lt; 31)
+              )
+            )
+          ) AS bucket_hash
+        FROM
+          github_events
+        GROUP BY
+          1,
+          2
+      ) AS bucketed_data
+    GROUP BY
+      1
+    ORDER BY
+      1
+  ) AS counted_data
+ORDER BY
+  1
+</pre></div>
+
+
+<p>We will not go into the details of the SQL. This SQL is adapted from Periscopedata, and <a href="https://www.periscopedata.com/blog/hyperloglog-in-pure-sql">they have a very nice tutorial here</a>.</p>
+<p>We will not be discussing the constants used or the algorithm. You should read the Periscopedata article or <a href="algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf">read the original paper</a>.</p>
+<p>We will try to convert this SQL to a Django ORM queryset and see how far we can go. This is a pretty advanced SQL with</p>
+<ol>
+<li>Nested Sub-queries</li>
+<li><code>hashtext</code> which is an undocumented Postgres function</li>
+<li>Bitwise operations</li>
+<li>Multiple grouping and mathematical functions</li>
+</ol>
+<p>Trying to convert this to ORM will allow us to use some adavanced Django ORM features.</p>
+<p>Lets start with the innermost subquery</p>
+<div class="highlight"><pre><span></span>SELECT
+  event_type,
+  hashtext(user_id :: varchar) &amp; (512 - 1) AS bucket_num,
+  31 - floor(
+    log(
+      2,
+      min(
+        hashtext(user_id :: varchar) &amp; ~(1 &lt;&lt; 31)
+      )
+    )
+  ) AS bucket_hash
+FROM
+  github_events
+GROUP BY
+  1,
+  2
+</pre></div>
+
+
+<p>The <code>hashtext(user_id :: varchar)</code> is used twice, so let us start by implementing that. <code>hashtext</code> is not part of <code>django.contrib.postgres</code>, but we can get it by subclassing <code>Func</code></p>
+<div class="highlight"><pre><span></span><span class="c1"># Some imports we are going to need for the rest of the tutorial.</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DateTimeField</span><span class="p">,</span> <span class="n">ExpressionWrapper</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span>
+     <span class="n">IntegerField</span><span class="p">,</span> <span class="n">Value</span><span class="p">,</span> <span class="n">Min</span><span class="p">,</span> <span class="n">Count</span><span class="p">,</span> <span class="n">TextField</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.db.models.functions</span> <span class="kn">import</span> <span class="n">Cast</span>
+
+<span class="k">class</span> <span class="nc">HashText</span><span class="p">(</span><span class="n">Func</span><span class="p">):</span>
+    <span class="n">function</span> <span class="o">=</span> <span class="s1">&#39;HASHTEXT&#39;</span>
+</pre></div>
+
+
+<p>With this we can do</p>
+<div class="highlight"><pre><span></span>GithubEvents.objects.annotate(
+    hashed_user_id=HashText(
+        Cast(&quot;user_id&quot;, TextField())
+    )
+)
+</pre></div>
+
+
+<p>With this we can do:</p>
+<div class="highlight"><pre><span></span>GithubEvents.objects.annotate(
+    hashed_user_id=HashText(
+        Cast(&quot;user_id&quot;, TextField())
+    )
+).annotate(
+    bucket_number=ExpressionWrapper(
+        F(&quot;hashed_user_id&quot;).bitand(511), output_field=IntegerField()
+    )
+)
+</pre></div>
+
+
+<p>We are taking the annotated <code>hashed_user_id</code> and applying a bitwise AND. We
+need to wrap this in a <code>ExpressionWrapper</code> as Django doesn't have sufficient data to calculate the output field.</p>
+<p>At this point we have the two fields we need to group on, so we can do</p>
+<div class="highlight"><pre><span></span>GithubEvents.objects.annotate(
+    hashed_user_id=HashText(
+        Cast(&quot;user_id&quot;, TextField())
+    )
+).annotate(
+    bucket_number=ExpressionWrapper(
+        F(&quot;hashed_user_id&quot;).bitand(511), output_field=IntegerField()
+    )
+).values(&quot;event_type&quot;, &quot;bucket_number&quot;, hashed_user_id=hashed_user_id)
+</pre></div>
+
+
+<p>Now we need our aggregated bucket hash corresponding to this expression:</p>
+<div class="highlight"><pre><span></span>31 - floor(
+    log(
+      2,
+      min(
+        hashtext(user_id :: varchar) &amp; ~(1 &lt;&lt; 31)
+      )
+    )
+  )
+</pre></div>
+
+
+<p>So we define a new function class, and use it to annotate further</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">FloorLog2</span><span class="p">(</span><span class="nx">Func</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">template</span> <span class="o">=</span> <span class="s1">&#39;FLOOR(LOG(2, (%(expressions)s)))&#39;</span>
+
+<span class="nx">grouped_gs</span> <span class="o">=</span> <span class="nx">GithubEvents</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">annotate</span><span class="p">(</span>
+    <span class="nx">hashed_user_id</span><span class="o">=</span><span class="nx">HashText</span><span class="p">(</span>
+        <span class="nx">Cast</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">())</span>
+    <span class="p">)</span>
+<span class="p">).</span><span class="nx">annotate</span><span class="p">(</span>
+    <span class="nx">bucket_number</span><span class="o">=</span><span class="nx">ExpressionWrapper</span><span class="p">(</span>
+        <span class="nx">F</span><span class="p">(</span><span class="s2">&quot;hashed_user_id&quot;</span><span class="p">).</span><span class="nx">bitand</span><span class="p">(</span><span class="mi">511</span><span class="p">),</span> <span class="nx">output_field</span><span class="o">=</span><span class="nx">IntegerField</span><span class="p">()</span>
+    <span class="p">)</span>
+<span class="p">).</span><span class="nx">values</span><span class="p">(</span>
+    <span class="s2">&quot;event_type&quot;</span><span class="p">,</span> <span class="s2">&quot;bucket_number&quot;</span><span class="p">,</span>
+    <span class="nx">hashed_user_id</span><span class="o">=</span><span class="nx">F</span><span class="p">(</span><span class="s2">&quot;hashed_user_id&quot;</span><span class="p">)</span>
+<span class="p">).</span><span class="nx">annotate</span><span class="p">(</span>
+    <span class="nx">bucket_hash</span><span class="o">=</span><span class="mi">31</span><span class="o">-</span><span class="nx">FloorLog2</span><span class="p">(</span>
+        <span class="nx">Min</span><span class="p">(</span><span class="s2">&quot;hashed_user_id&quot;</span><span class="p">).</span><span class="nx">bitand</span><span class="p">(</span><span class="mi">2147483647</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Lets look at the generated query</p>
+<div class="highlight"><pre><span></span>str(grouped_gs.query)
+</pre></div>
+
+
+<p>It gives us</p>
+<div class="highlight"><pre><span></span>&#39;SELECT &quot;github_events&quot;.&quot;event_type&quot;, HASHTEXT(&quot;github_events&quot;.&quot;user_id&quot;::text) AS &quot;hashed_user_id&quot;, (HASHTEXT(&quot;github_events&quot;.&quot;user_id&quot;::text) &amp; 511) AS &quot;bucket_number&quot;, (31 - FLOOR(LOG(2, ((MIN(HASHTEXT(&quot;github_events&quot;.&quot;user_id&quot;::text)) &amp; 2147483647))))) AS &quot;bucket_hash&quot; FROM &quot;github_events&quot; GROUP BY &quot;github_events&quot;.&quot;event_type&quot;, HASHTEXT(&quot;github_events&quot;.&quot;user_id&quot;::text), (HASHTEXT(&quot;github_events&quot;.&quot;user_id&quot;::text) &amp; 511)&#39;
+</pre></div>
+
+
+<p>Exactly what we want in our innermost subquery.</p>
+<p>Now we want to get to the middle subquery in our SQL, which is</p>
+<div class="highlight"><pre><span></span><span class="n">SELECT</span>
+      <span class="n">event_type</span><span class="p">,</span>
+      <span class="p">(</span>
+        <span class="p">(</span>
+          <span class="n">pow</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="mf">0.7213</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">1.079</span> <span class="o">/</span> <span class="mi">512</span><span class="p">)</span>
+          <span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+          <span class="p">(</span>
+            <span class="mi">512</span> <span class="o">-</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+          <span class="p">)</span> <span class="o">+</span> <span class="n">sum</span><span class="p">(</span>
+            <span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">bucket_hash</span><span class="p">)</span>
+          <span class="p">)</span>
+        <span class="p">)</span>
+      <span class="p">)</span><span class="o">::</span> <span class="kt">int</span> <span class="n">AS</span> <span class="n">num_uniques</span><span class="p">,</span>
+      <span class="mi">512</span> <span class="o">-</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">AS</span> <span class="n">num_zero_buckets</span>
+    <span class="n">FROM</span>
+      <span class="p">(</span>
+        <span class="p">...</span> <span class="p">[</span><span class="n">First</span> <span class="n">Subquery</span><span class="p">]</span>
+      <span class="p">)</span> <span class="n">AS</span> <span class="n">bucketed_data</span>
+    <span class="n">GROUP</span> <span class="n">BY</span>
+      <span class="mi">1</span>
+    <span class="n">ORDER</span> <span class="n">BY</span>
+      <span class="mi">1</span>
+</pre></div>
+
+
+<p>Our first attempt to get this, might be to add another level of <code>values</code> and anotate. Doing this we get.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">SumPow2</span><span class="p">(</span><span class="nx">Func</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">template</span> <span class="o">=</span> <span class="s2">&quot;sum(pow(2, -1 * %(expressions)s ))&quot;</span>
+
+<span class="nx">grouped_qs_2</span> <span class="o">=</span> <span class="nx">grouped_gs</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span>
+    <span class="s2">&quot;event_type&quot;</span><span class="p">,</span> <span class="nx">bucket_hash</span><span class="o">=</span><span class="nx">F</span><span class="p">(</span><span class="s2">&quot;bucket_hash&quot;</span><span class="p">)</span>
+<span class="p">).</span><span class="nx">annotate</span><span class="p">(</span>
+    <span class="nx">num_zero_buckets</span><span class="o">=</span><span class="mi">512</span><span class="o">-</span><span class="nx">Count</span><span class="p">(</span><span class="s2">&quot;event_type&quot;</span><span class="p">),</span>
+    <span class="nx">num_uniques</span><span class="o">=</span><span class="nx">ExpressionWrapper</span><span class="p">(</span>
+        <span class="mf">188686.824458612</span><span class="o">/</span><span class="p">(</span><span class="mi">512</span><span class="o">-</span><span class="nx">Count</span><span class="p">(</span><span class="s2">&quot;event_type&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">SumPow2</span><span class="p">(</span><span class="s1">&#39;bucket_hash&#39;</span><span class="p">)),</span> <span class="nx">output_field</span><span class="o">=</span><span class="nx">IntegerField</span><span class="p">()</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nx">str</span><span class="p">(</span><span class="nx">grouped_qs_2</span><span class="p">.</span><span class="nx">query</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Looking at the generated query we see</p>
+<div class="highlight"><pre><span></span>&#39;SELECT &quot;github_events&quot;.&quot;event_type&quot;, (31 - FLOOR(LOG(2, (MIN((HASHTEXT(&quot;github_events&quot;.&quot;user_id&quot;::text) &amp; 2147483647)))))) AS &quot;bucket_hash&quot;, (512 - COUNT(&quot;github_events&quot;.&quot;event_type&quot;)) AS &quot;num_zero_buckets&quot;, (188686.824458612 / ((512 - COUNT(&quot;github_events&quot;.&quot;event_type&quot;)) + sum(pow(2, -1 * (31 - FLOOR(LOG(2, (MIN((HASHTEXT(&quot;github_events&quot;.&quot;user_id&quot;::text) &amp; 2147483647)))))) )))) AS &quot;num_uniques&quot; FROM &quot;github_events&quot; GROUP BY &quot;github_events&quot;.&quot;event_type&quot;&#39;
+</pre></div>
+
+
+<p>This is not what we want. Rather than the nested group by we see only the outher most group by, corresponding to the last <code>values</code> call we added.</p>
+<p>My next approach was to try wrapping this in a subquery expression - <a href="https://docs.djangoproject.com/en/1.11/releases/1.11/">added in Django 1.11</a>, but
+there is no way to select with a group by from a subquery expression.</p>
+<p>At this point I gave up as there seemed to be no way to nest group by expressions. (Though I would ove to be wrong on this). I was able to go much further than I initially expected.</p>
+<h3>References</h3>
+<ul>
+<li><a href="http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf">HyperLogLog: the analysis of a near-optimal
+cardinality estimation algorithm</a></li>
+<li><a href="https://www.periscopedata.com/blog/hyperloglog-in-pure-sql">HyperLogLog in Pure SQL</a></li>
+<li><a href="https://www.citusdata.com/blog/2017/04/04/distributed_count_distinct_with_postgresql/">Distributed count(distinct) with HyperLogLog on Postgres</a></li>
+</ul>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
