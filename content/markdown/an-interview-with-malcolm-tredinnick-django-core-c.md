@@ -109,7 +109,7 @@ We can sort of see a few things coming up again and again, so I guess they'll be
 
 **Shabda**: Before we close, would you like to share a handy tip which you use a lot, but does not get used so much otherwise?
 
-**Malcolm**: People possibly overlook both the debug  template tag (best to use it as <pre>debug </pre> in a template) and the debug context processor [django.core.context_processors.media](http://www.djangoproject.com/documentation/settings/#template-context-processors).
+**Malcolm**: People possibly overlook both the `{% debug %}`  template tag (best to use it as `<pre>{% debug %}</pre>` in a template) and the debug context processor [django.core.context_processors.media](http://www.djangoproject.com/documentation/settings/#template-context-processors).
 Both of those are very useful for trying to see what's going on when you're passing information between a view function and a template.
 
 **Shabda**: Thanks Malcolm. It was great talking to you.
