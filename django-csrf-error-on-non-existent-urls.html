@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Django: csrf error on non-existent urls</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/django-csrf-error-on-non-existent-urls.html" rel="bookmark"
+           title="Permalink to Django: csrf error on non-existent urls">Django: csrf error on non-existent urls</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-06-03T07:20:26+05:30">
+                Published: Fri 03 June 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-06-03T17:50:26+05:30">
+                Updated: Fri 03 June 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->      <p>While testing out a API from another django site, I came across a seemingly common error. </p>
+<div class="highlight"><pre><span></span>403 Forbidden
+
+CSRF verification failed. Request aborted.
+
+Help
+
+Reason given for failure:
+
+    No CSRF or session cookie.
+</pre></div>
+
+
+<p>Posting the data to the api endpoint returned <code>403 Forbidden</code> with the standard csrf failure error page. I cross checked that the view was <code>csrf_exempted</code> and that <code>CsrfViewMiddleware</code> was not enabled. The view had some other unrelated decorators which I guessed could be the cause of the problem. According to <a href="https://code.djangoproject.com/ticket/14222">this bug</a>, not all decorators play nice with the <code>csrf_exempt</code> decorator. Even with that fixed, there was no luck.</p>
+<p>Well, turns out that I was posting the data to a non-existent URL (/facepalm) and django was catching the csrf part earlier than the not found part. For more discussion about this topic look at <a href="http://groups.google.com/group/django-users/browse_thread/thread/67baca233caeed53">HTTP POST sent from app to Django Server returns 403 Forbidden</a></p>
+<p>Lessons of the day:   </p>
+<ul>
+<li>POST'ing to a non-existent url results in csrf failure error. </li>
+<li>debug messages can be deceptive.</li>
+</ul>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

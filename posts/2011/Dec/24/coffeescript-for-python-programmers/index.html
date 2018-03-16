@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Coffeescript for Python programmers</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/coffeescript-for-python-programmers.html" rel="bookmark"
+           title="Permalink to Coffeescript for Python programmers">Coffeescript for Python programmers</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-12-24T00:24:11+05:30">
+                Published: Sat 24 December 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-12-24T11:54:11+05:30">
+                Updated: Sat 24 December 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/coffeescript.html">coffeescript</a> </p>
+</footer><!-- /.post-info -->      <p>I just learnt Coffeescript, and as a Python programmer loved being able to write Javascript in a Python like language. Coffeescript is inspired by 
+Python/Ruby and is very close to these languages. Writing Coffeescript and reading the compiled Javascript also improved my understanding of Javascript.
+Without much ado here is translation of some Python code to Coffeescript to get you started.</p>
+<p>Defining a variable</p>
+<div class="highlight"><pre><span></span>Python
+a = 10
+
+Coffeescript
+a = 10
+</pre></div>
+
+
+<p>Setting scope is done via whitespaces.</p>
+<div class="highlight"><pre><span></span>Python
+
+if i == 10:
+    foo()
+
+
+Coffeescript
+
+if i == 10
+    foo()
+</pre></div>
+
+
+<p>No semicolons</p>
+<p>List comprehensions</p>
+<div class="highlight"><pre><span></span>Python
+
+languages = [&quot;Python&quot;, &quot;Coffeescript&quot;, &quot;Java&quot;, &quot;Ruby&quot;, &quot;Haskell&quot;]
+languages = [lan.lower() for lan in languages]
+
+Coffeescript
+
+languages = [&quot;Python&quot;, &quot;Coffeescript&quot;, &quot;Java&quot;, &quot;Ruby&quot;, &quot;Haskell&quot;]
+languages = (lan.lowerCase for lan in languages)
+</pre></div>
+
+
+<p>Get a range</p>
+<div class="highlight"><pre><span></span>Python
+tillTen = range(1, 10)
+
+CoffeScript
+
+tillTen = [1...10]
+</pre></div>
+
+
+<p>String Interpolation</p>
+<div class="highlight"><pre><span></span>Python
+
+language = &quot;Python&quot;
+greet = &quot;I love %s&quot; % language
+
+Coffeescript
+
+language = &quot;Coffescript&quot;
+greet = &quot;I love #{language}&quot;
+</pre></div>
+
+
+<p>Multi Line String</p>
+<div class="highlight"><pre><span></span>Python
+
+&quot;&quot;&quot;
+The Quick Brown
+Fox, Jumps over
+The lazy Dog
+&quot;&quot;&quot;
+
+Coffeescript
+
+&quot;&quot;&quot;
+The Quick Brown
+Fox, Jumps over
+The lazy Dog
+&quot;&quot;&quot;
+</pre></div>
+
+
+<p>Defining a function</p>
+<div class="highlight"><pre><span></span>Python
+
+def double(x):
+    return 2 * x
+
+Coffeescript
+
+double = (x) -&gt; 
+    2 * x
+</pre></div>
+
+
+<p>Here is a larger <a href="https://github.com/shabda/humanhash-coffeescript/blob/master/humanhash.py">python script</a> converted to <a href="https://github.com/shabda/humanhash-coffeescript/blob/master/humanhash.coffee">Coffeescript</a>. </p>
+<p>You will see that they are very similar and if you know Python learning (and loving) Coffeescript won't take you a long time. Excited? 
+<a href="http://coffeescript.org/">Get started here</a>.</p>
+<hr>
+<h3>Resources</h3>
+<ul>
+<li><a href="http://pragprog.com/book/tbcoffee/coffeescript">CoffeeScript: Accelerated JavaScript Development</a>: This is the book I read Coffeescript from and I highly recommend it.</li>
+<li><a href="http://arcturo.github.com/library/coffeescript/">The Little book of Coffeescript</a></li>
+<li><a href="Http://coffeescript.org/">Official Coffeescript Site</a></li>
+<li><a href="http://blog.ssokolow.com/archives/2011/05/07/a-python-programmers-first-impression-of-coffeescript/">Another take on Coffeescript for Python people</a></li>
+</ul>
+<hr>
+<p>Can you believe that it has been only an year since the 1.0 release!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

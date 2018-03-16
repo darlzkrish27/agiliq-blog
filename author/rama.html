@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - rama</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/create-your-own-online-store-in-few-hours-using-sa.html">Create your own online store in few hours using satchmo (django)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2009-03-25T23:28:11+05:30">
+                Published: Wed 25 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-26T09:58:11+05:30">
+                Updated: Thu 26 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/satchmo.html">satchmo</a> </p>
+</footer><!-- /.post-info --><h2>What is satcmo?</h2>
+<p>Satchmo is a django based framework which allows  you to  create an online store very quickly.
+Satchmo also offers powerful customizations which allows you to tune a store to your specific business needs.</p>
+<p>Sample Demo Store : <a href="http://www.xfgw.info/store">http://www.xfgw.info/store</a></p>
+<h4>Login details</h4>
+<ol>
+<li>Use below mail and password to login into the site:  <br />
+  Email : test@test.com
+  password : welcome</li>
+<li>Use dummy credit card number like 4222-2222-2222-2222 (VISA) to make any purchases.</li>
+</ol>
+<p>Above is the sample demo store which is being provided by satchmo outofbox just after installing it.</p>
+<p>In this blog post we will discuss very basic things about satchmo like how to install satchmo? , and how to do various customizations ? etc......</p>
+<h2>Installing satchmo</h2>
+<p>Please note below </p>
+<ol>
+<li>Installation instructions are applicable to the latest version of satchmo  which is available in the trunk.</li>
+<li>We assume that python setuptools has already been installed on your system.</li>
+<li>You must have latest version of Django 1.1 beta.</li>
+</ol>
+<p>Just follow the below 5 steps to install various dependencies of satchmo.</p>
+<div class="highlight"><pre><span></span>1) easy_install pycrypto
+2) easy_install http://code.enthought.com/enstaller/eggs/rhel/3/Reportlab-2.1.0001-py2.5.egg
+3) easy_install django-registration
+4) easy_install http://tinyforge.org/frs/download.php/1/trml2pdf.tar.gz
+5) easy_install PyYAML
+</pre></div>
+
+
+<h4>install django-threaded-multihost</h4>
+<p>Go to  : http://banjo.assembla.com/spaces/threaded_multihost/documents. Download latest .tar.gz file and follow below steps</p>
+<div class="highlight"><pre><span></span>8  tar xvzf django-threaded-multihost-1.3-0.tar.gz  
+9) cd django-threaded-multihost-1.3-0 
+10) python setup.py install
+</pre></div>
+
+
+<p>if you get any error as below</p>
+<div class="highlight"><pre><span></span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="n">File</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="kn">import</span> <span class="nn">ez_setup</span>
+<span class="ne">ImportError</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="n">ez_setup</span>
+</pre></div>
+
+
+<h4>Fix the above error</h4>
+<p>Open setup.py and comment out  the first two lines as shown below and repeat the step 10.</p>
+<div class="highlight"><pre><span></span><span class="c1"># ez_setup.use_setuptools()</span>
+<span class="c1"># from setuptools import setup, find_packages</span>
+</pre></div>
+
+
+<p>Next install django-app-plugins app by following below steps.</p>
+<div class="highlight"><pre><span></span>11) svn checkout http://django-app-plugins.googlecode.com/svn/trunk/ django-app-plugins-read-only
+12) cd /path/to/your/site-packages/dir (usually it is /usr/lib/python2.X/site-packages/)
+13) ln -s /path/to/django-app-plugins-read-only/app_plugins  .
+</pre></div>
+
+
+<p>12) Installing an app means placing an app on  python path so that django can find it </p>
+<h4>How do we do it?</h4>
+<p>13) By convention any directory which is in  /usr/lib/python2.X/site-packages/ is on python path.Because of this we are creating a symlink from the sitepackges directory to the directory where we checkedout the latest version of django-app-plugins.Symlinking is more efficient that copying entire directory under sitepackages.</p>
+<p>Install Sorl thumbnail app for generating thumbnails from images</p>
+<div class="highlight"><pre><span></span>14) svn checkout http://sorl-thumbnail.googlecode.com/svn/trunk/sorl/
+15) cd /path/to/your/site-packages/dir
+16) ln -s /path/to/sorl  .
+</pre></div>
+
+
+<p>14,15,16  We followed similar approach as that of above  to install sorl-thumbnail application.</p>
+<p>Optional dependencies </p>
+<div class="highlight"><pre><span></span>17) easy_install elementtree
+18) easy_install docutils
+</pre></div>
+
+
+<p>The above are all dependencies which are required for the satchmo.</p>
+<h4>Now we will see how to create our own custom store using satchmo</h4>
+<p>create new django project </p>
+<div class="highlight"><pre><span></span>19) django-admin.py startproject customstore
+</pre></div>
+
+
+<p>check out the latest version of satchmo</p>
+<div class="highlight"><pre><span></span>20)  svn co svn://satchmoproject.com/satchmo/trunk satchmo-trunk
+</pre></div>
+
+
+<p>Install satchmo</p>
+<div class="highlight"><pre><span></span>21) cd satchmo-trunk
+21) sudo python setup.py install
+</pre></div>
+
+
+<p>Make sure everything is working fine.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">django</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">django</span><span class="o">.</span><span class="n">VERSION</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">satchmo_store</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">satchmo_store</span><span class="o">.</span><span class="n">VERSION</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;pre&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Go to your project</p>
+<div class="highlight"><pre><span></span>cd customstore
+</pre></div>
+
+
+<p>copy settings.py and localsetting.py from the sample project which is provided along with satchmo.</p>
+<div class="highlight"><pre><span></span>cp  ......../satchmo-trunk/satchmo/projects/base/settings.py  ........../customstore/settings.py
+cp  ......../satchmo-trunk/satchmo/projects/base/local_settings.py  ........../customstore/local_settings.py
+</pre></div>
+
+
+<h4>Edit customstore/settings.py</h4>
+<ol>
+<li>
+<p>Change the Django_project name from 'satchmo'  to 'satchmo_store'.In previous versions project is called as "satchmo" but now it being called as "satchmo_store"</p>
+</li>
+<li>
+<p>In installed apps if you find an app called "satchmo" rename it to "satchmo_store" .</p>
+</li>
+</ol>
+<h4>Edit customstore/local_settings.py</h4>
+<p>1.Uncomment DATEBASE_NAME,DATABASE_PASSWORD,DATABASE_USER and add corresponding details of your database</p>
+<div class="highlight"><pre><span></span>DATABASE_NAME = &#39;satchmostore&#39; #Name of the database which you create.Please refer to an additional note for mysql users at the end
+DATABASE_PASSWORD = &#39;welcome&#39;
+DATABASE_USER = &#39;operations&#39;
+</pre></div>
+
+
+<p>The characters which are being transferred  from database server to client should be in UTF-8.if your database is MYSQL you need to add
+the following in local_settings.py.</p>
+<div class="highlight"><pre><span></span>DATABASE_OPTIONS = { &quot;init_command&quot;: &#39;SET NAMES &quot;utf8&quot;&#39; ,  &quot;init_command&quot;:&#39;SET storage_engine=INNODB&#39; , }
+</pre></div>
+
+
+<p>The above command also sets INNODB as storage engine for database tables. we need to use INNODB instead of ISAM to support transactions.
+Uncomment SECRET_KEY and provide some value</p>
+<div class="highlight"><pre><span></span>SECRET_KEY = &#39;asdf&#39;
+</pre></div>
+
+
+<p>if you are using MYSQL  please note that you need to create database in UTF-8 character set as follows</p>
+<div class="highlight"><pre><span></span> create database satchmostore  CHARACTER SET UTF-8
+</pre></div>
+
+
+<h4>Edit urls.py</h4>
+<p>Copy paste the below code in the urls.py</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls.defaults</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">django.conf.urls.defaults</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">satchmo_store.urls</span> <span class="kn">import</span> <span class="n">urlpatterns</span>
+</pre></div>
+
+
+<p>if you have any other addtional urls you need to add at the end of urls.py as </p>
+<div class="highlight"><pre><span></span>urlpatterns += patterns(&#39;&#39;,.......)
+</pre></div>
+
+
+<p>Copy over the static content</p>
+<div class="highlight"><pre><span></span>22) python manage.py satchmo_copy_static
+</pre></div>
+
+
+<p>Check whether there are any errors in the configuration using.if there are any errors you need to resolve them before proceeding further.</p>
+<div class="highlight"><pre><span></span>23) python manage.py satchmo_check
+Checking your satchmo configuration.
+Using Django version 1.1 alpha 1
+Using Satchmo version 0.9-pre-SVN-unknown
+Your configuration has no errors.
+</pre></div>
+
+
+<p>Syncdb and load intial data</p>
+<div class="highlight"><pre><span></span>24) python manage.py syncdb
+25) python manage.py satchmo_load_l10n
+26) python manage.py satchmo_load_store
+27) python manage.py satchmo_load_us_tax
+</pre></div>
+
+
+<p>Runserver</p>
+<div class="highlight"><pre><span></span>28) python manage.py runserver
+</pre></div>
+
+
+<p>Your store is ready.</p>
+<p>29) <a href="http://localhost:8000/store">http://localhost:8000/store</a></p>
+<p>when you enter above URL you will be seeing a store and all the functionality which is being provided by satchmo out of box.</p>
+<p>You can delete all the data which is provided by satchmo by running the below command</p>
+<div class="highlight"><pre><span></span>30) python manage.py delete_all_dbs
+</pre></div>
+
+
+<p>You can see all the intial settings and configuration details at </p>
+<p>31) <a href="http://localhost:8000/settings">http://localhost:8000/settings</a></p>
+<p>YOu can see the admin interface by entering the below url</p>
+<p>32) <a href="http://localhost:8000/admin">http://localhost:8000/admin</a></p>
+<h2>Satchmo Customization:</h2>
+<p>Satchmo has powerfull customization mechanism using which you can tune the store to suit your business needs.The below are basic customizations which you can 
+do.Please refer to documentation for more complex customizations and features.</p>
+<h4>To add new products and category etc</h4>
+<p>You need to go to admin interface to add new categories,products,pricing,discounts,option groups,images etc.....</p>
+<p>More information about this details at:
+<a href="http://www.satchmoproject.com/docs/svn/product.html">http://www.satchmoproject.com/docs/svn/product.html</a></p>
+<h4>Selling different product types</h4>
+<p>Using satchmo you can also sell products such as Downloadable Product where customer downloads data/other information after paying amount,
+you can also sell subscription product for which customers have to pay every month.</p>
+<h4>Custom product types</h4>
+<p>YOu can also create custom product types by following the below approach.
+YOu need to create a model which participates in one-to-one relation ship with the default product model as below</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">from</span> <span class="nn">product.models</span> <span class="kn">import</span> <span class="n">Product</span>
+
+<span class="k">class</span> <span class="nc">MyNewProduct</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">product</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">Product</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Product&#39;</span><span class="p">),</span>
+    <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_subtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;MyNewProduct&#39;</span>
+
+<span class="k">def</span> <span class="fm">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">u</span><span class="s2">&quot;MyNewProduct: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span>
+
+<span class="k">class</span> <span class="nc">Admin</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;My New Product&#39;</span><span class="p">)</span>
+    <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;My New Products&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<ol>
+<li>Thereafter you need tell satchmo about this product type in config.py,add to admin.py to make it visible via admin etc..More details you can find in the below link:
+ <a href="http://www.satchmoproject.com/docs/svn/custom-product.html">http://www.satchmoproject.com/docs/svn/custom-product.html</a></li>
+</ol>
+<p>In addition to above you can do various other customizations like
+ CSS,Template,URL,Checkout process,Shipping module  customization,Payment module.</p>
+<p>More details at satchmo documentation <a href="http://www.satchmoproject.com/docs/svn/index.html">http://www.satchmoproject.com/docs/svn/index.html</a></p>
+<p>And important details related to above customizations in the next blog post.        </p>
+<p>Stay Tuned.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/create-a-new-social-networking-site-in-few-hours-u.html" rel="bookmark"
+                           title="Permalink to Create a new social networking site in few hours using pinax platform (django).">Create a new social networking site in few hours using pinax platform (django).</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-18T06:33:20+05:30">
+                Published: Wed 18 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-18T17:03:20+05:30">
+                Updated: Wed 18 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/pinax.html">pinax</a> </p>
+</footer><!-- /.post-info -->                <p>if you are excited to see how such a social networking site would like.Just follow the below link <a href="http://www.xfgx.info/">http://www.xfgx.info/</a> We made the above site on pinax platform (Please note pinax has done most of things we have done very little).A platform for rapidly developing websites. In this blogpost we will try to understand what pinax is? How it helps a developer to do things quickly? How to install &amp; deploy? and various other things related to pinax. ## What is Pinax? In the present day world every website require components like regisration,openid support,some kind groups/ tribes,user profiles etc.....Almost every site</p>
+                <a class="readmore" href="/create-a-new-social-networking-site-in-few-hours-u.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/uswaretech-whitepapers.html" rel="bookmark"
+                           title="Permalink to Uswaretech whitepapers">Uswaretech whitepapers</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-11T06:15:26+05:30">
+                Published: Wed 11 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-11T16:45:26+05:30">
+                Updated: Wed 11 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/uncategorized.html">Uncategorized</a> </p>
+</footer><!-- /.post-info -->                <p>We have released some whitepapers recently, which you can get from our <a href="http://uswaretech.com/whitepapers/">whitepapers subsection</a> 1. Django and J2EE 2. Challenges and solutions in Offshore software development 3. Usware Technologies Value Proposition We are going to be publishing some more whitepapers very soon, so <a href="http://uswaretech.com/whitepapers/">download the whitepapers and bookmark this page</a>.</p>
+                <a class="readmore" href="/uswaretech-whitepapers.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/ajax-seo.html" rel="bookmark"
+                           title="Permalink to AJAX & SEO">AJAX & SEO</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-03-01T23:53:22+05:30">
+                Published: Sun 01 March 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-03-02T11:23:22+05:30">
+                Updated: Mon 02 March 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/seo.html">seo</a> </p>
+</footer><!-- /.post-info -->                <p><a href=
+                <a class="readmore" href="/ajax-seo.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/automatically-backup-mysql-database-to-amazon-s3-using-django-python-script.html" rel="bookmark"
+                           title="Permalink to Automatically backup mysql database to Amazon S3 using django (Python) script">Automatically backup mysql database to Amazon S3 using django (Python) script</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-02-23T06:48:31+05:30">
+                Published: Mon 23 February 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-02-23T18:18:31+05:30">
+                Updated: Mon 23 February 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/mysql.html">mysql</a> </p>
+</footer><!-- /.post-info -->                <p>Many of us use Amazon S3 to backup  their mysql databases.As we do it so often we thought of writing an automated script which does this task of taking the backup of a mysql database and then moving it to the Amazon S3 .  Below is the django script .</p> <p><a href=
+                <a class="readmore" href="/automatically-backup-mysql-database-to-amazon-s3-using-django-python-script.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/understanding-datetime-tzinfo-timedelta-timezone-conversions-in-python.html" rel="bookmark"
+                           title="Permalink to Understanding DateTime, tzinfo, timedelta & TimeZone Conversions in python">Understanding DateTime, tzinfo, timedelta &amp; TimeZone Conversions in python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-02-18T22:24:06+05:30">
+                Published: Wed 18 February 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-02-19T09:54:06+05:30">
+                Updated: Thu 19 February 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/datetime.html">datetime</a> </p>
+</footer><!-- /.post-info -->                <p><a href=
+                <a class="readmore" href="/understanding-datetime-tzinfo-timedelta-timezone-conversions-in-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-popular-stories-widget.html" rel="bookmark"
+                           title="Permalink to Django popular stories Widget">Django popular stories Widget</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-02-04T03:51:00+05:30">
+                Published: Wed 04 February 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-02-04T15:21:00+05:30">
+                Updated: Wed 04 February 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/rama.html">rama</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+<p>tags: <a href="/tag/utilities.html">utilities</a> </p>
+</footer><!-- /.post-info -->                <p>At uswaretech we strive hard to keep track of the latest happenings in Django.To assist  in this  we have created a Django popular stories widget which lists down the popular stories in django.We are writing about it as we wanted to share this widget to the django community to who, it may be helpful.Please have look at the widget which is appearing at the bottom of this post.And also the source code of this widget is available to everyone who want to use in their own applications.More details at the bottom of this post.</p> <p><strong>How does it work?</strong></p> <p>We populate
+                <a class="readmore" href="/django-popular-stories-widget.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

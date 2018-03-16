@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="shabda" />
+        <meta name="copyright" content="shabda" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="API, markdown, " />
+
+<meta property="og:title" content="Getting trending Github projects via YQL "/>
+<meta property="og:url" content="/getting-trending-github-projects-via.html" />
+<meta property="og:description" content="Github.com/explore allows you to see the trending Github topics. They use repopular.com for this, which use twitter retweets to find out the popular Github repos. Since neither Repopular, nor Github have a RSS of these trending repos, I wanted to get a list of these. Here is how easy it is with YQL." />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="shabda" />
+<meta property="og:article:published_time" content="2010-10-24T15:27:33+05:30" />
+<meta property="" content="2010-10-25T01:57:33+05:30" />
+<meta name="twitter:title" content="Getting trending Github projects via YQL ">
+<meta name="twitter:description" content="Github.com/explore allows you to see the trending Github topics. They use repopular.com for this, which use twitter retweets to find out the popular Github repos. Since neither Repopular, nor Github have a RSS of these trending repos, I wanted to get a list of these. Here is how easy it is with YQL.">
+
+        <title>Getting trending Github projects via YQL  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/getting-trending-github-projects-via.html"> Getting trending Github projects via YQL  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p><a href="http://github.com/explore">Github.com/explore</a> allows you to see the trending Github topics. They use <a href="http://repopular.com/">repopular.com</a> for this,
+which use twitter retweets to find out the popular Github repos.</p>
+<p>Since neither Repopular, nor Github have a RSS of these trending repos, I wanted to get a list of these. Here is how easy it is with 
+<a href="http://developer.yahoo.com/yql/">YQL</a>.</p>
+<script src="http://gist.github.com/643959.js?file=repopular_projects.py"></script>
+
+<h2>How we do it</h2>
+<ul>
+<li>
+<p>Go to <a href="http://developer.yahoo.com/yql/console/?q=use%20'http://yqlblog.net/samples/data.html.cssselect.xml'%20as%20data.html.cssselect;%20select%20*%20from%20data.html.cssselect%20where%20url%3D%22www.yahoo.com%22%20and%20css%3D%22%23news%20a%22#h=use%20%27http%3A//yqlblog.net/samples/data.html.cssselect.xml%27%20as%20data.html.cssselect%3B%20select%20*%20from%20data.html.cssselect%20where%20url%3D%22repopular.com%22%20and%20css%3D%22div.bd%20a%22">YQL console</a>. Give the SQL query to get the data from the webpage. </p>
+</li>
+<li>
+<p><code>where url="repopular.com" and css="div.pad a"</code> is the magic which select the webpage, and also what DOM elemenst we are interested in.</p>
+</li>
+<li>
+<p>We get this data in JSON format which is munged to get the list of links.</p>
+</li>
+<li>
+<p>This list of links is passed via <code>is_github_project</code> which gets me just the Github projects.</p>
+</li>
+<li>
+<p>And we are done.</p>
+</li>
+</ul>
+<script src="http://gist.github.com/643970.js?file=gistfile1.txt"></script>
+
+<p>PS. <a href="http://developer.yahoo.com/yql/">YQL</a> is amazing.</p>
+<p>.</p>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2010-10-24T15:27:33+05:30">Oct 24, 2010</time>
+
+<h4>Last Updated</h4>
+<time datetime="2010-10-25T01:57:33+05:30">Oct 25, 2010</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#api-ref">API
+                    <span>3</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

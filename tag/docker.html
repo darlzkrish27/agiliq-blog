@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - docker</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/self-testing-fabfile-using-docker.html">Self-testing fabfile using docker</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-06-28T08:27:35+05:30">
+                Published: Fri 28 June 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-06-28T18:57:35+05:30">
+                Updated: Fri 28 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/docker.html">docker</a> </p>
+</footer><!-- /.post-info --><p>In my last blog post, I discussed <a href="http://agiliq.com/blog/2013/06/deploying-django-using-docker/">deploying django on
+docker</a>. This is
+a blog post on a related note and we'll be looking at using docker to test a
+fabfile. Note that docker is still under development and not ready for use in
+production.</p>
+<h2>Fabfile and testing:</h2>
+<p><a href="http://docs.fabfile.org/en/latest/index.html">Fabric</a> is a great tool for
+automating deployments. Unfortunately, the docs on testing fabfiles are a bit
+scarce.</p>
+<p>With good tests, you can be sure that your fabfile works out of the box and be
+prepared for server migrations or upgrades.</p>
+<p>One apporach to testing complex fabfiles is using vagrant or using a VM
+manually. I think docker is easier to use in scripts and way faster.</p>
+<p>In this example, we're testing the deployment of a website using fabric, so our
+basic testcase would be that the url to which we're deploying is returning a
+200. For the sake of simplicity, let's assume that we have docker installed on
+     www.example.com and we're deploying to the same address.</p>
+<p>We can use fabric to create a new container and use it to run our provision and
+deployment commands (all() does both here). We can use the "dhrp/sshd"
+container image as mentioned in the <a href="http://agiliq.com/blog/2013/06/deploying-django-using-docker/">earlier blog
+post</a> to forward
+ssh and web ports. One minor quibble might be that the dhrp/sshd image doesn't
+have your public key by default so your fab command would be interrupted for a
+password, but using ssh-copy-id should fix that. You could commit this change
+and use this image next time for a permanent fix.</p>
+<p>Here's a rough idea of how our fabfile would look like:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">fabric.api</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="k">def</span> <span class="nf">docker</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">run</span><span class="p">(</span><span class="s2">&quot;docker </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">self_test</span><span class="p">():</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;www.example.com&#39;</span> <span class="c1">#  test server with docker installed</span>
+    <span class="k">with</span> <span class="n">settings</span><span class="p">(</span><span class="n">host_string</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(user)s</span><span class="s1">@</span><span class="si">%(host)s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;me&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">}):</span>
+        <span class="n">container</span> <span class="o">=</span> <span class="n">docker</span><span class="p">(</span><span class="s1">&#39;run -d -p 22 -p 80 dhrp/sshd /usr/sbin/sshd -D&#39;</span><span class="p">)</span>
+        <span class="n">ssh_port</span> <span class="o">=</span> <span class="n">docker</span><span class="p">(</span><span class="s1">&#39;port </span><span class="si">%s</span><span class="s1"> 22&#39;</span> <span class="o">%</span> <span class="n">container</span><span class="p">)</span>
+        <span class="n">web_port</span> <span class="o">=</span> <span class="n">docker</span><span class="p">(</span><span class="s1">&#39;port </span><span class="si">%s</span><span class="s1"> 80&#39;</span> <span class="o">%</span> <span class="n">container</span><span class="p">)</span>
+        <span class="n">container_host</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(user)s</span><span class="s1">@</span><span class="si">%(host)s</span><span class="s1">:</span><span class="si">%(port)s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">ssh_port</span><span class="p">}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">settings</span><span class="p">(</span><span class="n">host_string</span><span class="o">=</span><span class="n">container_host</span><span class="p">):</span>
+                <span class="nb">all</span><span class="p">()</span>  <span class="c1"># provision and deploy to the container</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://</span><span class="si">%(host)s</span><span class="s2">:</span><span class="si">%(port)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">web_port</span><span class="p">}</span>
+                <span class="k">assert</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">run</span><span class="p">(</span><span class="s1">&#39;docker kill </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">container</span><span class="p">)</span>
+</pre></div>
+
+
+<p>and voila:</p>
+<div class="highlight"><pre><span></span>fab self_test
+</pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/deploying-django-using-docker.html" rel="bookmark"
+                           title="Permalink to Deploying django using docker">Deploying django using docker</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-14T08:46:51+05:30">
+                Published: Fri 14 June 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-06-14T19:16:51+05:30">
+                Updated: Fri 14 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/docker.html">docker</a> </p>
+</footer><!-- /.post-info -->                <p>In this blog post we'll take a look at <a href="http://docker.io">Docker</a> and discuss ways to deploy django using docker. About Docker: ------------- Docker is a tool that helps you manage lxc containers and images. You can create an image, launch container from the existing image, attach to a running container, and generally play around with the containers. The most important benefit of using docker and containers in general is that you have a clean, hygeinic and portable runtime enivorment for your app. This means you don't have to worry about missing dependecies, packages and other pain points during subsequent deployments. You</p>
+                <a class="readmore" href="/deploying-django-using-docker.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

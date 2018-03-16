@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="dheeru" />
+        <meta name="copyright" content="dheeru" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="mobile applications, markdown, " />
+
+<meta property="og:title" content="iPhone and Android application development using Titanium "/>
+<meta property="og:url" content="/iphoneandroid-application-development-using-titani.html" />
+<meta property="og:description" content="Titanium Mobile is Appcelerator&#39;s development platform for developing cross-platform native mobile applications. In this article we will be introducing you to installation and developing applications using Titanium. ## Installation Follow the steps mentioned here, to install Titanium and the corresponding sdks for your developement platform ## Hello world application Creating a new application and aplication structure is elaborately described in appcelerator gettting started guide ## Creating Forms #### Field Label var win = Titanium.UI.currentWindow; // get refernce to the current window var label = Titanium.UI.createLabel({ text: &#39;Label Name&#39;, height: 50, color: &#39;#000000&#39;, font:{fontSize:14}, top: 20, // vertical postion of label" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="dheeru" />
+<meta property="og:article:published_time" content="2011-02-03T09:22:06+05:30" />
+<meta property="" content="2011-02-03T20:52:06+05:30" />
+<meta name="twitter:title" content="iPhone and Android application development using Titanium ">
+<meta name="twitter:description" content="Titanium Mobile is Appcelerator&#39;s development platform for developing cross-platform native mobile applications. In this article we will be introducing you to installation and developing applications using Titanium. ## Installation Follow the steps mentioned here, to install Titanium and the corresponding sdks for your developement platform ## Hello world application Creating a new application and aplication structure is elaborately described in appcelerator gettting started guide ## Creating Forms #### Field Label var win = Titanium.UI.currentWindow; // get refernce to the current window var label = Titanium.UI.createLabel({ text: &#39;Label Name&#39;, height: 50, color: &#39;#000000&#39;, font:{fontSize:14}, top: 20, // vertical postion of label">
+
+        <title>iPhone and Android application development using Titanium  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/iphoneandroid-application-development-using-titani.html"> iPhone and Android application development using Titanium  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p><a href="http://www.appcelerator.com/products/titanium-mobile-application-development/">Titanium Mobile</a> is <a href="http://www.appcelerator.com/">Appcelerator's</a> development platform for developing cross-platform native mobile applications. In this article we will be introducing you to installation and developing applications using Titanium.</p>
+<h2>Installation</h2>
+<p>Follow the steps mentioned <a href="http://guides.appcelerator.com/en/getting_started.html#installing_titanium">here</a>, to install Titanium and the corresponding sdks for your developement platform</p>
+<h2>Hello world application</h2>
+<p>Creating a new application and aplication structure is elaborately described in <a href="http://guides.appcelerator.com/en/getting_started.html#hello_world!">appcelerator gettting started guide</a></p>
+<h2>Creating Forms</h2>
+<h4>Field Label</h4>
+<div class="highlight"><pre><span></span>var win = Titanium.UI.currentWindow; // get refernce to the current window
+var label = Titanium.UI.createLabel({
+    text: &#39;Label Name&#39;,
+    height: 50,
+    color: &#39;#000000&#39;,
+    font:{fontSize:14},
+    top: 20, // vertical postion of label on the screen w.r.t screen top
+    left: 20, // horizontal postion of label on the screen w.r.t screen left
+    width: 200 // width of the label
+});
+win.add(label); // add label to the current window
+</pre></div>
+
+
+<p>Check more properties of label in <a href="http://developer.appcelerator.com/apidoc/mobile/latest/Titanium.UI.Label-object.html">Titanium Label API</a></p>
+<h4>Text Field</h4>
+<div class="highlight"><pre><span></span>var text_field = Titanium.UI.createTextField({
+    color:&#39;#000000&#39;,
+    height: 50,
+    top: 70, // vertical postion of label on the screen w.r.t screen top
+    left: 20, // horizontal postion of label on the screen w.r.t screen left
+    width: 200, // width of the field
+    borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+});
+win.add(text_field); // add field to the current window
+</pre></div>
+
+
+<p>Check more properties of textfield in <a href="http://developer.appcelerator.com/apidoc/mobile/latest/Titanium.UI.TextField-object.html">Titanium Text Field API</a></p>
+<h4>Button</h4>
+<div class="highlight"><pre><span></span>var button = Titanium.UI.createButton({
+    title: &#39;Button&#39;,
+    top: 160, // vertical postion of label on the screen w.r.t screen top
+    width: 200, // width of the button
+    height: 50 // width of the button
+});
+win.add(button); // add button to the current window
+</pre></div>
+
+
+<p>Check more properties of button in <a href="http://developer.appcelerator.com/apidoc/mobile/latest/Titanium.UI.Button-object">Titanium Button API</a></p>
+<h4>Submiting Form Data</h4>
+<p>Form submission has to be handled via 'click' event listner on button</p>
+<div class="highlight"><pre><span></span>button.addEventListener(&#39;click&#39;, function() { 
+    var field_value = text_field.value;
+});
+</pre></div>
+
+
+<p>Screenshot of how the form with the above code looks
+<img alt="Screenshot of form" src="http://media.agiliq.com/images/blog/iphone_screenshot.png" title="Form Screenshot"></p>
+<p>Accessing database and saving data to database is mentioned in the next section.</p>
+<h2>Database</h2>
+<h4>Creating database</h4>
+<div class="highlight"><pre><span></span>var db = Titanium.Database.open(&#39;db_name&#39;);
+</pre></div>
+
+
+<p>'open' returns a reference to the opened database. If the database doesn't yet exist, 'open' creates the database.</p>
+<h4>Executing SQL queries</h4>
+<div class="highlight"><pre><span></span>db.execute(&#39;CREATE TABLE IF NOT EXISTS table_name (id INTEGER PRIMARY KEY, field1 VARCHAR, field2 VARCHAR);&#39;);
+</pre></div>
+
+
+<h4>Inserting data into table</h4>
+<div class="highlight"><pre><span></span>var f1 = &#39;v1&#39;;
+var f2 = &#39;v2&#39;;
+db.execute(&#39;INSERT INTO table_name (f1, f2) VALUES (?, ?)&#39;, f1, f2);
+</pre></div>
+
+
+<p>Id of last inserted row is the value of 'lastInsertRowId' property on the database
+    var last_insert_id = db.lastInsertRowId;</p>
+<h4>Selecting and looping over the data from table</h4>
+<div class="highlight"><pre><span></span>var rows = db.execute(&#39;select * from table_name&#39;);
+
+while (rows.isValidRow()) {
+    // check below on how to access field values of a row
+    rows.next();
+}
+rows.close();
+</pre></div>
+
+
+<h4>Accessing the field values of a row by index(zero based)</h4>
+<div class="highlight"><pre><span></span>var id = rows.field(0);
+var v1 = rows.field(1);
+var v2 = rows.field(2);
+</pre></div>
+
+
+<h4>Accessing the field values of a row by name</h4>
+<div class="highlight"><pre><span></span>var id = rows.fieldByName(&#39;id&#39;);
+var v1 = rows.fieldByName(&#39;field1&#39;);
+var v2 = rows.fieldByName(&#39;field2&#39;);
+</pre></div>
+
+
+<p>More about <a href="http://developer.appcelerator.com/apidoc/mobile/latest/Titanium.Database-module">Database API</a></p>
+<ul>
+<li>Titanium.Database.install('meditracker');, raised invalid database path error when tried to run the application on device. So I opted to use Titanium.Database.open</li>
+</ul>
+<h4>Code Resources</h4>
+<ul>
+<li><a href="https://github.com/appcelerator/KitchenSink/">https://github.com/appcelerator/KitchenSink/</a></li>
+<li><a href="https://github.com/agiliq/meditracker">https://github.com/agiliq/meditracker</a>, our sample application for tracking medicine timings.</li>
+<li><a href="http://itunes.apple.com/in/app/track-my-med/id415622449?mt=8#">http://itunes.apple.com/in/app/track-my-med/id415622449?mt=8#</a> The <a href="https://github.com/agiliq/meditracker">github code</a> on Apple App store</li>
+<li><a href="http://market.android.com/details?id=com.agiliq.trackmymed">http://market.android.com/details?id=com.agiliq.trackmymed</a> same code on Android stors</li>
+</ul>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2011-02-03T09:22:06+05:30">Feb 3, 2011</time>
+
+<h4>Last Updated</h4>
+<time datetime="2011-02-03T20:52:06+05:30">Feb 3, 2011</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#mobile-applications-ref">mobile applications
+                    <span>1</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

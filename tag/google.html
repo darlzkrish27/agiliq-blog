@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - google</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/building-chrome-extensions.html">Building Chrome Extensions</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-03-04T00:10:38+05:30">
+                Published: Wed 04 March 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-03-04T11:40:38+05:30">
+                Updated: Wed 04 March 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/karambir.html">karambir</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/google.html">google</a> </p>
+</footer><!-- /.post-info --><p>In this blog post, we will look at how to build a chrome extension that can work with multiple online services. Specifically we will see how to update Trello web pages with relevant content from Google Drive. For a particular Trello board, we will update trello cards with data from Google Drive document.</p>
+<p>Google Chrome extensions are nothing but some html, js files linked together that are running behind the scenes. Before starting out, we need to make sure that <em>Developer mode</em> is checked in <code>chrome://extensions/</code>. </p>
+<p>Chrome extensions work by telling chrome about our html, js files using a Manifest.json. It will have some meta data like name, description, icon images and more important information like permissions our extension needs, files to load in background. A simple Manifest.json can look like this:</p>
+<div class="highlight"><pre><span></span>{
+    &quot;name&quot;: &quot;Trello Updater&quot;,
+    &quot;version&quot;: &quot;0.1&quot;,
+    &quot;manifest_version&quot; : 2,
+
+    &quot;description&quot;: &quot;Update trello with Google Drive&quot;,
+
+    &quot;background&quot;: {
+        &quot;scripts&quot;: [&quot;background.js&quot;],
+        &quot;persistent&quot;: false
+    },
+
+    &quot;browser_action&quot;: {
+        &quot;default_icon&quot;: &quot;icon.png&quot;,
+        &quot;default_title&quot;: &quot;Trello Updater&quot;
+    },
+
+    &quot;content_scripts&quot;: [
+        {
+            &quot;matches&quot;: [&quot;https://trello.com/*&quot;],
+            &quot;js&quot;: [&quot;lib/jquery.js&quot;,
+            &quot;trelloupdater.js&quot;]
+        }
+    ],
+    &quot;permissions&quot;: [
+        &quot;tabs&quot;,
+        &quot;storage&quot;,
+        &quot;*://*.google.com/*&quot;,
+        &quot;https://*.trello.com/*&quot;
+    ]
+}
+</pre></div>
+
+
+<p>First lets learn what these mean:</p>
+<ul>
+<li>
+<p>Meta-Data: The first 4 lines in our manifest.json provides meta-data about our extension like name, version, description.</p>
+</li>
+<li>
+<p>Background: This is the main script that will be running for our extension. It can detect events/changes on Google Chrome and act on them. There are many events that Google Chrome provides for us to use. Read <a href="https://developer.chrome.com/extensions/runtime">them here</a>. This page/script will be calling other parts of our extension code to act on something. It can use chrome messaging api for this.</p>
+</li>
+<li>
+<p>Content Scripts: Content scripts are JavaScript files that run in the context of web pages. By using the standard Document Object Model (DOM), they can read details of the web pages the browser visits, or make changes to them. We tell Chrome when to inject our content_scripts using "matches" and "permissions" keyword. Here we are telling it to inject our two content_scripts <em>jquery</em> and <em>trelloupdater</em> in all trello.com webpages. We are taking permissions to have access to chrome tabs(you will see why), chrome storage and google.com(for authentication).</p>
+</li>
+</ul>
+<blockquote>
+<p><em>Note that for security reasons, content scripts have different execution environment than a Web page javascript environment.</em></p>
+</blockquote>
+<p>There can be two ways for our extension to work:</p>
+<ul>
+<li>
+<p>Browser Actions: This property keeps an icon representing our extension on the right side of the address bar. Users can then click the icon and open a pop-up which is actually HTML content controlled by us. For most extensions, developers use this property.</p>
+</li>
+<li>
+<p>Page Actions: This property is similar to browser actions but the icon is shown inside the address bar. Initially this icon is hidden and we decide when to show it. We use page actions when we need to invoke our script only when a page with specific property is loaded. Like a page with a rss feed or video.</p>
+</li>
+</ul>
+<p>We can load our extension using Load unpacked extension in <code>chrome://extensions/</code>. Once loaded, our background script will be loaded instantly and we can use a chrome event called <a href="https://developer.chrome.com/extensions/runtime#event-onInstalled">onInstalled</a> to do something. For our example we will call <a href="https://developers.google.com/accounts/docs/OAuth2">Google Oauth</a> to get the user permission for Google Drive files:</p>
+<p><em>background.js</em></p>
+<div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">encodeData</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">urlEncodedDataPairs</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">urlEncodedDataPairs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">name</span><span class="p">]));</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">urlEncodedDataPairs</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%20/g</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getAccessToken</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">uriData</span>  <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;client_id&quot;</span><span class="o">:</span> <span class="s2">&quot;your google oauth client id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_secret&quot;</span><span class="o">:</span> <span class="s2">&quot;your google client secret&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;redirect_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;urn:ietf:wg:oauth:2.0:oob:auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;grant_type&quot;</span><span class="o">:</span> <span class="s2">&quot;authorization_code&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;code&quot;</span><span class="o">:</span> <span class="nx">code</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+    <span class="nx">encodedData</span> <span class="o">=</span> <span class="nx">encodeData</span><span class="p">(</span><span class="nx">uriData</span><span class="p">);</span>
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;https://accounts.google.com/o/oauth2/token&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span><span class="p">);</span>
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+            <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">sync</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;GoogleAccess&#39;</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">access_token</span><span class="p">});</span>
+            <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">sync</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;GoogleRefresh&#39;</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">refresh_token</span><span class="p">});</span>
+            <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">sync</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;GoogleType&#39;</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">token_type</span><span class="p">});</span>
+            <span class="nx">result</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">access_token</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">statusText</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">encodedData</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nx">chrome</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">onInstalled</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">uriData</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s2">&quot;access_type&quot;</span><span class="o">:</span> <span class="s2">&quot;offline&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;redirect_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;urn:ietf:wg:oauth:2.0:oob:auto&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;response_type&quot;</span><span class="o">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;client_id&quot;</span><span class="o">:</span> <span class="s2">&quot;your google oauth client id&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;approval_prompt&quot;</span><span class="o">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;scope&quot;</span><span class="o">:</span> <span class="s2">&quot;https://spreadsheets.google.com/feeds&quot;</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">encodedData</span> <span class="o">=</span> <span class="nx">encodeData</span><span class="p">(</span><span class="nx">uriData</span><span class="p">);</span>
+    <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span> <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://accounts.google.com/o/oauth2/auth?&#39;</span><span class="o">+</span><span class="nx">encodedData</span> <span class="p">});</span> <span class="c1">//Create new tab and call Google Oauth</span>
+
+    <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">onUpdated</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="kd">function</span> <span class="nx">googleAuth</span><span class="p">(</span><span class="nx">tabId</span><span class="p">,</span> <span class="nx">changeInfo</span><span class="p">,</span> <span class="nx">tab</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//Check for auth token on the page.</span>
+        <span class="k">if</span> <span class="p">((</span><span class="nx">changeInfo</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="s2">&quot;complete&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">tab</span><span class="p">.</span><span class="nx">title</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="s2">&quot;Success code=&quot;</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">authToken</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">.</span><span class="nx">title</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">13</span><span class="p">);</span>
+        <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">sync</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;GoogleAuth&#39;</span><span class="o">:</span> <span class="nx">authToken</span><span class="p">});</span>
+        <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">onUpdated</span><span class="p">.</span><span class="nx">removeListener</span><span class="p">(</span><span class="nx">googleAuth</span><span class="p">);</span>
+
+        <span class="c1">//get access token</span>
+        <span class="nx">getAccessToken</span><span class="p">(</span><span class="nx">authToken</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>Here we are doing the oauth2 and getting Access token from Google. For this we have an event listener which will be called when our extension is first installed. We are doing following with our function:</p>
+<ul>
+<li>First, we create a new tab using <code>chrome.tabs.create</code> and redirect user to Google oAuth.</li>
+<li>Then, we add a listener on that tab to check when user give us permission(note that we are only taking permission for Spreadsheets) and the page have the auth token.</li>
+<li>Then, we are calling function <em>getAccessToken</em> to get the access token. This is done behind the scenes.</li>
+<li>At last, we are saving the access token using `chrome.storage.sync.set'.</li>
+</ul>
+<p>Once we have the access token, we can make calls to Google Drive from our content scripts to get data and fill in our trello web pages using simple javascript. From our manifest, we can see that we added pattern match for our content scripts. So our scripts will be loaded on all trello web pages automatically and we can use document.onload to make the changes. </p>
+<p>Also we can add one more thing to our extension. When a user clicks our extension, we can explicitly call our content script again from our background page to update data. We will use chrome browser action onClicked event to send a message to our content script like this:</p>
+<p><em>background.js</em></p>
+<div class="highlight"><pre><span></span><span class="nt">chrome</span><span class="p">.</span><span class="nc">browserAction</span><span class="p">.</span><span class="nc">onClicked</span><span class="p">.</span><span class="nc">addListener</span><span class="o">(</span><span class="nt">function</span><span class="o">(</span><span class="nt">activeTab</span><span class="o">)</span> <span class="p">{</span>
+    <span class="err">chrome.tabs.sendMessage(activeTab.id,</span> <span class="err">{</span><span class="n">action</span><span class="p">:</span> <span class="s2">&quot;forceUpdate&quot;</span><span class="p">}</span><span class="o">);</span> <span class="o">//</span> <span class="nt">Send</span> <span class="nt">a</span> <span class="nt">message</span> <span class="nt">to</span> <span class="nt">content_scipt</span>
+<span class="err">}</span><span class="o">);</span>
+</pre></div>
+
+
+<p><em>trelloupdater.js</em></p>
+<div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">getGoogleData</span><span class="p">(</span><span class="nx">access_token</span><span class="p">,</span> <span class="nx">sheetId</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Call Google Sheets API</span>
+  <span class="kd">var</span> <span class="nx">sheets_url</span> <span class="o">=</span> <span class="s2">&quot;https://spreadsheets.google.com/feeds/list/&quot;</span> <span class="o">+</span> <span class="nx">sheetId</span> <span class="o">+</span> <span class="s2">&quot;/od6/private/full&quot;</span><span class="p">;</span>
+  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+    <span class="nx">url</span>: <span class="kt">sheets_url</span><span class="p">,</span>
+    <span class="nx">async</span>: <span class="kt">true</span><span class="p">,</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Authorization&quot;</span><span class="o">:</span> <span class="s2">&quot;Bearer &quot;</span> <span class="o">+</span> <span class="nx">access_token</span>
+    <span class="p">}</span>
+  <span class="p">}).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">sheetXml</span><span class="p">)</span> <span class="p">{</span>
+
+      <span class="c1">//Update Trello board cards with data &quot;sheetXml&quot;</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.list-card-title&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">originalCard</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">cardUuid</span> <span class="o">=</span> <span class="nx">originalCard</span><span class="p">[</span><span class="nx">originalCard</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">((</span><span class="nx">cardUuid</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">isNumeric</span><span class="p">(</span><span class="nx">cardUuid</span><span class="p">)))</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">cardName</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">cardDob</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+          <span class="nx">$</span><span class="p">(</span><span class="nx">sheetXml</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;entry&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">textContent</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">cardUuid</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">cardName</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+              <span class="nx">cardDob</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;dob&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+              <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="p">}</span>
+          <span class="p">});</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">cardName</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">cardName</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">cardDob</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">cardUuid</span><span class="p">;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Changed card &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">text</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+
+  <span class="p">}).</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">jqXHR</span><span class="p">,</span> <span class="nx">textStatus</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">textStatus</span><span class="p">);</span>
+  <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">updateTrello</span><span class="p">(</span><span class="nx">tData</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">trelloApi</span> <span class="o">=</span> <span class="s2">&quot;https://api.trello.com/1/&quot;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">trelloBoardId</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">tData</span><span class="p">.</span><span class="nx">board</span><span class="p">)</span><span class="o">!=-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="nx">page</span> <span class="o">=</span> <span class="s2">&quot;board&quot;</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Board Page found to sync&quot;</span><span class="p">);</span>
+    <span class="nx">getGoogleData</span><span class="p">(</span><span class="nx">tData</span><span class="p">.</span><span class="nx">GoogleAccess</span><span class="p">,</span> <span class="nx">tData</span><span class="p">.</span><span class="nx">sheet</span><span class="p">);</span> <span class="c1">//send sheet id and access token for Google Sheets api</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="nx">chrome</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">onMessage</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">action</span> <span class="o">==</span> <span class="s2">&quot;forceTrello&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">sync</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">items</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Get access token from chrome storage.</span>
+        <span class="nx">updateTrello</span><span class="p">(</span><span class="nx">items</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>Thats it. Our updateTrello function will be called everytime a user clicks on our extension icon. And updateTrello is just doing some simple calls to Google Sheets Api and updating trello cards according to that data. This is just tip of iceberg, a simple example showing simple event listeners like tabs.onUpdated, tabs.sendMessage, runtime.onMessage, runtime.onInstalled etc. Chrome gives you so many events, ways to <a href="https://developer.chrome.com/extensions/options">interact with your user</a> that you can add complex functionalities easily. For more information, check their <a href="https://developer.chrome.com/extensions">documentation</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/google-diff-match-patch-library.html" rel="bookmark"
+                           title="Permalink to Google diff match patch library">Google diff match patch library</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-05-09T05:59:34+05:30">
+                Published: Fri 09 May 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-05-09T16:29:34+05:30">
+                Updated: Fri 09 May 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/manjunath.html">manjunath</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/google.html">google</a> </p>
+</footer><!-- /.post-info -->                <p>Google's <a href="http://code.google.com/p/google-diff-match-patch/">diff match patch library</a> is very simple to use.</p>
+                <a class="readmore" href="/google-diff-match-patch-library.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

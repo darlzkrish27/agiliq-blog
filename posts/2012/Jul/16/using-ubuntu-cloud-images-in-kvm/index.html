@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Using Ubuntu cloud images in KVM</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li class="active"><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/using-ubuntu-cloud-images-in-kvm.html" rel="bookmark"
+           title="Permalink to Using Ubuntu cloud images in KVM">Using Ubuntu cloud images in KVM</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-07-16T00:00:00+05:30">
+                Published: Mon 16 July 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-07-16T10:30:00+05:30">
+                Updated: Mon 16 July 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/virtualization.html">virtualization</a> </p>
+</footer><!-- /.post-info -->      <p>Quite a few of our clients are powered by Amazon EC2 or Rackspace and we use
+Ubuntu LTS releases for our servers. Canonical <a class="reference external" href="http://cloud-images.ubuntu.com/">provides</a> EC2 AMIs and Openstack
+images for all their releases. By using these <a class="reference external" href="https://en.wikipedia.org/wiki/Just_enough_operating_system">JeOS images</a> on the server as well
+as on the development platform reduces the dev/prod parity which we discussed
+in a <a class="reference external" href="http://agiliq.com/blog/2012/06/libvirt-and-kvm/">previous</a> post.</p>
+<p>In this post, we'll see how to setup the Ubuntu cloud images in the local KVM
+hypervisor. Unlike the previous post, we'll use only the virt-manager to do the
+initial provisioning but you can be assured that there is a command line way
+to do all of the same.</p>
+<p>Head over to <a class="reference external" href="http://cloud-images.ubuntu.com/">Ubuntu cloud images</a> and select the appropriate release (or daily
+build). At the time of writing the article, 12.04 is the latest LTS release and
+can be downloaded from <a class="reference external" href="http://cloud-images.ubuntu.com/releases/precise/release/">here</a>. I have downloaded the 64-bit (or amd64) images
+(<cite>ubuntu-12.04-server-cloudimg-amd64-root.tar.gz</cite>) since I use a 64-bit machine
+for my development and the servers are all 64-bit file. This compressed file
+contains a virtual hard disk, virtual floppy disk and a kernel.</p>
+<p>Let us now use this virtual hard disk as a base for our images and create new
+guest VM based on this disk.:</p>
+<pre class="literal-block">
+$ qemu-img create -b ubuntu-12.04-server-cloudimg-amd64.img -f qcow2 new_vm.img
+</pre>
+<p>The <a class="reference external" href="https://en.wikibooks.org/wiki/QEMU/Images">qemu-img</a> command creates a <cite>new_vm.img</cite> image with qcow2 format using the
+<cite>ubuntu-12.04-server-cloudimg-amd64.img</cite> as the backing image.</p>
+<p>Right click on the connection in virt-manager and select <cite>New</cite> and provide a name
+for the new virtual machine and select the <cite>Import existing disk image</cite> option.
+In the next step, provide the path of the image just created (ie <cite>new_vm.img</cite>)
+and optionally select the OS type and version. In the third step, select the RAM
+allocated to the VM and the number of cores and in the final step check the
+<cite>Customize configuration before install</cite> before filling other options.</p>
+<p>In the Customization screen, click on the section that says <cite>Disk 1</cite> and set the
+storage format to qcow2 and apply the changes.</p>
+<blockquote>
+<a class="reference external image-reference" href="http://agiliq.com/static/dumps/images/20120716/disk_configuration.png"><img alt="Configuring the disk" class="align-center" src="http://agiliq.com/static/dumps/images/20120716/disk_configuration.png" style="width: 90%;" /></a>
+</blockquote>
+<p>Now all that is left is to set the boot order and there are two methods:</p>
+<ul class="simple">
+<li>Using the floppy disk image</li>
+<li>Using cloud-init on the hard disk image</li>
+</ul>
+<div class="section" id="using-the-floppy-disk-for-booting">
+<h2>Using the floppy disk for booting</h2>
+<p>If you don't see a floppy disk in the list of devices in the customization screen,
+click on <cite>Add Hardware</cite> and add a new Storage device of type <cite>Floppy disk</cite> and
+check the <cite>Select managed or other existing storage</cite> and provide the path to
+the floppy disk image from the download and set the <cite>Storage format</cite> to raw.</p>
+<blockquote>
+<a class="reference external image-reference" href="http://agiliq.com/static/dumps/images/20120716/floppy_disk_create.png"><img alt="Adding Floppy Disk" class="align-center" src="http://agiliq.com/static/dumps/images/20120716/floppy_disk_create.png" style="width: 90%;" /></a>
+</blockquote>
+<p>Select the <cite>Boot Options</cite> section in the customization screen after creating the
+floppy disk and select the Floppy in the <cite>Boot device order</cite>. Start the
+installation and after that run the VM and you are done!</p>
+<p>After booting the new VM, you should see the GRUB screen in a few seconds as below.</p>
+<blockquote>
+<a class="reference external image-reference" href="http://agiliq.com/static/dumps/images/20120716/grub_screen.png"><img alt="Grub Screen" class="align-center" src="http://agiliq.com/static/dumps/images/20120716/grub_screen.png" style="width: 90%;" /></a>
+</blockquote>
+<p>Choose the option that you prefer and you will be redirected to the login prompt
+after the bootup.</p>
+<p>This method is useful if you have a provisioning or a metadata service like
+<a class="reference external" href="https://help.ubuntu.com/community/Orchestra/Overview">Orchestra</a> or <a class="reference external" href="http://cobbler.github.com/">Cobbler</a> though not a compulsion.</p>
+</div>
+<div class="section" id="using-cloud-init-on-the-hard-disk">
+<h2>Using cloud-init on the hard disk</h2>
+<p><a class="reference external" href="https://help.ubuntu.com/community/CloudInit">CloudInit</a> is an init script that performs some basic configuration and house
+keeping tasks on guest VMs like setting the hostname, generating SSH keys etc</p>
+<p>Go to the <cite>Boot Options</cite> section and select the <cite>Hard disk</cite> from the
+<cite>Boot device order</cite> and change the <cite>Direct kernel boot</cite> sub section.</p>
+<p>Provide the kernel file (the file ending with vmlinuz-virtual) from the download
+in the <cite>Kernel path</cite> and the following values in the <cite>Kernel arguments</cite>:</p>
+<pre class="literal-block">
+ro init=/usr/lib/cloud-init/uncloud-init root=/dev/vda ds=nocloud ubuntu-pass=initialpassword
+</pre>
+<a class="reference external image-reference" href="http://agiliq.com/static/dumps/images/20120716/hard_disk_boot.png"><img alt="Configuring the hard disk" class="align-center" src="http://agiliq.com/static/dumps/images/20120716/hard_disk_boot.png" style="width: 90%;" /></a>
+<p>Start the installation and in a few moments you have a brand new guest VM.</p>
+<p>You now have exactly the same packages as an official and freshAmazon AMI or
+Rackspace image and so you don't have to break your head worrying about
+the dependency hell and enjoy more time developing.</p>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

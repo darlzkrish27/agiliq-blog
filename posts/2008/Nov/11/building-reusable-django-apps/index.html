@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Building reusable Django apps</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/building-reusable-django-apps.html" rel="bookmark"
+           title="Permalink to Building reusable Django apps">Building reusable Django apps</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2008-11-11T08:04:11+05:30">
+                Published: Tue 11 November 2008
+        </abbr>
+		<br />
+        <abbr class="modified" title="2008-11-11T19:34:11+05:30">
+                Updated: Tue 11 November 2008
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tips.html">tips</a> </p>
+</footer><!-- /.post-info -->      <p>Recently I updated a lot of our old apps to be compatible with Django 1.0 and be reusable. Before we go further, let me define a _ Reusable Django App _.</p>
+<div class="highlight"><pre><span></span>A Django app is reusable if
+
+*  It is app. (That is, it is not a project, and has no settings.py/manage.py.)
+* It can be dropped in an existing project, and only places where the project should need editing are `settings.py` `installed_apps` and the projects level `urls.py`.
+* It can be used in the project with an arbitrary url prefix.
+</pre></div>
+
+
+<p>The updated apps were written initially for Django 0.96 and were coupled to the projects, so it was not possible to include them in other projects. After updating these I was able to include them
+in in a single project as a part of this site.</p>
+<p>The apps were,</p>
+<ul>
+<li>blogango <a href="http://uswaretech.com/blogango/">demo</a> <a href="https://svn.uswaretech.com/blogango/trunk/blogango/">source</a></li>
+<li>djikiki <a href="http://uswaretech.com/djikiki/">demo</a> <a href="https://svn.uswaretech.com/djikiki/trunk/djikiki/">source</a></li>
+</ul>
+<p>The following apps from 7days7apps.com</p>
+<ul>
+<li>pastebin <a href="http://uswaretech.com/pastebin/">demo</a> <a href="https://svn.uswaretech.com/7days7apps/trunk/djpaste/pastebin/">source</a></li>
+<li>jobs <a href="http://uswaretech.com/jobs/">demo</a> <a href="https://svn.uswaretech.com/7days7apps/trunk/djobboard/jobs/">source</a></li>
+<li>pollngo <a href="http://uswaretech.com/polls/">demo</a> <a href="https://svn.uswaretech.com/7days7apps/trunk/polls/pollngo/">source</a></li>
+<li>todidlist <a href="http://uswaretech.com/todo/">demo</a> <a href="https://svn.uswaretech.com/7days7apps/trunk/todolist/todidlist/">source</a></li>
+<li>mytym <a href="http://uswaretech.com/timesheets/">demo</a> <a href="https://svn.uswaretech.com/7days7apps/trunk/timetrack/mytym">source</a></li>
+<li>answrs <a href="http://uswaretech.com/answrs/">demo</a> <a href="https://svn.uswaretech.com/7days7apps/trunk/answers/answrs/">source</a></li>
+<li>kamp <a href="http://uswaretech.com/kamp/">demo</a> <a href="https://svn.uswaretech.com/7days7apps/trunk/kasekamp/kamp/">source</a></li>
+</ul>
+<hr>
+<p>Without further ado hints to help you make your apps reusable,</p>
+<h5>Always use models.permalink with <code>get_absolute_url</code> type of functions:</h5>
+<p>If you have code like</p>
+<div class="highlight"><pre><span></span>def get_absolute_url(self):
+    return &#39;/project/%s/&#39; % self.name
+</pre></div>
+
+
+<p>this is tying your app to a specific url structure. (and hence to a specific project). Instead a code like,</p>
+<div class="highlight"><pre><span></span>@models.permalink
+def get_absolute_url(self):
+    return (&#39;app.views.view_func&#39;, [self.name])
+</pre></div>
+
+
+<p>allows you to use this app with any arbitrary url structure in the project.</p>
+<h5>Always use <code>reverse</code> when you use <code>HttpResponseRedirect</code>.</h5>
+<p>For a similar reason as 1. Of course this does not apply if you are doing <code>return HttpResponseRedirect('.')</code></p>
+<h5>Always use <code>{% url %}</code> with <code>&lt;a href="</code>.</h5>
+<p>For reasons as in 1.</p>
+<h5>Do all imports assuming your apps exist on Pythonpath. So your imports should look like</h5>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">myapp.models</span> <span class="kn">import</span> <span class="n">ModelClass</span>
+</pre></div>
+
+
+<p>and not</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">myproject.myapp.models</span> <span class="kn">import</span> <span class="n">ModelClass</span>
+</pre></div>
+
+
+<p>as this ties the app to a specific project.</p>
+<h5>Use named urlpatterns. Prefix app name to url patterns names.</h5>
+<p>Named url patterns make point 2 and 3 much simpler. Prefixing appname to url pattern name makes removes name collision and simplifies using <code>reverse</code> and <code>{% url %}</code>.</p>
+<h5>Serve your static media from /MEDIA_URL/<app_name>/:</h5>
+<p>Each app could be using a stylesheet named style.css. If we were serving media from user /MEDIA_URL/, we are tied to one stylesheet for the whole project. If you were serving it from /MEDIA_URL/<app_name>/ it is as simple
+as symlinking a directory.</p>
+<p>After using these pointers, your apps are decoupled from the project. To use the apps with Usware site, all we needed to do was to add the following lines to svn:externals</p>
+<div class="highlight"><pre><span></span>blogango https://svn.uswaretech.com/blogango/trunk/blogango/
+djikiki https://svn.uswaretech.com/djikiki/trunk/djikiki/
+...............
+pastebin https://svn.uswaretech.com/7days7apps/trunk/djpaste/pastebin   site_media/kamp https://svn.uswaretech.com/7days7apps/trunk/kasekamp/site_media/kamp/
+</pre></div>
+
+
+<p>And put the apps in <code>settings.INSTALLED_APPS</code> and include the app urls.py in the projects urls.py.</p>
+<hr>
+<p>Need an <code>Amazing Webapp</code> built? <a href="http://uswaretech.com/contact/">Talk to Usware</a>. Need help with any of these apps? <a href="http://uswaretech.com/contact/">Talk to Usware</a>.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

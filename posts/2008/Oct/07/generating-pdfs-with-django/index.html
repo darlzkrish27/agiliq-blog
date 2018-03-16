@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Generating PDFs with Django</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/generating-pdfs-with-django.html" rel="bookmark"
+           title="Permalink to Generating PDFs with Django">Generating PDFs with Django</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2008-10-07T12:31:17+05:30">
+                Published: Tue 07 October 2008
+        </abbr>
+		<br />
+        <abbr class="modified" title="2008-10-07T23:01:17+05:30">
+                Updated: Tue 07 October 2008
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tips.html">tips</a> </p>
+</footer><!-- /.post-info -->      <p>If your web app creates report chances are you also want this report in PDF form. The Django docs describe a way to generate PDFs using ReportLab. Here is some code from there.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reportlab.pdfgen</span> <span class="kn">import</span> <span class="n">canvas</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+
+<span class="k">def</span> <span class="nf">some_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># Create the HttpResponse object with the appropriate PDF headers.</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;application/pdf&#39;</span><span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;attachment; filename=somefilename.pdf&#39;</span>
+
+    <span class="c1"># Create the PDF object, using the response object as its &quot;file.&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="c1"># Draw things on the PDF. Here&#39;s where the PDF generation happens.</span>
+    <span class="c1"># See the ReportLab documentation for the full list of functionality.</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">drawString</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Hello world.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Close the PDF object cleanly, and we&#39;re done.</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">showPage</span><span class="p">()</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+
+
+<p>This suffers from two problems,</p>
+<ol>
+<li>You are laying out your PDF using Python, which means if you later want to change the design of the PDF you need to change the Python code.</li>
+<li>Most of the time you already have the report in Html, form, writing the same PDF via ReportLab is error prone. </li>
+</ol>
+<p>Both these problems can be cleanly solved using Pisa, a Html2Pdf library. We proceed as,</p>
+<ol>
+<li>Generate a Html representation of Pdf using normal Django macienry.</li>
+<li>Convert to Pdf using Pisa.</li>
+<li>Return PDF.</li>
+</ol>
+<p>This solves both our problems as,</p>
+<ol>
+<li>Designers can edit the template to change the layout of Pdf.</li>
+<li>The code to generate the Html and Pdf views can share code.</li>
+</ol>
+<p>Here is some example code.</p>
+<div class="highlight"><pre><span></span>def html_view(request, as_pdf = False):
+    #Get varaibles to populate the template
+    payload = {&#39;data&#39;:data, ....}
+    if as_pdf:
+        return payload
+    return render_to_response(&#39;app/template.html&#39;, payload, RequestContext(request))
+
+def pdf_view(request):
+    payload = html_view(request, as_pdf = True)
+    file_data = render_to_string(&#39;app/template.pdf&#39;, payload, RequestContext(request))
+    myfile = StringIO.StringIO()
+    pisa.CreatePDF(file_data, myfile)
+    myfile.seek(0)
+    response =  HttpResponse(myfile, mimetype=&#39;application/pdf&#39;)
+    response[&#39;Content-Disposition&#39;] = &#39;attachment; filename=coupon.pdf&#39;
+    return response
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

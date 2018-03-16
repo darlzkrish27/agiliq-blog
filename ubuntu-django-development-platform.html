@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Ubuntu as a django development platform</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/ubuntu-django-development-platform.html" rel="bookmark"
+           title="Permalink to Ubuntu as a django development platform">Ubuntu as a django development platform</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-06-30T09:19:30+05:30">
+                Published: Wed 30 June 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-06-30T19:49:30+05:30">
+                Updated: Wed 30 June 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->      <p>Hi, I am Javed Khan, also known as tuxcanfly elsewhere on the internets. I have recently joined <a href="http://agiliq.com/">agiliq</a>
+  and am thrilled to be a part of the team.</p>
+<p>This blog post covers the steps I took to convert a fresh ubuntu install to a full fledged django development platform.</p>
+<h2>Databases:</h2>
+<p>Mysql 
+    sudo apt-get install mysql-server mysql-client python-mysqldb
+  Postgresql 
+    sudo apt-get install postgresql
+  Sqlite
+    sudo apt-get install sqlite python-sqlite</p>
+<h2>Version Control:</h2>
+<p>Git<br>
+<a href="http://help.github.com/">need help setting up git with github?</a> 
+    sudo apt-get install git-core git-gui git-svn
+  Svn 
+    sudo apt-get install subversion rapidsvn meld
+  meld is a diff/merge tool that can be used with rapidsvn<br>
+<a href="http://meld.sourceforge.net/">http://meld.sourceforge.net/</a></p>
+<p>Mercurial
+    sudo apt-get install mercurial mercurial-git hgsvn</p>
+<h2>IDEs:</h2>
+<p>WingIDE: not free, heavy on resources (reminds me of visual studio)<br>
+<a href="http://www.wingware.com/downloads">http://www.wingware.com/downloads</a></p>
+<p>Eclipse 
+    sudo apt-get install eclipse
+  Pydev for eclipse: better than WingIDE but still resource intensive
+  <a href="http://pydev.org/download.html">http://pydev.org/download.html</a></p>
+<p>Gedit: can be quite handy for quickly editing files but somewhat lacking on decent plugins<br>
+  gedit plugins: 
+    sudo apt-get install gedit-plugins
+  gedit file search plugin<br>
+<a href="http://github.com/oliver/gedit-file-search">http://github.com/oliver/gedit-file-search</a></p>
+<p>gedit autocomplete plugin<br>
+<a href="http://github.com/nagaozen/gedit-plugin-autocomplete/">http://github.com/nagaozen/gedit-plugin-autocomplete/</a></p>
+<p>gedit pyflakes support<br>
+<a href="http://code.google.com/p/geditchecker/">http://code.google.com/p/geditchecker/</a></p>
+<p>vim 
+    sudo apt-get install vim vim-gtk vim-addon-manager vim-scripts
+  django with vim:<br>
+<a href="http://code.djangoproject.com/wiki/UsingVimWithDjango">http://code.djangoproject.com/wiki/UsingVimWithDjango</a></p>
+<p>pida: reuses a lot of vim and its addons, lighter than most IDEs 
+    sudo apt-get install pida<br>
+<a href="http://pida.co.uk/">http://pida.co.uk/</a></p>
+<h2>Tools:</h2>
+<p>ipython: handy python shell 
+    sudo apt-get install ipython
+  bpython: another python shell, more interative
+    sudo apt-get install bpython
+  pyflakes code cheker: checks your code on the fly while editing, shows syntax errors, unused variables etc, useful tool to avoid n00bish mistakes 
+    sudo apt-get install pyflakes
+  vim plugin for pyflakes<br>
+<a href="http://www.vim.org/scripts/script.php?script_id=2441">http://www.vim.org/scripts/script.php?script_id=2441</a></p>
+<p>Omni completion with vim: very useful, somewhat like intellisense of visual studio<br>
+<a href="http://vim.wikia.com/wiki/Omni_completion">http://vim.wikia.com/wiki/Omni_completion</a></p>
+<p>Code completion with vim: python specific code completion<br>
+<a href="http://www.vim.org/scripts/script.php?script_id=850">http://www.vim.org/scripts/script.php?script_id=850</a> </p>
+<p>python debugger: remote debugger for python, can be used with any IDE, better than pdb from what I have heard 
+    sudo apt-get install winpdb
+  Debugging django:<br>
+<a href="http://code.djangoproject.com/wiki/DebuggingDjangoWithWinpdb">http://code.djangoproject.com/wiki/DebuggingDjangoWithWinpdb</a></p>
+<p>refactoring tool: haven't used it yet, but goes with vim/pida
+    sudo apt-get install python-rope</p>
+<p>virtualenv, easy_install, pip: python package management
+    sudo apt-get install python-setuptools
+    sudo easy_install pip virtualenv virtualenvwrapper</p>
+<p>python-imaging: imaging library for python with jpeg and freetype support (previously known as PIL)
+    sudo apt-get install libjpeg62 libjpeg-dev libfreetype6 libfreetype6-dev python-imaging</p>
+<p>python-crypto: 
+    sudo apt-get install python-crypto</p>
+<h2>Communication:</h2>
+<p>Dropbox<br>
+<a href="https://www.dropbox.com/downloading?os=lnx">https://www.dropbox.com/downloading?os=lnx</a></p>
+<p>Skype 
+    sudo apt-get install skype</p>
+<h2>Django:</h2>
+<p>Django, of course<br>
+<a href="http://www.djangoproject.com/download/">http://www.djangoproject.com/download/</a></p>
+<h2>Suggestions:</h2>
+<p>I am vim addict, so I was inclined towards making vim work with python. I have tried out a bunch of IDEs but I think I'll go with Pida + vim (let the editor wars begin!)</p>
+<p>Do you have a virtual machine with your most loved tools pre-installed?<br>
+What IDE do you use? (Vim is better, problem?)<br>
+Am I missing something cool?<br>
+Did you watch the latest futurama episode?<br>
+Let me know :)</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

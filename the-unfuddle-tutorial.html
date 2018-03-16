@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="shabda" />
+        <meta name="copyright" content="shabda" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="tips, markdown, " />
+
+<meta property="og:title" content="The Unfuddle Tutorial "/>
+<meta property="og:url" content="/the-unfuddle-tutorial.html" />
+<meta property="og:description" content="Unfuddle is the Tool we use for our non open source application development. I have found it to be the best tool for Software Project management, in particular I think it is superior to Basecamp and Assembla. When you are first using Unfuddle , \ the number of things seem overwhelming. ##The Unfuddle Glossary Unfuddle has, * Projects: Top level Things which need to be done. * User: People who are working on a given project. * Ticket: What a User works on. * Milestone: A timed list of tickets which should be completed before this given time. * Messages:" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="shabda" />
+<meta property="og:article:published_time" content="2010-12-04T09:25:21+05:30" />
+<meta property="" content="2010-12-04T20:55:21+05:30" />
+<meta name="twitter:title" content="The Unfuddle Tutorial ">
+<meta name="twitter:description" content="Unfuddle is the Tool we use for our non open source application development. I have found it to be the best tool for Software Project management, in particular I think it is superior to Basecamp and Assembla. When you are first using Unfuddle , \ the number of things seem overwhelming. ##The Unfuddle Glossary Unfuddle has, * Projects: Top level Things which need to be done. * User: People who are working on a given project. * Ticket: What a User works on. * Milestone: A timed list of tickets which should be completed before this given time. * Messages:">
+
+        <title>The Unfuddle Tutorial  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/the-unfuddle-tutorial.html"> The Unfuddle Tutorial  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p><a href="http://unfuddle.com/">Unfuddle</a> is the tool we use for our non open source development. 
+I have found it to be the best tool for Software Project management, in particular 
+I think it is superior to Basecamp and Assembla. </p>
+<p>When you start using Unfuddle, the number of things can seem overwhelming. This tutorial should help you <em>Unfuddle the Unfuddle</em>.</p>
+<hr>
+<h2>The Unfuddle Glossary</h2>
+<p>Unfuddle has,</p>
+<ul>
+<li>Projects: Top level Things which need to be done.</li>
+<li>User: People who are working on a given project.</li>
+<li>Ticket: What a <code>User</code> works on.</li>
+<li>Milestone: A timed list of <code>ticket</code>s which should be completed before this given time.</li>
+<li>Messages: A broadcast for all <code>user</code>s.</li>
+<li>Notebook: A wiki for storing documentation.</li>
+<li>Repository: Git or SVN for storing the code.</li>
+<li>Ticket Report: Reports about the </li>
+</ul>
+<h2>The tips</h2>
+<h4>Work from a list.</h4>
+<p>All action item items should be a ticket for somebody. Everything which a <code>user</code> needs to work should be in his work queue.</p>
+<h4>Make it easy to see everyone's work items.</h4>
+<p>When we start a project we create project reports with every <code>user</code> ticket queue.</p>
+<h4>Manage cognitive overload</h4>
+<p>People should have less than 10 tickets in their queue. More than this leads to a paradox of choice, 
+with making it hard to decide to work on. 5 is a good number of open tickets per person, with proving choices on what to work on next, 
+without being overwhelming.</p>
+<h4>Prefer Unfuddle messages to email.</h4>
+<p>Unfuddle message threads are easier to refer to in conversation in tickets and other places, having a meaningful url.</p>
+<h4>Commit all your code.</h4>
+<p>All code should be in a central repo, which can be refered to from tickets and messages.</p>
+<h4>Commit messages should be meaningful.</h4>
+<p>This is a good commit message.</p>
+<div class="highlight"><pre><span></span>Makes the color of visited links on Buy now page to Cyan
+Anonymous users can do a checkout using Paypal
+Refs #441, fixes #372
+</pre></div>
+
+
+<p>This will automatically attach this commit to the given tickets, making it easier to track why a change was introduced, and how did a bug get fixed.</p>
+<h4>Get all stakeholders on board.</h4>
+<p>Your project probably has many people who are acuustomed to keeping things on email. For them using a tool like Unfuddle would be a big change.
+You need to get them on board to use Unfuddle. </p>
+<hr>
+<p>This was first in a series of tutorials we would be publishing for using Unfuddle. Stay tuned.</p>
+<p>d.</p>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2010-12-04T09:25:21+05:30">Dec 4, 2010</time>
+
+<h4>Last Updated</h4>
+<time datetime="2010-12-04T20:55:21+05:30">Dec 4, 2010</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#tips-ref">tips
+                    <span>5</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

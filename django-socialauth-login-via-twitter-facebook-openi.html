@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="shabda" />
+        <meta name="copyright" content="shabda" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="yahoo, markdown, " />
+
+<meta property="og:title" content="Django-SocialAuth - Login via twitter, facebook, openid, yahoo, google using a single app. "/>
+<meta property="og:url" content="/django-socialauth-login-via-twitter-facebook-openi.html" />
+<meta property="og:description" content="TL;DR version: Here is an app to allow logging in via twitter, facebook, openid, yahoo, google, which should work transparently with Django authentication system. (@login_required, User and other infrastructure work as expected.) Demo and Code.Longer version follow: ----------------------- We are releasing our new app. Django-Socialauth. This app makes it awfully easy, to allow users to login your site using Yahoo/Google/Twitter/Facebook/Openid. A demo is available here. This is released under an Attribution Assurance License. A copy of the same is provided included with the code. After installing this app, you can use @login_required on any view and users identified via any" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="shabda" />
+<meta property="og:article:published_time" content="2009-08-27T04:20:33+05:30" />
+<meta property="" content="2009-08-27T14:50:33+05:30" />
+<meta name="twitter:title" content="Django-SocialAuth - Login via twitter, facebook, openid, yahoo, google using a single app. ">
+<meta name="twitter:description" content="TL;DR version: Here is an app to allow logging in via twitter, facebook, openid, yahoo, google, which should work transparently with Django authentication system. (@login_required, User and other infrastructure work as expected.) Demo and Code.Longer version follow: ----------------------- We are releasing our new app. Django-Socialauth. This app makes it awfully easy, to allow users to login your site using Yahoo/Google/Twitter/Facebook/Openid. A demo is available here. This is released under an Attribution Assurance License. A copy of the same is provided included with the code. After installing this app, you can use @login_required on any view and users identified via any">
+
+        <title>Django-SocialAuth - Login via twitter, facebook, openid, yahoo, google using a single app.  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/django-socialauth-login-via-twitter-facebook-openi.html"> Django-SocialAuth - Login via twitter, facebook, openid, yahoo, google using a single app.  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>TL;DR version: Here is an app to allow logging in via twitter, facebook, openid, yahoo, google, which should work transparently with Django authentication system. (@login_required, User and other infrastructure work as expected.) <a href="http://socialauth.uswaretech.net/">Demo</a> and <a href="http://github.com/uswaretech/Django-Socialauth/tree/master">Code</a>.Longer version follow:</p>
+<hr>
+<p>We are releasing our new app. <a href="http://github.com/uswaretech/Django-Socialauth/tree/master"><strong>Django-Socialauth</strong></a>. This app makes it awfully easy,
+to allow users to login your site using Yahoo/Google/Twitter/Facebook/Openid. A demo is available <a href="http://socialauth.uswaretech.net/">here</a>.</p>
+<p>This is released under an <a href="http://www.opensource.org/licenses/attribution.php">Attribution Assurance License</a>. A copy of the same is
+provided included with the code.</p>
+<p>After installing this app, you can use @login_required on any view and users identified
+via any means can access protected content.</p>
+<hr>
+<p>We provide services to integrate and implement this, for a low price of USD 1600.
+Please contact us at <a href="mailto:licenses@uswaretech.com">licenses@uswaretech.com</a> to discuss your exact needs.</p>
+<hr>
+<p>The README is copied here for convenience.</p>
+<h3>What it does.</h3>
+<p>Allow logging in via various providers.</p>
+<h4>Logging In</h4>
+<p>This is a application to enable authentication via various third party sites.
+In particular it allows logging in via</p>
+<ol>
+<li>Twitter</li>
+<li>Gmail</li>
+<li>Facebook</li>
+<li>Yahoo(Essentially openid)</li>
+<li>OpenId</li>
+</ol>
+<p>Libs you need to install</p>
+<ol>
+<li><a href="http://pypi.python.org/pypi/python-openid/">python-openid</a> (<code>easy_install</code>)</li>
+<li>python-yadis (<code>easy_install</code>)</li>
+<li><a href="http://oauth.googlecode.com/svn/code/python/oauth/">python-oauth</a>(<code>easy_install</code>)</li>
+</ol>
+<p>The API Keys are available from</p>
+<ul>
+<li><a href="http://www.facebook.com/developers/createapp.php">http://www.facebook.com/developers/createapp.php</a></li>
+<li><a href="https://developer.yahoo.com/dashboard/createKey.html">https://developer.yahoo.com/dashboard/createKey.html</a></li>
+<li><a href="https://www.google.com/accounts/ManageDomains">https://www.google.com/accounts/ManageDomains</a></li>
+<li><a href="http://twitter.com/oauth_clients">http://twitter.com/oauth_clients</a></li>
+</ul>
+<h4>How it works.</h4>
+<p>Openid: Users need to provide their openid providers. Talk to the providers and
+login.<br>
+Yahoo: Yahoo is an openid provider. Talk to Yahoo endpoints. (Endpoint: http://yahoo.com)<br>
+Google: Google is a provider. Talk to them. (Endpoint: https://www.google.com/accounts/o8/id)<br>
+Facebook: Facebook connect provides authentication framework.<br>
+Twitter: We use Twitter Oauth for authentication. In theory, Oauth shouldn't be
+used for authentication. (It is an autorisation framework, not an authentication one),
+In practice it works pretty well. Once you have an access_token, and a name, essentially
+authenticated.  </p>
+<p>References</p>
+<ol>
+<li><a href="http://socialauth.uswaretech.net/">Demo of app</a></li>
+<li><a href="http://github.com/uswaretech/Django-Socialauth/tree/master">Code for app</a></li>
+<li><a href="http://openid.net/developers/">http://openid.net/developers/</a></li>
+<li><a href="http://developer.yahoo.com/openid/">http://developer.yahoo.com/openid/</a></li>
+<li><a href="http://code.google.com/apis/accounts/docs/OpenID.html">http://code.google.com/apis/accounts/docs/OpenID.html</a></li>
+<li><a href="http://apiwiki.twitter.com/OAuth-FAQ">http://apiwiki.twitter.com/OAuth-FAQ</a></li>
+<li><a href="http://developers.facebook.com/connect.php">http://developers.facebook.com/connect.php</a></li>
+</ol>
+<h2>Below the hoods</h2>
+<ol>
+<li>For all providers(except Facebook) there are two urls and views. (start and done)</li>
+<li>Start sets up the required tokens, and redirects and hands off to the correct
+provider.</li>
+<li>Provider handles authentication on their ends, and hands off to Us, providing
+authorization tokens.</li>
+<li>In done, we check if the user with these details already exists, if yes, we
+log them in. Otherwise we create a new user, and log them in.</li>
+</ol>
+<p>For all of these, we use standard django authenication system, with custom
+<code>auth_backends</code>, hence all existing views, and decorators as <code>login_required</code>
+will work as expected.</p>
+<h2>Urls</h2>
+<div class="highlight"><pre><span></span>/login/ Login page. Has all the login options  
+/openid_login/ AND /openid_login/done/  
+/yahoo_login/ AND /yahoo_login/done/  
+/gmail_login/ AND /gmail_login/done/  
+/twitter_login/ AND /twitter_login/done/  
+/facebook_login/done/ We dont have a start url here, as the starting tokens are  
+set in a popup, as per FB Connect recommendations.
+</pre></div>
+
+
+<h2>Implementation</h2>
+<ol>
+<li>Install required libraries.</li>
+<li>Get tokens and populate in localsettings.py</li>
+<li>Set the token callback urls correctly at Twitter and Facebook.</li>
+<li>Add the OpenId middleware. Set the Authentication backends. (Set in localsettings.example.py)</li>
+</ol>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2009-08-27T04:20:33+05:30">Aug 27, 2009</time>
+
+<h4>Last Updated</h4>
+<time datetime="2009-08-27T14:50:33+05:30">Aug 27, 2009</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#yahoo-ref">yahoo
+                    <span>2</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Supervisor with Django and Gunicorn</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/supervisor-with-django-and-gunicorn.html" rel="bookmark"
+           title="Permalink to Supervisor with Django and Gunicorn">Supervisor with Django and Gunicorn</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-05-09T00:10:13+05:30">
+                Published: Fri 09 May 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-05-09T10:40:13+05:30">
+                Updated: Fri 09 May 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/supervisor.html">supervisor</a> </p>
+</footer><!-- /.post-info -->      <p>Supervisor with Django: A starter guide</p>
+<p>This post assumes that you have used gunicorn and know what it does. I will try everything inside a virtual environment and hope you do the same.</p>
+<h4>What is supervisor.</h4>
+<p>Supervisor is a monitoring tool that can monitor your processes. It can restart the process if the process dies or gets killed for some reason.</p>
+<h4>Use of supervisor: Why I started using it.</h4>
+<p>In production, I use gunicorn as web server. I started a gunicorn process as a daemon and logged out from the server. My site ran as expected for few days. All of a sudden, we started getting '502 Bad Gateway' and I had no idea why. I had to ssh to the server to find out what went wrong. After <code>ps aux | grep gunicorn</code>, I found out gunicorn wasn't running anymore. My gunicorn process died on its own, and I had no idea when and why. Had I used supervisor, supervisor would have been controlling the gunicorn process. It must have recieved a signal when gunicorn died and it would have created a new gunicorn process in such scenario. And my site would have kept running as expected.</p>
+<h5>Other scenario</h5>
+<p>We want to run a process which doesn't allow deamonizing. eg: I wanted to keep <code>celery</code>, a Python worker, running on the production server. I could not run it in the foreground because I had to logout from the server. I did not find an easy way to run celery as a daemon. Here too, supervisor came handy.</p>
+<h4>Project setup</h4>
+<p>I am setting up a new Django project so you will have proper idea of the path and how to use paths in supervisor configuration file.</p>
+<p>We will use Django 1.6.</p>
+<p>Create a new Django project:</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp $ django-admin.py startproject testproj
+(PythonEnv)/tmp $ cd testproj/
+</pre></div>
+
+
+<p>Project structure looks like:</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ tree
+manage.py
+testproj
+    __init__.py
+    settings.py
+    urls.py
+    wsgi.py
+</pre></div>
+
+
+<p>Run syncdb and runserver. Hereafter, we will run all our commands from directory <strong>/tmp/testproj/</strong> with <strong>PythonEnv</strong> activated.</p>
+<div class="highlight"><pre><span></span>python manage.py syncdb
+python manage.py runserver
+</pre></div>
+
+
+<p>And then access the '/admin/'. You should be able to see django admin.</p>
+<p>Let's use <code>gunicorn</code> instead of using <code>runserver</code>.</p>
+<div class="highlight"><pre><span></span>pip install gunicorn
+
+gunicorn testproj.wsgi:application --bind 127.0.0.1:8000
+</pre></div>
+
+
+<p>Make sure you can still see <code>/admin/</code>. You will not be able to view static files now, because we aren't using Django development server anymore. Read <a href="http://agiliq.com/blog/2013/08/minimal-nginx-and-gunicorn-configuration-for-djang/">this post</a> if you want to know how to serve static files using nginx. Though you don't need to do this now, our motive is not to see static files.</p>
+<p>Let's run gunicorn as a daemon. Also, we will tell gunicorn to use a file to keep track of process id, so that we can use that process id to kill gunicorn whenever we want.</p>
+<div class="highlight"><pre><span></span>gunicorn testproj.wsgi:application --bind 127.0.0.1:8000 --pid /tmp/gunicorn.pid --daemon
+</pre></div>
+
+
+<p>The problem with this approach is, gunicorn might die at any moment and you will not know about it immediately. Since we are working on dev environment, it is acceptable but gunicorn dying on a server is not acceptable. Your site will loose too many users/customers.</p>
+<p>Kill this gunicorn process, we will let supervisor handle gunicorn hereafter.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ cat /tmp/gunicorn.pid 
+19363
+(PythonEnv)/tmp/testproj $ kill -9 19363
+</pre></div>
+
+
+<h4>Using supervisor</h4>
+<p>Let's install supervisor inside our virtual environment.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ pip install supervisor
+</pre></div>
+
+
+<p>With this, you should have a <code>echo_supervisord_conf</code> command available. Get a stub supervisor file in your current directory using it.</p>
+<div class="highlight"><pre><span></span>echo_supervisord_conf &gt; ./supervisord.conf
+</pre></div>
+
+
+<p>With this, your directory structure should look like:</p>
+<div class="highlight"><pre><span></span>db.sqlite3
+manage.py
+supervisord.conf
+testproj
+    __init__.py
+    settings.py
+    urls.py
+    wsgi.py
+</pre></div>
+
+
+<p>You can remove most of the sections of this supervisor configuration file if you want. Initially we can only keep:</p>
+<div class="highlight"><pre><span></span><span class="k">[supervisord]</span>
+<span class="na">logfile</span><span class="o">=</span><span class="s">/tmp/supervisord.log ; (main log file;default $CWD/supervisord.log)</span>
+<span class="na">logfile_maxbytes</span><span class="o">=</span><span class="s">50MB        ; (max main logfile bytes b4 rotation;default 50MB)</span>
+<span class="na">logfile_backups</span><span class="o">=</span><span class="s">10           ; (num of main logfile rotation backups;default 10) </span>
+<span class="na">loglevel</span><span class="o">=</span><span class="s">info                ; (log level;default info; others: debug,warn,trace)</span>
+<span class="na">pidfile</span><span class="o">=</span><span class="s">/tmp/supervisord.pid ; (supervisord pidfile;default supervisord.pid)</span>
+<span class="na">nodaemon</span><span class="o">=</span><span class="s">true               ; (start in foreground if true;default false)</span>
+<span class="na">minfds</span><span class="o">=</span><span class="s">1024                  ; (min. avail startup file descriptors;default 1024)</span>
+<span class="na">minprocs</span><span class="o">=</span><span class="s">200                 ; (min. avail process descriptors;default 200)</span>
+</pre></div>
+
+
+<p>From <a href="http://supervisord.org/running.html">supervisor docs</a>:</p>
+<p>Before supervisord will do anything useful for you, you’ll need to add at least one <strong>program</strong> section to its configuration. The program section will define a program that is run and managed when you invoke the supervisord command. To add a program, you’ll need to edit the supervisord.conf file.</p>
+<p>So, we'll add a <strong>program</strong> section for gunicorn to supervisord.conf. Add it after the [supervisord] section.</p>
+<div class="highlight"><pre><span></span><span class="k">[program:gunicorn]</span>
+<span class="na">command</span><span class="o">=</span><span class="s">/home/akshar/.virtualenvs/PythonEnv/bin/gunicorn testproj.wsgi:application --bind 127.0.0.1:8000 --pid /tmp/gunicorn.pid ;</span>
+<span class="na">directory</span><span class="o">=</span><span class="s">/tmp/testproj/ ;</span>
+</pre></div>
+
+
+<p>You need to change <strong>command</strong> and <strong>directory</strong> depending on your environment. My gunicorn executable resides at <code>/home/akshar/.virtualenvs/PythonEnv/bin/gunicorn</code>. Find where your gunicorn executable is and use that in <code>command</code> section of <code>program</code>.</p>
+<p>We passed <code>testproject.wsgi:application</code> as application object to gunicorn, so <code>testproject</code> need to be available on the PATH for this to work. And for something to be available on the path, you need to be in correct directory. That's why we need the <code>directory</code> setting inside <code>program</code> section.</p>
+<p>Make sure neither a gunicorn nor a supervisor process exists till here:</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ ps aux | grep supervisord
+(PythonEnv)/tmp/testproj $ ps aux | grep gunicorn
+</pre></div>
+
+
+<p>Run <code>supervisord</code></p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ supervisord
+</pre></div>
+
+
+<p>Now a supervisor process as well as a gunicorn process should be running. Even though you did not explicitly start a gunicorn process, supervisor started gunicorn for you. Verify that supervisor as well as gunicorn process exists. You need to check these on a different terminal, because <code>supervisord</code> must be running on your first terminal in the foreground, since it wasn't daemonized.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ ps aux | grep supervisord
+(PythonEnv)/tmp/testproj $ ps aux | grep gunicorn
+</pre></div>
+
+
+<p>Access <code>http://localhost:8000/admin/</code> to make sure your site is running fine.</p>
+<p>Kill <code>supervisord</code> process(Ctrl+c), we will deamonize it now. Change <strong>nodaemon=true</strong> in your supervisord.conf to <strong>nodaemon=false</strong>.</p>
+<p>Run supervisord again</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ supervisord
+</pre></div>
+
+
+<p>Supervisor should no more be running in foreground. Verify that you have a gunicorn process running too, gunicorn was started by supervisor.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ ps aux | grep gunicorn
+</pre></div>
+
+
+<p>Also, match the process id given by 'ps aux' with pid shown in /tmp/gunicorn.pid</p>
+<p>Verify that <code>/admin/</code> is still accessible.</p>
+<h4>Supervisor client</h4>
+<p>Supervisor also provides a client using which you can see currently managed process by this supervisor instance. Add the following sections between <code>supervisord</code> and <code>program</code> section.</p>
+<div class="highlight"><pre><span></span><span class="k">[inet_http_server]</span>
+<span class="na">port</span><span class="o">=</span><span class="s">127.0.0.1:9001   ;</span>
+
+<span class="k">[rpcinterface:supervisor]</span>
+<span class="na">supervisor.rpcinterface_factory</span> <span class="o">=</span> <span class="s">supervisor.rpcinterface:make_main_rpcinterface</span>
+
+<span class="k">[supervisorctl]</span>
+<span class="na">serverurl</span><span class="o">=</span><span class="s">http://127.0.0.1:9001 ;</span>
+</pre></div>
+
+
+<p>You need to restart supervisor to see these changes taking effect. Kill the existing supervisor process by checking its id from supervisor pid file. Notice that you have a <code>pidfile</code> option under your <code>supervisord</code> section, which tells the file which stores process id of supervisor.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ cat /tmp/supervisord.pid 
+9820
+(PythonEnv)/tmp/testproj $ kill -9 9820
+</pre></div>
+
+
+<p>This killed the exising supervisor process.</p>
+<p>Also, you need to kill the running gunicorn process. Else supervisor will fail to start another gunicorn process because the current gunicorn process has already occupied port 8000.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ cat /tmp/gunicorn.pid 
+9824
+(PythonEnv)/tmp/testproj $ kill -9 9824
+</pre></div>
+
+
+<p>Run <code>supervisord</code> again </p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ supervisord
+</pre></div>
+
+
+<p>Again verify that gunicorn process was started by supervisor.</p>
+<p>Start supervisor client by issuing following command:</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ supervisorctl
+</pre></div>
+
+
+<p>It should tell you that a process for gunicorn is being managed by supervisor. Output should be something like:</p>
+<div class="highlight"><pre><span></span>gunicorn                         RUNNING    pid 9950, uptime 0:01:01
+supervisor&gt;
+</pre></div>
+
+
+<p>Suppose you made some change in your Django code and you need to restart gunicorn for that change to take effect. You can easily do it from supervisor client.</p>
+<div class="highlight"><pre><span></span>supervisor&gt; restart gunicorn
+</pre></div>
+
+
+<p>Output should be:</p>
+<div class="highlight"><pre><span></span><span class="n">gunicorn</span><span class="o">:</span> <span class="n">stopped</span>
+<span class="n">gunicorn</span><span class="o">:</span> <span class="n">started</span>
+</pre></div>
+
+
+<p>You can verify that the pid of gunicorn changes everytime you restart gunicorn from supervisorctl.</p>
+<p>supervisorctl provides a host of other functionalities too. Use command <code>help</code> on supervisorctl to know more.</p>
+<h5>Surprise</h5>
+<p>You have a running gunicorn process. Kill it.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ cat /tmp/gunicorn.pid 
+10137
+(PythonEnv)/tmp/testproj $ kill -9 10137
+</pre></div>
+
+
+<p>Now gunicorn should be killed and you should not be able to access <code>/admin/</code>. But you will be able to access it, try it. Surprised? Check the pid of gunicorn now.</p>
+<div class="highlight"><pre><span></span>(PythonEnv)/tmp/testproj $ cat /tmp/gunicorn.pid 
+10301
+</pre></div>
+
+
+<p>So, somehow a new gunicorn process was created as soon as we killed gunicorn, and the process id for that gunicorn process was written in /tmp/gunicorn.pid.</p>
+<h6>Why did it happen.</h6>
+<p>When you killed gunicorn, supervisor came to know that gunicorn process died. And it's supervisor's duty to restart any process if it dies, if supervisor controls that process. Since gunicorn was being controlled by supervisor, supervisor made sure to restart gunicorn. So, be assured that if you are using supervisor and let it control gunicorn, then supervisor will make sure to always keep gunicorn running. And your site will never be down.</p>
+<p>This is how we used supervisor on our development environment. You can similarly use supervisor on a production server.</p>
+<p>It is worth mentioning that supervisor conf can have multiple <code>program</code> section. So, you can use single supervisor instance to control gunicorn, celery and any other process you want.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

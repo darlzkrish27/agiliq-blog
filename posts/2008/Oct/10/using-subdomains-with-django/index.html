@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Using subdomains with Django</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/using-subdomains-with-django.html" rel="bookmark"
+           title="Permalink to Using subdomains with Django">Using subdomains with Django</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2008-10-10T10:01:57+05:30">
+                Published: Fri 10 October 2008
+        </abbr>
+		<br />
+        <abbr class="modified" title="2008-10-10T20:31:57+05:30">
+                Updated: Fri 10 October 2008
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tips.html">tips</a> </p>
+</footer><!-- /.post-info -->      <p>Django makes using beautiful urls a snap. However using subdomains with Django is not so obvious. Here is an article explaining this.</p>
+<p>Advantages of subdomain</p>
+<ol>
+<li>Sometimes looks more professional. Users will prefer someblog.wordpress.com over wordpress.com/someblog.</li>
+<li>If each part of your site is Under a different untrusted users, you might want to give them a separate subdomain, so that if they do Blackhat Seo on their part, the main site is not harmed.</li>
+<li>Your users can point a Cname to their subdomain to use domain of their choice with their subdomain.</li>
+</ol>
+<p>Disadvantages of subdomain</p>
+<ol>
+<li>When you need subdomains, you will know it. If you do not if you need it or not, you probably do not.</li>
+</ol>
+<p>Getting the current subdomain is ridiculously easy.</p>
+<div class="highlight"><pre><span></span>bits = urlparse.urlsplit(request.META[&#39;HTTP_HOST&#39;])[0].split(&#39;.&#39;)
+bits[0]
+</pre></div>
+
+
+<p>now bits[0] is you subdomain.</p>
+<p>However if you are using subdomains you are probably going to be needing this,</p>
+<ol>
+<li>In all your views.</li>
+<li>In all your templates.</li>
+</ol>
+<p>So you need to expose the subdomains using </p>
+<ol>
+<li>A <a href="http://docs.djangoproject.com/en/dev/topics/http/middleware/">Middleware</a> for all requests.</li>
+<li>A <a href="http://docs.djangoproject.com/en/dev/ref/templates/api/">request context</a> for all templates.</li>
+</ol>
+<p>A Middleware is nothing but a normal Python class which can implement <code>process_request</code>, <code>process_response</code> and others.</p>
+<p>The code to expose subdomains for all requests via a middleware is,</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urlparse</span>
+
+<span class="k">class</span> <span class="nc">GetSubdomainMiddleware</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="p">[</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">pass</span><span class="c1">#Todo Raise an exception etc</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">subdomain</span> <span class="o">=</span> <span class="n">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>The way to populate subdomain in all templates is similar</p>
+<div class="highlight"><pre><span></span>def populate_board(request):
+    &quot;Populate the board in the template&quot;
+    return {&#39;board&#39;:request.subdomain}#request.subdomain has been populated via the Middleware.
+</pre></div>
+
+
+<p>And now you need to edit you settings.py file to add <code>TEMPLATE_CONTEXT_PROCESSORS</code> and <code>MIDDLEWARE_CLASSES</code> to include your Middleware and context processor. </p>
+<p>You are almost ready to go, however your cookies will not work across sub domains. To
+make your cookies work across subdomains, add this line to your settings.py</p>
+<p><code>SESSION_COOKIE_DOMAIN</code> = '.example.com' if not DEBUG else '.local</p>
+<p><a href="http://sharjeel.2scomplement.com/2008/07/24/django-subdomains/">Thanks</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

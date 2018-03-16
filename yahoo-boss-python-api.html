@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="lakshman" />
+        <meta name="copyright" content="lakshman" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="yahoo, markdown, " />
+
+<meta property="og:title" content="Yahoo BOSS python api "/>
+<meta property="og:url" content="/yahoo-boss-python-api.html" />
+<meta property="og:description" content="Yahoo has a search api with generous limits, BOSS. There are a few python apis around it. But we wanted a lighter api, and one which has the same interface as out Bing Python api. So here is the updated bingapi.(Now with bossapi.py as well). Or svn it from here ------------- ### Usage Usage is mostly compatible with bingapi In [2]: from bingapi import bossapi In [3]: api = bossapi.Boss(&#39;&#39;) In [4]: api.do_web_search(&#39;Uswaretech&#39;) Out[4]: .... In [5]: api.do_news_search(&#39;salsa&#39;) Out[5]: ... In [6]: api.do_siteexplorer_search(&#39;http://uswaretech.com&#39;) Out[6]: ....." />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="lakshman" />
+<meta property="og:article:published_time" content="2009-06-14T11:17:51+05:30" />
+<meta property="" content="2009-06-14T21:47:51+05:30" />
+<meta name="twitter:title" content="Yahoo BOSS python api ">
+<meta name="twitter:description" content="Yahoo has a search api with generous limits, BOSS. There are a few python apis around it. But we wanted a lighter api, and one which has the same interface as out Bing Python api. So here is the updated bingapi.(Now with bossapi.py as well). Or svn it from here ------------- ### Usage Usage is mostly compatible with bingapi In [2]: from bingapi import bossapi In [3]: api = bossapi.Boss(&#39;&#39;) In [4]: api.do_web_search(&#39;Uswaretech&#39;) Out[4]: .... In [5]: api.do_news_search(&#39;salsa&#39;) Out[5]: ... In [6]: api.do_siteexplorer_search(&#39;http://uswaretech.com&#39;) Out[6]: .....">
+
+        <title>Yahoo BOSS python api  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/yahoo-boss-python-api.html"> Yahoo BOSS python api  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>Yahoo has a search api with generous limits, <a href="http://developer.yahoo.com/search/boss/">BOSS</a>. There are a few <a href="http://www.google.co.in/search?q=boss+python+api">python</a> <a href="http://pysearch.sourceforge.net/">apis</a> around it. But we wanted a lighter api, and one which has the same interface as out Bing Python api. So here is the updated <a href="http://pypi.python.org/pypi/bingapi/0.02">bingapi</a>.(Now with bossapi.py as well). Or svn it from <a href="https://svn.uswaretech.com/bingapi/">here</a></p>
+<hr>
+<h3>Usage</h3>
+<div class="highlight"><pre><span></span><span class="n">Usage</span> <span class="ow">is</span> <span class="n">mostly</span> <span class="n">compatible</span> <span class="k">with</span> <span class="n">bingapi</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">bingapi</span> <span class="kn">import</span> <span class="n">bossapi</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">api</span> <span class="o">=</span> <span class="n">bossapi</span><span class="o">.</span><span class="n">Boss</span><span class="p">(</span><span class="s1">&#39;&lt;appid&gt;&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">api</span><span class="o">.</span><span class="n">do_web_search</span><span class="p">(</span><span class="s1">&#39;Uswaretech&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="o">....</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">api</span><span class="o">.</span><span class="n">do_news_search</span><span class="p">(</span><span class="s1">&#39;salsa&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="o">...</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">api</span><span class="o">.</span><span class="n">do_siteexplorer_search</span><span class="p">(</span><span class="s1">&#39;http://uswaretech.com&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="o">.....</span>
+</pre></div>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2009-06-14T11:17:51+05:30">Jun 14, 2009</time>
+
+<h4>Last Updated</h4>
+<time datetime="2009-06-14T21:47:51+05:30">Jun 14, 2009</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#yahoo-ref">yahoo
+                    <span>2</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

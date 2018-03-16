@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="shabda" />
+        <meta name="copyright" content="shabda" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="opinion, markdown, " />
+
+<meta property="og:title" content="Django is not flexible "/>
+<meta property="og:url" content="/django-is-not-flexible.html" />
+<meta property="og:description" content="Django is not flexible at all because you can not do simple things like. 1. Using various authentication mechanisms. You can authenticate via Username, emails, Facebook, Twitter or any combination of these. 2. Using different database backends. Use MySQL, PostgreSQL, Non-relational databases, more or a combination. 3. Use different mail sending strategies. Send mail via smtp, queue to database, log to files and more. 4. Different file storage method. Store locally, FTP, Amazon S3 or write your own. 5. Store messages in Sessions, cookies or others. 6. Cache things in Files, DB, Memcache or just fake it. 7. Save sessions" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="shabda" />
+<meta property="og:article:published_time" content="2010-10-17T10:17:46+05:30" />
+<meta property="" content="2010-10-17T20:47:46+05:30" />
+<meta name="twitter:title" content="Django is not flexible ">
+<meta name="twitter:description" content="Django is not flexible at all because you can not do simple things like. 1. Using various authentication mechanisms. You can authenticate via Username, emails, Facebook, Twitter or any combination of these. 2. Using different database backends. Use MySQL, PostgreSQL, Non-relational databases, more or a combination. 3. Use different mail sending strategies. Send mail via smtp, queue to database, log to files and more. 4. Different file storage method. Store locally, FTP, Amazon S3 or write your own. 5. Store messages in Sessions, cookies or others. 6. Cache things in Files, DB, Memcache or just fake it. 7. Save sessions">
+
+        <title>Django is not flexible  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/django-is-not-flexible.html"> Django is not flexible  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>Django is not flexible at all because you can not do simple
+things like.   </p>
+<ul>
+<li>
+<p>Using various authentication mechanisms.<br>
+You can authenticate via <a href="http://docs.djangoproject.com/en/dev/topics/auth/#authentication-in-web-requests">Username</a>,
+<a href="http://www.davidcramer.net/code/224/logging-in-with-email-addresses-in-django.html">emails</a>,
+<a href="http://github.com/agiliq/Django-Socialauth">Facebook, Twitter</a> or any combination of these.</p>
+</li>
+<li>
+<p>Using different database backends.<br>
+Use MySQL, PostgreSQL,
+<a href="http://www.allbuttonspressed.com/projects/djangoappengine">Non-relational databases</a>,
+<a href="http://docs.djangoproject.com/en/dev/ref/databases/#using-a-3rd-party-database-backend">more</a>
+or a <a href="http://docs.djangoproject.com/en/dev/topics/db/multi-db/">combination</a>.</p>
+</li>
+<li>
+<p>Use different mail sending strategies.<br>
+Send mail via <a href="http://docs.djangoproject.com/en/dev/topics/email/#smtp-backend">smtp</a>,
+<a href="http://github.com/jtauber/django-mailer">queue to database</a>,
+<a href="http://docs.djangoproject.com/en/dev/topics/email/#file-backend">log to files</a>
+and more.</p>
+</li>
+<li>
+<p>Different file storage method.<br>
+Store locally, <a href="http://djangosnippets.org/snippets/1269/">FTP</a>,
+<a href="http://code.welldev.org/django-storages/wiki/S3Storage">Amazon S3</a>
+or <a href="http://docs.djangoproject.com/en/dev/howto/custom-file-storage/">write your own</a>.</p>
+</li>
+<li>
+<p>Store messages in <a href="http://docs.djangoproject.com/en/dev/ref/contrib/messages/#storage-backends">Sessions, cookies or others</a>.</p>
+</li>
+<li>
+<p>Cache things in <a href="http://docs.djangoproject.com/en/dev/topics/cache/#filesystem-caching">Files</a>,
+<a href="http://docs.djangoproject.com/en/dev/topics/cache/#database-caching">DB</a>,
+<a href="http://docs.djangoproject.com/en/dev/topics/cache/#memcached">Memcache</a>
+or <a href="http://docs.djangoproject.com/en/dev/topics/cache/#dummy-caching-for-development">just fake it</a>.</p>
+</li>
+<li>
+<p>Save sessions in files, DB, Memcache or cookies.</p>
+</li>
+<li>
+<p>Use <a href="http://www.davidcramer.net/code/479/using-jinja2-with-django.html">Jinja</a>,
+<a href="http://djangosnippets.org/snippets/97/">Mako or Gensi</a> as templating library.</p>
+</li>
+</ul>
+<hr>
+<p>One of the most lingering criticisms of Django has been
+that it is not flexible. People have criticised its design
+as too-tightly coupled, hard to extend, and inflexible.
+As a result, people have recommended to roll their own
+using SQLchemy, Jinja or web.py.  </p>
+<p>I think this view is unfounded and wrong. You would be hard
+pressed to get the choices and flexibility which Django offers.
+Eg, while development I run with Sqlite, Dummy caching, and emails
+on console, while on production I switch to PostgreSQL, Memcache, and
+queued emails.  </p>
+<p>Many apps use this backend pattern themselves.
+<a href="http://docs.b-list.org/django-registration/0.8/backend-api.html">Django registeration</a>,
+<a href="http://ask.github.com/celery/getting-started/first-steps-with-django.html">Django-celery</a>
+and our own <a href="http://github.com/agiliq/merchant">merchant</a>.  </p>
+<p>I have always been annoyed at Django is inflexible meme, and the recent 
+<a href="http://charlesleifer.com/blog/django-patterns-pluggable-backends/">Charles Leifer's post</a>
+put various Django plug points to make writing this too post easy to not do it.  </p>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2010-10-17T10:17:46+05:30">Oct 17, 2010</time>
+
+<h4>Last Updated</h4>
+<time datetime="2010-10-17T20:47:46+05:30">Oct 17, 2010</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#opinion-ref">opinion
+                    <span>1</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

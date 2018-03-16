@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="thejaswi" />
+        <meta name="copyright" content="thejaswi" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="upload, rst, " />
+
+<meta property="og:title" content="Dropbox file upload handler for django "/>
+<meta property="og:url" content="/dropbox-file-upload-handler-for-django.html" />
+<meta property="og:description" content="Dropbox announced new pro plans last week and some accounts have ahd their storage size doubled. Wouldn&#39;t it be wonderful if we could upload all our files to dropbox from our django webapp? In this post, I write a custom file upload handler that will upload files from our application to dropbox. Let us see how to use the custom file upload handler. Install the Dropbox Python SDK before you setup your django app to handle the file uploads. In your settings.py, add the following attributes (with the values filled):: DROPBOX_APP_KEY = &#34;&#34; DROPBOX_APP_SECRET_KEY = &#34;&#34; DROPBOX_APP_ACCESS_TOKEN = &#34;&#34; DROPBOX_APP_ACCESS_TOKEN_SECRET" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="thejaswi" />
+<meta property="og:article:published_time" content="2012-07-17T00:00:00+05:30" />
+<meta property="" content="2012-07-17T10:30:00+05:30" />
+<meta name="twitter:title" content="Dropbox file upload handler for django ">
+<meta name="twitter:description" content="Dropbox announced new pro plans last week and some accounts have ahd their storage size doubled. Wouldn&#39;t it be wonderful if we could upload all our files to dropbox from our django webapp? In this post, I write a custom file upload handler that will upload files from our application to dropbox. Let us see how to use the custom file upload handler. Install the Dropbox Python SDK before you setup your django app to handle the file uploads. In your settings.py, add the following attributes (with the values filled):: DROPBOX_APP_KEY = &#34;&#34; DROPBOX_APP_SECRET_KEY = &#34;&#34; DROPBOX_APP_ACCESS_TOKEN = &#34;&#34; DROPBOX_APP_ACCESS_TOKEN_SECRET">
+
+        <title>Dropbox file upload handler for django  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/dropbox-file-upload-handler-for-django.html"> Dropbox file upload handler for django  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>Dropbox <a class="reference external" href="http://blog.dropbox.com/index.php/new-dropbox-pro-plans/">announced</a> new pro plans last week and some accounts have had their
+storage size doubled. Wouldn't it be wonderful if we could upload all our
+files to dropbox from our django webapp?</p>
+<p>In this post, I write a custom file upload handler that will upload files
+from our application to dropbox.</p>
+<p>Let us see how to use the custom file upload handler.</p>
+<p>Install the <a class="reference external" href="https://www.dropbox.com/developers/reference/sdk">Dropbox Python SDK</a> before you setup your django app to handle
+the file uploads.</p>
+<p>In your <cite>settings.py</cite>, add the following attributes (with the values filled):</p>
+<pre class="literal-block">
+DROPBOX_APP_KEY = &quot;&quot;
+DROPBOX_APP_SECRET_KEY = &quot;&quot;
+DROPBOX_APP_ACCESS_TOKEN = &quot;&quot;
+DROPBOX_APP_ACCESS_TOKEN_SECRET = &quot;&quot;
+
+# Optional values below
+
+# The folder where you want the files uploaded.
+# Example: /Public or /
+DROPBOX_FILE_UPLOAD_FOLDER = &quot;&quot;
+# The value below may be either 'app_folder' or 'dropbox'
+DROPBOX_ACCESS_TYPE = &quot;&quot;
+</pre>
+<p>The <cite>DROPBOX_APP_KEY</cite> and <cite>DROPBOX_APP_SECRET_KEY</cite> are provided to you when you
+<a class="reference external" href="https://www.dropbox.com/developers/apps">create a new dropbox app</a>. Fetching the access token and access token secret
+is outside the scope of this blog post but you can follow the <a class="reference external" href="https://www.dropbox.com/developers/start/authentication#python">Getting Started
+Guide</a> until the <cite>Get an access token section</cite> and then paste the access token
+key and secret in the <cite>DROPBOX_APP_ACCESS_TOKEN</cite> and <cite>DROPBOX_APP_ACCESS_TOKEN_SECRET</cite>
+attributes respectively.</p>
+<p>Add the <a class="reference external" href="https://gist.github.com/3128835">DropboxFileUploadHandler</a> to any app (in my case <cite>testapp</cite>) and reference
+it in the <cite>FILE_UPLOAD_HANDLERS</cite> in <cite>settings.py</cite>:</p>
+<pre class="literal-block">
+FILE_UPLOAD_HANDLERS = (
+    &quot;testapp.dropbox_upload_handler.DropboxFileUploadHandler&quot;,
+)
+</pre>
+<p>That's it and you are done!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since dropbox doesn't support chunked uploads, the file is first uploaded
+to the temporary file upload directory on the server and then onto dropbox.</p>
+</div>
+<p>Here's how you would handle the file post upload in your view:</p>
+<pre class="literal-block">
+def file_upload_handler_view(request):
+    if request.method == &quot;POST&quot;:
+        file_uploaded = request.FILES[&quot;name_of_file_input&quot;]
+        print file_uploaded.read()
+        # Helpful attribute to get dropbox file metadata
+        # like path on the server, size, thumbnail etc
+        file_uploaded.dropbox_metadata
+</pre>
+<p>The <cite>DropboxFile</cite> returned is an instance of <a class="reference external" href="http://docs.python.org/library/httplib.html?highlight=httplib#httplib.HTTPResponse">httplib.HTTPResponse</a> and so all
+file like methods are not defined but some basic methods like read are supported.
+There is an attribute called <cite>dropbox_metadata</cite> on the uploaded file that holds
+the <a class="reference external" href="https://www.dropbox.com/developers/reference/api#metadata-details">dropbox metadata</a>.</p>
+
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2012-07-17T00:00:00+05:30">Jul 17, 2012</time>
+
+<h4>Last Updated</h4>
+<time datetime="2012-07-17T10:30:00+05:30">Jul 17, 2012</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#rst-ref">rst</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#upload-ref">upload
+                    <span>2</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

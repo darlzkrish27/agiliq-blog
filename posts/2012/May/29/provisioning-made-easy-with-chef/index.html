@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Provisioning Made Easy With Chef</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/provisioning-made-easy-with-chef.html" rel="bookmark"
+           title="Permalink to Provisioning Made Easy With Chef">Provisioning Made Easy With Chef</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-05-29T03:00:00+05:30">
+                Published: Tue 29 May 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-05-29T13:30:00+05:30">
+                Updated: Tue 29 May 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/saket.html">saket</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/provisioning.html">provisioning</a> </p>
+</footer><!-- /.post-info -->      <p>Managing Servers and scaling at will is hard. The bigger web players
+have put in years of effort, brute-forcing at times and re-iterating
+their methodologies, have come up with the secret sauce which they use
+to keep their cloud cool. The article is meant to be introductory rather than
+comprehensive. Chef has a steep learning curve, and in this post I
+wish to simplify few of the basic concepts. So, instead of going to
+the Chef Docs, finding searching, reading and re-reading, few of the beginner
+concepts are put at one place, which will help you get started on your
+own.  </p>
+<p>SysAdmins have started adopting programming paradigms to manage
+infrastructure. Infrastructure is managed as code. Preparing a server
+is just running few codes, that's how easy it becomes with a
+provisioning tool as chef. Chef is a  library for configuration
+management its an API for your entire infrastructure. Using Chef helps
+you improve scalability and manageability. It helps you save time,
+money and the pains of doing the same repetitive tasks time and
+again. </p>
+<h2>The Chef Architecture:</h2>
+<p>Chef Server:  Central Store of your infrastructure’s configuration
+data. It stores data necessary to configure your nodes, a REST API
+makes this data accessible to the nodes.  Optionally, it has a WebUI
+which helps you manage your infrastructure via a web interface.</p>
+<p>Nodes: Systems managed by Chef Servers. A node is any host that is
+configured using chef-client. Chef-client runs on your node which
+contacts the server for information necessary to configure the node. 
+In simple terms nodes are your servers in the cloud which you want to
+configure using chef. They can be your webservers, database server
+etc. </p>
+<p>Workstations - The machine where the sysadmin works. Cookbooks are
+maintained at the workstation. The workstation has two key components:</p>
+<ul>
+<li>the knife executable - helps upload data to chef server or individual nodes using ssh. </li>
+<li>a repository containing cookbooks, data bags, roles etc.(infrastructure’s configuration documents)</li>
+</ul>
+<h3>Few Basic Definitions:</h3>
+<p>Lets look at few of the basic definitions which we will use later:</p>
+<p>Resources are  a cross platform abstraction of the things you are
+configuring on the host.</p>
+<p>Parameters are the piece of data that the resources contain. </p>
+<p>Action in a resource is what you want to do with the resource. </p>
+<p>Providers are the specific implementation of what the resource
+abstracts. They run the system commands. </p>
+<p>Roles provide a way to describe a particular function or type of
+node. Roles have run_lists and attributes. </p>
+<p>Templates are all the files with all the important data substituted
+with code, so we can fill them later. </p>
+<p>Recipes are where you write your resources. The execution is done in
+top down order. </p>
+<p>Mentioned below is how a cookbook folder looks like:
+<pre>
+.
+|-- attributes
+|   -- default.rb
+|-- CHANGELOG.md
+|-- CONTRIBUTING
+|-- LICENSE
+|-- metadata.rb
+|-- README.md
+-- recipes
+   -- default.rb
+</pre></p>
+<p>Cookbooks can be found at Github, they are actively maintained by
+opsCode and the community support. This was a basic intro to Chef, in
+later posts we will see about the flavors of chef, and which one to
+use when. This shall act as a building block to the next series of
+posts. Stay Tuned!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Five things I love about Django.</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/five-things-i-love-about-django.html" rel="bookmark"
+           title="Permalink to Five things I love about Django.">Five things I love about Django.</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2008-04-18T06:05:37+05:30">
+                Published: Fri 18 April 2008
+        </abbr>
+		<br />
+        <abbr class="modified" title="2008-04-18T16:35:37+05:30">
+                Updated: Fri 18 April 2008
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/uncategorized.html">Uncategorized</a> </p>
+</footer><!-- /.post-info -->      <p>I posted <a href="http://42topics.com/blog/2008/04/five-things-i-hate-about-django/">five things I hate about Django</a>, so as a penance, I will of course have to tell the "Five things I love about Django".</p>
+<h3>The Admin interface rocks:</h3>
+<p>I have demoed Django to a fair number of People, and when you write a few lines in <code>models.py</code>, and then show the auto generated Admin interface, this is a <em>jaw-dropping</em> moment. Happened with me every time I introduced Django to someone. In <a href="https://barcamp.pbwiki.com/BarCampHyderabad5">Barcamp Hyderabad 05</a>, people could not believe this was so easy, and asked if there was some more code <acronym title="Any sufficiently advanced technology is indistinguishable from magic.">behind this.</acronym></p>
+<p>Of course Admin is much more useful than as a show off tool. When I am developing a new website I write the views to query the DB first, at that time the Admin is indispensable. And in many cases, just writing the Models, and tweaking the Admin is enough for me.</p>
+<h3>Documentation is comprehensive, available, and always maintained:</h3>
+<p>When I was looking around to learn a python framework, after search I has to choose between Django and Turbogears. Now after having used Django a lot, and Turbogears for comparison, I believe Django to be better. But this decision I could not have taken when I was just starting out. I choose Django because it seemed better documented, with tutorials more freely available.</p>
+<p>Having the whole framework documented, from the <a href="http://www.djangoproject.com/documentation/tutorial01/">most basic</a>, to the more <a href="http://www.djangoproject.com/documentation/legacy_databases/">esoteric</a> is huge time saver.</p>
+<h3>The community is extremely helpful:</h3>
+<p>Whenever I have asked, a question in <a href="http://groups.google.com/group/django-users">django-users</a> or on <a href="irc://irc.freenode.com/django">IRC#Django</a> I always get helpful responses, and a lot of help. Few communities have this culture where, people with so much experience are willing to help out people who are just starting out.</p>
+<h3>There is a reusable app for almost everything.</h3>
+<p>Need to handle hierarchical data as relational data, <a href="http://code.google.com/p/django-mptt/">django-mptt</a> to the rescue. Need to handle <a href="http://code.google.com/p/django-voting/">voting</a>, <a href="http://code.google.com/p/django-tagging/">tagging</a>, or <a href="http://code.google.com/p/django-registration/">registration</a>. Well we got you <a href="http://djangoplugables.com/">covered</a>.</p>
+<h3>Easy things are easy, and hard things are possible:</h3>
+<p>You just want to do as <code>SELECT * FROM ... WHERE ...</code>, just use <code>Model.objects.filter</code>. Ok, so your queries span a number of relationships, and you want to reduce the number of queries, use <code>select_related</code>. Or might be you want to model a relationship, which Django ORM can not, might be a little sql in <code>.extra</code> will help you? Or might be you have a lot of <code>GROUP BY</code> or <code>UNION ALL</code>, drop to raw sql in <code>connection.cursor</code>. Depending upon your requirement, you moved from the trivially easy to the somewhat hard.</p>
+<p>Similarly with templates, you just want to substitute some variables. Use <code>{% for ... %}</code> and <code>{{ ... }}</code>. Or you want to do something difficult/custom in template, (and are sure that template is the right place to do this), just write a template tag.</p>
+<h3>Bonus</h3>
+<p><em>The development web server</em>: When you are developing, not worrying about Apache, and any configuration, is a huge help. And the fact that pdb plays nice with web server is awesome, (compared to GAE servers which give a <code>BdbQuit</code> exception).</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Rakesh" />
+        <meta name="copyright" content="Rakesh" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="crispyforms, markdown, " />
+
+<meta property="og:title" content="Writing styled forms with absolutely minimal HTML (Part-2) "/>
+<meta property="og:url" content="/writing-styled-forms-with-absolutely-minimal-html2.html" />
+<meta property="og:description" content="Writing styled forms with absolutely minimal HTML (Part-2) =================================================================== In the earlier post we have cruised through the fundamentals of using crispy forms for writing styled forms with minimal HTML. At this time, let us dip into getting a clear understanding on how to customize the crispy forms. Before diving into the crux of this post we will become aware with the following key words: 1.FormHelper 2.Layout FormHelper ----------------------- * Django-crispy-forms implements a class called FormHelper to define the form rendering behavior. * Helpers give us a way to control the form attributes and its layout. * They control global" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="Rakesh" />
+<meta property="og:article:published_time" content="2014-04-28T09:43:02+05:30" />
+<meta property="" content="2014-04-28T20:13:02+05:30" />
+<meta name="twitter:title" content="Writing styled forms with absolutely minimal HTML (Part-2) ">
+<meta name="twitter:description" content="Writing styled forms with absolutely minimal HTML (Part-2) =================================================================== In the earlier post we have cruised through the fundamentals of using crispy forms for writing styled forms with minimal HTML. At this time, let us dip into getting a clear understanding on how to customize the crispy forms. Before diving into the crux of this post we will become aware with the following key words: 1.FormHelper 2.Layout FormHelper ----------------------- * Django-crispy-forms implements a class called FormHelper to define the form rendering behavior. * Helpers give us a way to control the form attributes and its layout. * They control global">
+
+        <title>Writing styled forms with absolutely minimal HTML (Part-2)  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/writing-styled-forms-with-absolutely-minimal-html2.html"> Writing styled forms with absolutely minimal HTML (Part-2)  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>In the <a href="http://agiliq.com/blog/2014/04/writing-styled-forms-with-absolutely-minimal-html-/">earlier post</a> we have cruised through the fundamentals of using crispy forms for writing styled forms with minimal HTML.</p>
+<p>At this time, let us dip into getting a clear understanding on how to customize the crispy forms.</p>
+<p>Before diving into the crux of this post we will become aware with the following key words:</p>
+<ol>
+<li>FormHelper</li>
+<li>Layout</li>
+</ol>
+<h2>FormHelper</h2>
+<ul>
+<li>Django-crispy-forms  implements a class called FormHelper to define the form rendering behavior.</li>
+<li>Helpers give us a way to control the form attributes and its layout.</li>
+<li>They control global form rendering behavior.</li>
+</ul>
+<h2>Layout</h2>
+<ul>
+<li>It is an another powerful class of Django-crispy-forms which allow us to change the way the form fields are rendered.</li>
+<li>This allows us to set the order of the fields, wrap them in divs or other structure, etc.</li>
+<li>Custom output</li>
+<li>Flexible and highly reususable</li>
+</ul>
+<p>In the first place we will get to know how to render a model form and then we will be customizing the divs and fields in the template.</p>
+<h2>Handling ModelForm with a Django-crispy-form.</h2>
+<p>As we know ModelForms render Model fields as HTML, let us do this using the crispy-forms now.</p>
+<p>Now lets render an Address form containing the fields like name, street, landmark and so on...</p>
+<p>The basic form stays the same except that we will be appending a FormHelper class.</p>
+<p>The snippet of forms.py:</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">AddressModelForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">ModelForm</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="kr">super</span><span class="p">(</span><span class="nx">AddressModelForm</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">__init__</span><span class="p">(</span><span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">helper</span> <span class="o">=</span> <span class="nx">FormHelper</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
+
+    <span class="kr">class</span> <span class="nx">Meta</span>:
+        <span class="kt">model</span> <span class="o">=</span> <span class="nx">Address</span>
+</pre></div>
+
+
+<p>In the above code when the AddressModelForm is called the crispy-forms builds a default layout using form.fields for us, so we don't have to manually list all the fields whatever number of fields it may contain.</p>
+<p>Then creation of the views stays the normal way as we do for a normal model-form like this:</p>
+<p>views.py:
+    <code>form = AddressModelForm()</code></p>
+<p>In the template we just need to add the crispy form tag and that's it and our mission is accomplished.</p>
+<p>address.html</p>
+<div class="highlight"><pre><span></span>{% load crispy_form_tags %}
+{% crispy form %}
+</pre></div>
+
+
+<p>That gets us done with handling ModelForm with a Django-crispy-form.</p>
+<hr>
+<h2>Customizing the form</h2>
+<p>Now in the second phase we shall start customizing our form using the powerful classes of crispy-forms -- Layouts and FormHelper.</p>
+<p>In the above example, we could just render the form fields, but we are couldn't able to assign any attributes to the form.</p>
+<p>In the normal scenario we tend to use the form_action and form_method in the template's form attributes, but in the crispy-forms we can do it by specifying them in the form itself. For this we take the help of FormHelper.</p>
+<p>Here is the above example rewritten to get the needed task done:</p>
+<div class="highlight"><pre><span></span><span class="nx">The</span> <span class="nx">snippet</span> <span class="nx">of</span> <span class="nx">forms.py</span>:
+
+<span class="kt">class</span> <span class="nx">AddressModelForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">ModelForm</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="kr">super</span><span class="p">(</span><span class="nx">AddressModelForm</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">__init__</span><span class="p">(</span><span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+        <span class="nx">form_method</span> <span class="o">=</span> <span class="s1">&#39;post&#39;</span>
+        <span class="nx">form_id</span> <span class="o">=</span> <span class="s1">&#39;address-form-id&#39;</span>
+        <span class="nx">form_show_errors</span> <span class="o">=</span> <span class="nx">True</span>
+        <span class="nx">render_hidden_fields</span> <span class="o">=</span> <span class="nx">False</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">helper</span> <span class="o">=</span> <span class="nx">FormHelper</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
+
+    <span class="kr">class</span> <span class="nx">Meta</span>:
+        <span class="kt">model</span> <span class="o">=</span> <span class="nx">Address</span>
+</pre></div>
+
+
+<p>Additionally, we have got the capability to add custom helper attributes and Bootstrap Helper attibutes:</p>
+<p>Examples for Bootstrap helper attributes:</p>
+<div class="highlight"><pre><span></span>`help_text_inline`
+`error_text_inline`
+`label_class`
+`field_class` and so on..
+</pre></div>
+
+
+<h2>Reorder the form fields</h2>
+<p>Now it's time for learning the approach to render the form of a template in the customized way. For this we can use the Layout class.</p>
+<p>With Layout class we can arrange the fields according to the requirement.</p>
+<ul>
+<li>What if we want to reorder the fields? And what if I have 100 such fields?</li>
+</ul>
+<p>Example: forms.py</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">ExampleFieldForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">helper</span> <span class="o">=</span> <span class="nx">FormHelper</span><span class="p">()</span>
+    <span class="nx">helper</span><span class="p">.</span><span class="nx">layout</span> <span class="o">=</span> <span class="nx">Layout</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>Power of Layouts:</h2>
+<p>The Power of Layouts becomes much more powerful with layout objects.
+Every layout object has an associated template.</p>
+<p>There are three types of layout objects.</p>
+<ol>
+<li>Universal layout objects (Div, HTML, Field, Fieldset..)</li>
+<li>Uniform layout objects (ButtonHolder, MultiField)</li>
+<li>Bootstrap layout objects (FormActions, AppendedText, Alert...)</li>
+</ol>
+<p>Using the layout objects will result in tailor made outputs in the relatively simplest way.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">RegistrationForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">)</span><span class="o">:</span>
+<span class="p">[...]</span>
+<span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+    <span class="kr">super</span><span class="p">(</span><span class="nx">RegistrationForm</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">__init__</span><span class="p">(</span><span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">helper</span> <span class="o">=</span> <span class="nx">FormHelper</span><span class="p">()</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">helper</span><span class="p">.</span><span class="nx">layout</span> <span class="o">=</span> <span class="nx">Layout</span><span class="p">(</span>
+        <span class="nx">Fieldset</span><span class="p">(</span>
+            <span class="s1">&#39;Registration form&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Father&#39;</span><span class="nx">s</span> <span class="nx">name</span><span class="p">,</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">,</span>
+           <span class="p">),</span>
+        <span class="nx">Div</span><span class="p">(</span>
+            <span class="s1">&#39;Address&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;City&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;pincode&#39;</span>
+            <span class="nx">css_id</span> <span class="o">=</span> <span class="s1">&#39;coloured_fields&#39;</span>
+            <span class="p">),</span>
+        <span class="nx">Button</span><span class="p">(</span>
+            <span class="nx">Submit</span><span class="p">(</span><span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="s1">&#39;Submit&#39;</span><span class="p">),</span>
+        <span class="nx">HTML</span><span class="p">(</span><span class="s2">&quot; {% if success %} &lt;p&gt; Successfully submitted &lt;/p&gt; {% endif %}&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+
+
+<p>Explaination:</p>
+<ul>
+<li>
+<p>The fieldset attribute renders the name, fathers's name, email fields wrapped in a fieldset and the first argument in the fieldset is rendered as a legend for the fieldset.</p>
+</li>
+<li>
+<p>The Div attribute wraps the fields Address, city, pincode in a div.</p>
+</li>
+<li>
+<p>Button takes name and value resulting a beautiful button.</p>
+</li>
+<li>
+<p>With HTML attribute we can render HTML content and the context can be accessed from where the form is rendered</p>
+</li>
+</ul>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2014-04-28T09:43:02+05:30">Apr 28, 2014</time>
+
+<h4>Last Updated</h4>
+<time datetime="2014-04-28T20:13:02+05:30">Apr 28, 2014</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#crispyforms-ref">crispyforms
+                    <span>1</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

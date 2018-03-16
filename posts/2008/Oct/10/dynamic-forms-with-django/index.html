@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Dynamic forms with Django</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/dynamic-forms-with-django.html" rel="bookmark"
+           title="Permalink to Dynamic forms with Django">Dynamic forms with Django</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2008-10-10T09:16:05+05:30">
+                Published: Fri 10 October 2008
+        </abbr>
+		<br />
+        <abbr class="modified" title="2008-10-10T19:46:05+05:30">
+                Updated: Fri 10 October 2008
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/forms.html">forms</a> </p>
+</footer><!-- /.post-info -->      <p><a href="http://docs.djangoproject.com/en/dev/topics/forms/">Newforms</a>, (or forms now) are without doubt one of the coolest features of Django. (Of course after Admin, Localflavor, and many others). Here is some sample code.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">EmployeeForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">CharField</span><span class="p">()</span>
+    <span class="nx">age</span> <span class="o">=</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">IntegerField</span><span class="p">()</span>
+    <span class="nx">resume</span> <span class="o">=</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">FileField</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Just this code gives you </p>
+<ol>
+<li>A form which knows how to render itself as Html.</li>
+<li>A form which knows how to validate data on the server side.</li>
+<li>A form which knows how to show the relevant errors.</li>
+</ol>
+<p>However think of this scenario, </p>
+<p>You need to customise your form depending on values in the Database.</p>
+<p>What you want to do is </p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">EmployeeForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">CharField</span><span class="p">()</span>
+    <span class="s2">&quot;Show more fields depending on the Values in DB for a specific employees.&quot;</span>
+    <span class="err">#</span><span class="p">....</span>
+    <span class="err">#</span><span class="p">....</span>
+    <span class="err">#</span><span class="p">....</span>
+</pre></div>
+
+
+<p>You can do this without resorting to any black magic. Here is the code to do so,</p>
+<div class="highlight"><pre><span></span><span class="err">#</span><span class="k">in</span> <span class="nx">models</span><span class="p">.</span><span class="nx">py</span>
+
+<span class="nx">type_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;CharField&#39;</span><span class="o">:</span><span class="nx">forms</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">),</span> <span class="s1">&#39;TextField&#39;</span><span class="o">:</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">widget</span> <span class="o">=</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">Textarea</span><span class="p">),</span>
+        <span class="s1">&#39;BooleanField&#39;</span><span class="o">:</span><span class="nx">forms</span><span class="p">.</span><span class="nx">BooleanField</span><span class="p">(</span><span class="nx">required</span> <span class="o">=</span> <span class="nx">False</span><span class="p">),</span>
+        <span class="s1">&#39;URLField&#39;</span><span class="o">:</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">URLField</span><span class="p">(),</span> <span class="s1">&#39;EmailField&#39;</span><span class="o">:</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">EmailField</span><span class="p">()</span>
+        <span class="p">}</span>
+
+<span class="kr">class</span> <span class="nx">EmployeeFieldModel</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="s2">&quot;Model for employee form fields for a specific Job board.&quot;</span>
+    <span class="nx">employee</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">Employee</span><span class="p">)</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="nx">type</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="nx">order</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">IntegerField</span><span class="p">()</span>
+
+<span class="err">#</span><span class="k">in</span> <span class="nx">forms</span><span class="p">.</span><span class="nx">py</span>
+
+<span class="nx">def</span> <span class="nx">get_employee_form</span><span class="p">(</span><span class="nx">employee</span><span class="p">)</span><span class="o">:</span>
+    <span class="s2">&quot;&quot;&quot;Return the form for a specific Board.&quot;&quot;&quot;</span>
+    <span class="nx">employee_fields</span> <span class="o">=</span> <span class="nx">EmployeeFieldModel</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">employee</span> <span class="o">=</span> <span class="nx">employee</span><span class="p">).</span><span class="nx">order_by</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">)</span>
+    <span class="kr">class</span> <span class="nx">EmployeeForm</span><span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="o">*</span><span class="nx">args</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">employee</span> <span class="o">=</span> <span class="nx">employee</span>
+    <span class="nx">def</span> <span class="nx">save</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="s2">&quot;Do the save&quot;</span>
+    <span class="k">for</span> <span class="nx">field</span> <span class="k">in</span> <span class="nx">employee_fields</span>:
+    <span class="kt">setattr</span><span class="p">(</span><span class="nx">EmployeeForm</span><span class="p">,</span> <span class="nx">field</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">copy</span><span class="p">(</span><span class="nx">type_mapping</span><span class="p">[</span><span class="nx">field</span><span class="p">.</span><span class="nx">type</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="nx">type</span><span class="p">(</span><span class="s1">&#39;EmployeeForm&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">forms</span><span class="p">.</span><span class="nx">Form</span><span class="p">,</span> <span class="p">),</span> <span class="nx">dict</span><span class="p">(</span><span class="nx">EmployeeForm</span><span class="p">.</span><span class="nx">__dict__</span><span class="p">))</span>
+
+<span class="err">#</span><span class="k">in</span> <span class="nx">views</span><span class="p">.</span><span class="nx">py</span>
+
+<span class="nx">employee</span> <span class="o">=</span> <span class="nx">Employee</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">employee_slug</span><span class="p">)</span>
+<span class="nx">get_employee_form</span><span class="p">(</span><span class="nx">employee</span><span class="p">)</span>
+</pre></div>
+
+
+<p>PS. A similar techniques works for Dynamic models.<br>
+PPS. Yes I have worked with Oracle. Yes, all my data models start with Employee and Departments.</p>
+<hr>
+<p>Want to build an <a href="http://uswaretech.com/">Web Application</a>. Talk to <a href="http://uswaretech.com/contact/">Usware</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

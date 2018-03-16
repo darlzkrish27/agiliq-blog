@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - agiliq</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/self-testing-fabfile-using-docker.html" rel="bookmark"
+                           title="Permalink to Self-testing fabfile using docker">Self-testing fabfile using docker</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-28T08:27:35+05:30">
+                Published: Fri 28 June 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-06-28T18:57:35+05:30">
+                Updated: Fri 28 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>In my last blog post, I discussed <a href="http://agiliq.com/blog/2013/06/deploying-django-using-docker/">deploying django on docker</a>. This is a blog post on a related note and we'll be looking at using docker to test a fabfile and make sure it's working as intended. Fabfile and testing: -------------------- <a href="http://docs.fabfile.org/en/latest/index.html">Fabfile</a> is a great tool for automating deployments, and is very useful for creating continous integration workflows. With good tests, you can be sure that your fabfile works out of the box and be prepared for server migrations or upgrades. One apporach to testing complex fabfiles is using vagrant or using a VM manually. I think docker is</p>
+                <a class="readmore" href="/self-testing-fabfile-using-docker.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/deploying-django-using-docker.html" rel="bookmark"
+                           title="Permalink to Deploying django using docker">Deploying django using docker</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-14T08:46:51+05:30">
+                Published: Fri 14 June 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-06-14T19:16:51+05:30">
+                Updated: Fri 14 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>In this blog post we'll take a look at <a href="http://docker.io">Docker</a> and discuss ways to deploy django using docker. About Docker: ------------- Docker is a tool that helps you manage lxc containers and images. You can create an image, launch container from the existing image, attach to a running container, and generally play around with the containers. The most important benefit of using docker and containers in general is that you have a clean, hygeinic and portable runtime enivorment for your app. This means you don't have to worry about missing dependecies, packages and other pain points during subsequent deployments. You</p>
+                <a class="readmore" href="/deploying-django-using-docker.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/common-testing-scenarios-for-django-app.html" rel="bookmark"
+                           title="Permalink to Common testing scenarios for Django app.">Common testing scenarios for Django app.</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-04-28T10:03:38+05:30">
+                Published: Sun 28 April 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-04-28T20:33:38+05:30">
+                Updated: Sun 28 April 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>People are often confused regarding what tests to write. Let's look into some scenarios for which tests can be written. ##Setting up the project We start a Django project inside a virtual environment. In this post we would be using django 1.4. (dj)~/play/dj$ django-admin.py startproject testcases Let's start an app named <code>blog</code>. (dj)~/play/dj/testcases$ python manage.py startapp blog We will have the following model in <code>blog/models.py</code>: class BlogEntry(models.Model): title = models.CharField(max_length=100) text = models.TextField() is_published = models.BooleanField(default=True) user = models.ForeignKey(User) We will do test driven development which requires: * Thinking about our assumption. * Writing the test to satisfy that assumption.</p>
+                <a class="readmore" href="/common-testing-scenarios-for-django-app.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/logging-in-django.html" rel="bookmark"
+                           title="Permalink to Logging in Django">Logging in Django</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-03-22T02:08:04+05:30">
+                Published: Fri 22 March 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-03-22T12:38:04+05:30">
+                Updated: Fri 22 March 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+
+</footer><!-- /.post-info -->                This is a talk I gave at Agiliq on 21-March-2013 <script async class=
+                <a class="readmore" href="/logging-in-django.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/serving-static-files-in-django.html" rel="bookmark"
+                           title="Permalink to Serving static files in Django">Serving static files in Django</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-03-21T00:00:01+05:30">
+                Published: Thu 21 March 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-03-21T10:30:01+05:30">
+                Updated: Thu 21 March 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>Many a times I started a Django project, I had difficulty setting up how static files should be served. And everytime this happened, I read Django documentation for serving static files, tried changing some values in settings.py and after some changes here and there it worked. I guess there are many like me who find themself in a similar situation. In this blog post, I intend to lessen the confusion about serving static files. We will see what settings need to be there for serving static files in development and what directory structure we should be using for static files.</p>
+                <a class="readmore" href="/serving-static-files-in-django.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/two-scoops-of-django-review.html" rel="bookmark"
+                           title="Permalink to Two Scoops of Django: Review">Two Scoops of Django: Review</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-02-11T00:00:00+05:30">
+                Published: Mon 11 February 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-02-11T11:30:00+05:30">
+                Updated: Mon 11 February 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p><img alt="Django best practices" src="https://s3.amazonaws.com/twoscoops/img/tsd-cover.png"> <a href="https://django.2scoops.org/">Two scoops of Django</a> is the new book on Django best practices by Daniel Greenfeld and Audrey Roy. I just finished reading it and found it extremely useful. The book is a collection of tips, their justification and code organized in logical areas. I have been using Django since 2008, but I still found a few tips which were new to me and many which served as good reminder. At about 200 pages, its comprehensive but not overwhelming. If you are an advanced Djangonaut, you can read it in a weekend (And you probably are using all</p>
+                <a class="readmore" href="/two-scoops-of-django-review.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/introduction-to-python-workshop-on-february-15th-2.html" rel="bookmark"
+                           title="Permalink to Introduction to Python Workshop on February 15th, 2013">Introduction to Python Workshop on February 15th, 2013</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-02-08T00:00:00+05:30">
+                Published: Fri 08 February 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-02-08T11:30:00+05:30">
+                Updated: Fri 08 February 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+
+</footer><!-- /.post-info -->                <p class="first last">We are conducting an &quot;Introduction to Python&quot; workshop at <a class="reference internal" href="#our-office">our office</a> on February 15th, 2013 between 5-8PM IST. This workshop is geared towards those who are planning to learn python. Topics: * Language features * Variables * Built in data structures * Functions * Object Oriented Programming * Demo writing a simple program Prerequisites to attend this session: * Basic programming skills. * A laptop with any linux flavour (OR) a laptop with Python installed in it. Register for the workshop by filling up the form. .. <span class="target" id="our-office">our office</span>: <a class="reference external" href="http://agiliq.com/contactus#map">http://agiliq.com/contactus#map</a> .. _Register: <a class="reference external" href="http://bit.ly/Yf0eiH">http://bit.ly/Yf0eiH</a></p>
+
+                <a class="readmore" href="/introduction-to-python-workshop-on-february-15th-2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/easy-client-side-form-validations-for-django-djang.html" rel="bookmark"
+                           title="Permalink to Easy client side form validations for Django: Django Parsley">Easy client side form validations for Django: Django Parsley</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-02-07T00:00:00+05:30">
+                Published: Thu 07 February 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-02-07T11:30:00+05:30">
+                Updated: Thu 07 February 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p><a href="http://parsleyjs.org/">Parsleyjs</a> is a JavaScript library to do client side data validations. It does this in a non-intrusive way via adding a <code>data-*</code> attributes to form fields. Check it out, it's really slick. Django forms do a great job of server side data validations. By integrating Parsley with Django form, you get good client side data validations as well. Get the <a href="https://github.com/agiliq/django-parsley">app here</a>. ### Some design considerations When I started writing this app I wanted to make it really easy to use. My first thought was to make this a filter or a template tag which would have allowed you to</p>
+                <a class="readmore" href="/easy-client-side-form-validations-for-django-djang.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/moreapps-android-library-project-open-sourced.html" rel="bookmark"
+                           title="Permalink to MoreApps - Android Library Project: Open Sourced">MoreApps - Android Library Project: Open Sourced</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-01-21T00:00:00+05:30">
+                Published: Mon 21 January 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-01-21T11:30:00+05:30">
+                Updated: Mon 21 January 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->                <p>If you have a portfolio of apps, you probably want to cross promote them. We are open sourcing an Android Library Project to make this possible. <a href="https://github.com/agiliq/MoreApps">Get the code</a>. This provides an Activity which you can show with a Grid of your apps. How to use it ------------- Add this MoreAppsLibrary project(<b>library</b>) as a dependency in the Android Application project you are implementing. Add the following code in your <code>AndroidManifest.xml</code>: <activity android:name="com.agiliq.android.moreappslib.MoreAppsActivity" android:label="More Apps"> </activity> Perform an <code>Intent</code> to start the <code>MoreAppsActivity</code>; make sure to <code>putExtra("package", getPackageName());</code>, this ensures that if the your app is in the list of apps</p>
+                <a class="readmore" href="/moreapps-android-library-project-open-sourced.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/tutorial-building-a-chrome-app.html" rel="bookmark"
+                           title="Permalink to Tutorial: Building a Chrome app">Tutorial: Building a Chrome app </a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-01-16T12:46:01+05:30">
+                Published: Wed 16 January 2013
+        </abbr>
+		<br />
+        <abbr class="modified" title="2013-01-16T12:16:01+05:30">
+                Updated: Wed 16 January 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/html.html">html</a>.</p>
+
+</footer><!-- /.post-info -->                This tutorial helps in building a simple chrome app . Examples included along with source code.
+                <a class="readmore" href="/tutorial-building-a-chrome-app.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="/author/agiliq6.html">&laquo;</a>
+    Page 7 / 24
+        <a href="/author/agiliq8.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Yahoo BOSS python api</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/yahoo-boss-python-api.html" rel="bookmark"
+           title="Permalink to Yahoo BOSS python api">Yahoo BOSS python api</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-06-14T11:17:51+05:30">
+                Published: Sun 14 June 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-06-14T21:47:51+05:30">
+                Updated: Sun 14 June 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/yahoo.html">yahoo</a> </p>
+</footer><!-- /.post-info -->      <p>Yahoo has a search api with generous limits, <a href="http://developer.yahoo.com/search/boss/">BOSS</a>. There are a few <a href="http://www.google.co.in/search?q=boss+python+api">python</a> <a href="http://pysearch.sourceforge.net/">apis</a> around it. But we wanted a lighter api, and one which has the same interface as out Bing Python api. So here is the updated <a href="http://pypi.python.org/pypi/bingapi/0.02">bingapi</a>.(Now with bossapi.py as well). Or svn it from <a href="https://svn.uswaretech.com/bingapi/">here</a></p>
+<hr>
+<h3>Usage</h3>
+<div class="highlight"><pre><span></span><span class="n">Usage</span> <span class="ow">is</span> <span class="n">mostly</span> <span class="n">compatible</span> <span class="k">with</span> <span class="n">bingapi</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">bingapi</span> <span class="kn">import</span> <span class="n">bossapi</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">api</span> <span class="o">=</span> <span class="n">bossapi</span><span class="o">.</span><span class="n">Boss</span><span class="p">(</span><span class="s1">&#39;&lt;appid&gt;&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">api</span><span class="o">.</span><span class="n">do_web_search</span><span class="p">(</span><span class="s1">&#39;Uswaretech&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="o">....</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">api</span><span class="o">.</span><span class="n">do_news_search</span><span class="p">(</span><span class="s1">&#39;salsa&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="o">...</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">api</span><span class="o">.</span><span class="n">do_siteexplorer_search</span><span class="p">(</span><span class="s1">&#39;http://uswaretech.com&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="o">.....</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

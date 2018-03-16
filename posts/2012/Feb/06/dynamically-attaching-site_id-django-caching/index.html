@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Dynamically attaching SITE_ID to Django Caching</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/dynamically-attaching-site_id-django-caching.html" rel="bookmark"
+           title="Permalink to Dynamically attaching SITE_ID to Django Caching">Dynamically attaching SITE_ID to Django Caching</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-02-06T12:23:01+05:30">
+                Published: Mon 06 February 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-02-05T23:56:52+05:30">
+                Updated: Sun 05 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/anoop.html">anoop</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/site_id-prefix.html">SITE_ID prefix</a> </p>
+</footer><!-- /.post-info -->      <p>It would be useful and convenient, if you have an automatic way to add the SITE_ID, especially, when you have multiple sites running on the same deployment. Django provides a cache prefix function KEY_FUNCTION in settings which can be used to achieve this.</p>
+<p>Just follow the following steps, and your cache, automatically prepends SITE_ID to the cache key, making it unique across multiple sites.</p>
+<ol>
+<li>
+<p>Put the following into the settings file.</p>
+<div class="highlight"><pre><span></span>     CACHES = {
+
+     &#39;default&#39;: {
+
+      &#39;BACKEND&#39;: &#39;django.core.cache.backends.db.DatabaseCache&#39;,
+
+       &#39;LOCATION&#39;: &#39;cache_table&#39;,
+
+       KEY_FUNCTION = ‘projectname.appname.modulename.functionname’,
+
+                }
+
+         }
+</pre></div>
+
+
+</li>
+<li>
+<p>Write a function to get current site id, say, get_current_site(), which returns current SITE_ID.</p>
+</li>
+<li>
+<p>Add a function like below, as functionname at the same path as specified in KEY_FUNCTION.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.utils.encoding</span> <span class="kn">import</span> <span class="n">smart_str</span>
+
+<span class="k">def</span> <span class="nf">prefix_site_id</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key_prefix</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+
+   <span class="n">site_id</span> <span class="o">=</span> <span class="n">get_current_site</span><span class="p">()</span>
+
+   <span class="k">return</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">site_id</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">version</span><span class="p">),</span> <span class="n">smart_str</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
+</pre></div>
+
+
+</li>
+</ol>
+<p>That’s it. You have successfully added an automatic, dynamic, function based cache prefix for django.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

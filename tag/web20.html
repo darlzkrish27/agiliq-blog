@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - web2.0</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/how-we-built-a-twitter-application.html">How we built a Twitter Application</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2009-02-19T02:20:52+05:30">
+                Published: Thu 19 February 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-02-19T13:50:52+05:30">
+                Updated: Thu 19 February 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/web20.html">web2.0</a> </p>
+</footer><!-- /.post-info --><p>Twitter, just like many other Web2.0 sites, has an excellent API. So much so, writing a twitter app is considered to be "Hello World" of Web2.0 Programming.</p>
+<p>I wrote an application recently. It is <a href="http://dmplusplus.com">DM++</a>. By default, this application allows you to receive direct messages from twitter users you have @replied even if you currently don't follow them. You can even configure application to be able to receive direct messages from people you have @replied in only last 2 days, or receive Dm from all other twitter users.</p>
+<p>Look how many people are currently complaining <a href="http://search.twitter.com/search?q=%22cant+dm%22">Cant DM U as U dont follow me</a> or read our <a href="http://faq.dmplusplus.com">Faq</a></p>
+<p>Now, let me illustrate some steps in building this application. </p>
+<p>One of the modules is where I need to find out whether the userx follows usery. This request needs authentication headers added for twitter to respond, else U receive a "Not authorized" response</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib2</span><span class="o">,</span><span class="nn">base64</span><span class="o">,</span><span class="nn">simplejson</span>
+
+<span class="k">def</span> <span class="nf">is_follows</span><span class="p">(</span><span class="n">follower</span><span class="p">,</span> <span class="n">following</span><span class="p">):</span>
+
+    <span class="n">theurl</span> <span class="o">=</span> <span class="s1">&#39;http://twitter.com/friendships/exists.json?user_a=</span><span class="si">%s</span><span class="s1">&amp;user_b=</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">follower</span><span class="p">,</span> <span class="n">following</span><span class="p">)</span>
+
+    <span class="n">username</span> <span class="o">=</span> <span class="s1">&#39;uname&#39;</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="s1">&#39;pwd&#39;</span>
+
+    <span class="n">handle</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">theurl</span><span class="p">)</span>
+
+    <span class="n">authheader</span> <span class="o">=</span>  <span class="s2">&quot;Basic </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">base64</span><span class="o">.</span><span class="n">encodestring</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
+
+    <span class="n">handle</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">,</span> <span class="n">authheader</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">handle</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># This is reached when allocated API requests to IP are completed.</span>
+        <span class="k">print</span> <span class="s2">&quot;parsing the is_follows json from twitter, failed&quot;</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">is_follows</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;scorpion032&#39;</span><span class="p">,</span><span class="sa">u</span><span class="s1">&#39;scobleizer&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This is an independent module, intended so, as this functionality is best that way, simplest without the bloat of any other functions and it is portable.</p>
+<p>There is a very good <a href="http://code.google.com/p/python-twitter/">Python-twitter wrapper</a> by Google, many functions on twitter are now very simple, for anything more than finding out if userx follows usery as above, this can be very useful.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">twitter</span>
+<span class="n">api</span><span class="o">=</span><span class="n">twitter</span><span class="o">.</span><span class="n">Api</span><span class="p">(</span><span class="s1">&#39;uname&#39;</span><span class="p">,</span><span class="s1">&#39;pwd&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Thats it and you have an authenticated api object from which U can do nearly all twitter functions. Infact it is working with this wrapper, that tempted me to write this application. There are a host of things you can do with this wrapper including what is shown below, that I have used.</p>
+<p>This code retrieves all Direct Messages that are received since it was last retrieved. We store the fetchinfo table pk=1 field with the last date time it was retrieved</p>
+<div class="highlight"><pre><span></span><span class="k">try</span><span class="o">:</span>
+    <span class="n">f</span><span class="o">=</span><span class="n">FetchInfo</span><span class="o">.</span><span class="na">objects</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="o">).</span><span class="n">last_datetime</span>
+<span class="n">except</span><span class="o">:</span>
+    <span class="n">f</span><span class="o">=</span><span class="n">None</span>   
+<span class="n">dm_list</span><span class="o">=</span><span class="n">api</span><span class="o">.</span><span class="na">GetDirectMessages</span><span class="o">(</span><span class="n">since</span><span class="o">=</span><span class="n">f</span><span class="o">)</span>
+</pre></div>
+
+
+<p>Following snippet sends the Direct Messages to the users that can receive it, else it is marked filtered.
+'canhesend()' is a function where we find verify if the user is able to send direct messages based on his access_level setting</p>
+<div class="highlight"><pre><span></span>    <span class="k">if</span> <span class="n">canhesend</span><span class="p">(</span><span class="n">adm</span><span class="p">.</span><span class="n">sent_by</span><span class="p">.</span><span class="n">username</span><span class="p">,</span><span class="n">user</span><span class="p">)</span><span class="o">:</span>
+            <span class="nl">try</span><span class="p">:</span>
+                <span class="n">api</span><span class="p">.</span><span class="n">PostDirectMessage</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="s">&quot;via @&quot;</span><span class="o">+</span><span class="n">adm</span><span class="p">.</span><span class="n">sent_by</span><span class="p">.</span><span class="n">username</span><span class="o">+</span><span class="s">&quot;: &quot;</span><span class="o">+</span><span class="n">adm</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">api</span><span class="p">.</span><span class="n">PostDirectMessage</span><span class="p">(</span><span class="n">adm</span><span class="p">.</span><span class="n">sent_by</span><span class="p">.</span><span class="n">username</span><span class="p">,</span><span class="s">&quot;Your Dm has been sent to @&quot;</span><span class="o">+</span><span class="n">user</span><span class="p">)</span>
+                <span class="n">adm</span><span class="p">.</span><span class="n">is_sent</span><span class="o">=</span><span class="n">True</span>
+                <span class="n">adm</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">except</span> <span class="nl">HTTPError</span><span class="p">:</span>
+                <span class="n">adm</span><span class="p">.</span><span class="n">is_filter</span><span class="o">=</span><span class="n">True</span>
+                <span class="n">adm</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">else</span><span class="o">:</span>
+            <span class="n">adm</span><span class="p">.</span><span class="n">is_filter</span><span class="o">=</span><span class="n">True</span>
+            <span class="n">adm</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+
+
+<p><code>adm</code> is the parameter that loops on direct messages.</p>
+<p>Among other important things see how we seperate the usernames and text which are sent to us, there is a very nice input from <a href="http://stackoverflow.com/questions/558105/string-separation-in-required-format-pythonic-way-with-or-w-o-regex/563299#563299">stackoverflow</a>, which we incorporated.</p>
+<p>We have a text of the format 
+<code>'@abc [@def ..] This part is text'</code>
+which we want seperated to user names and text part. We want retrieved in the following format:</p>
+<div class="highlight"><pre><span></span>l=[&#39;abc&#39;,&#39;def&#39;]
+s=&#39;This part is text&#39;
+</pre></div>
+
+
+<p>This is how we went about doing it:</p>
+<div class="highlight"><pre><span></span><span class="s s-Atom">import</span> <span class="s s-Atom">re</span>
+<span class="s s-Atom">rx</span> <span class="o">=</span> <span class="s s-Atom">re</span><span class="p">.</span><span class="nf">compile</span><span class="p">(</span><span class="err">&quot;</span><span class="p">((</span><span class="s s-Atom">?:@\w</span><span class="o">+</span> <span class="s s-Atom">+</span><span class="p">)</span><span class="s s-Atom">+</span><span class="p">)(.</span><span class="s s-Atom">*</span><span class="p">)</span><span class="err">&quot;</span><span class="p">)</span>
+<span class="s s-Atom">t=&#39;@abc   @def  @xyz Hello this part is text and my email is foo@ba.r&#39;</span>
+<span class="s s-Atom">a</span><span class="p">,</span><span class="s s-Atom">s</span> <span class="o">=</span> <span class="s s-Atom">rx</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="s s-Atom">t</span><span class="p">).</span><span class="nf">groups</span><span class="p">()</span>
+<span class="s s-Atom">l</span> <span class="o">=</span> <span class="s s-Atom">re</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s s-Atom">&#39;[@ ]+&#39;</span><span class="p">,</span><span class="s s-Atom">a</span><span class="p">)[</span><span class="mi">1</span><span class="p">:-</span><span class="mi">1</span><span class="p">]</span>
+<span class="s s-Atom">print</span> <span class="s s-Atom">l</span>
+<span class="s s-Atom">print</span> <span class="s s-Atom">s</span>
+</pre></div>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

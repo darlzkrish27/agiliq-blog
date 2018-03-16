@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - appengine</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/getting-started-webapp2-and-gae.html">Getting started with webapp2 and GAE</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-09-04T08:15:27+05:30">
+                Published: Mon 04 September 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-09-04T12:45:27+05:30">
+                Updated: Mon 04 September 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/appengine.html">appengine</a> </p>
+</footer><!-- /.post-info --><p>Deploying a webapp2 app on Google app engine</p>
+<p>We want to setup our dev environment to write a web application using webapp2 which we will deploy to Google app engine.</p>
+<h3>Agenda</h3>
+<ul>
+<li>About GAE(Google App Engine)</li>
+<li>Setting up dev environment for GAE</li>
+<li>Running webapp2 locally</li>
+<li>Deploying it on app engine</li>
+</ul>
+<h3>About GAE</h3>
+<p>They key points around GAE are:</p>
+<ul>
+<li>It provides Platform as a Service. GAE is not Infrastructure as a service.</li>
+<li>Fully managed environment. Your runtime, libraries and frameworks are managed, installed and updated behind the scene. You don't have to do sysadmin task. You don't have to provision the server.</li>
+<li>GAE provides shell access when needed. <a href="https://cloud.google.com/appengine/">App engine docs</a> puts it as "Infrastructure when you need it."</li>
+</ul>
+<h3>Setting up dev environment for GAE</h3>
+<p>GAE is part of Google Cloud Platform(GCP), so first we need GCP SDK.</p>
+<p>GCP SDK can be installed from <a href="https://cloud.google.com/sdk/docs/">here</a>. Once GCP is installed, you should be able to run command <strong>gcloud</strong>.</p>
+<p>If you are on Mac, you should see a directory called "google-cloud-sdk" in ~/Downloads. If you are on Ubuntu, you will find this directory "google-cloud-sdk" in whichever folder your downloads go.</p>
+<p>Once GCP is installed, we need App engine extension for Python. App engine extension can be downloaded from <a href="https://cloud.google.com/appengine/docs/standard/python/download" target="_blank">here</a>. The most important thing is:</p>
+<div class="highlight"><pre><span></span>gcloud components install app-engine-python
+</pre></div>
+
+
+<h3>Running webapp2 locally</h3>
+<p>Once app engine extension for python is installed, a directory called <code>google_appengine</code> is added to <strong>platform</strong> directory of Google Cloud SDK installation path.</p>
+<p>So you should be able to see ~/Downloads/google-cloud-sdk/platform/google_appengine/. This directory has a file called <strong>dev_appserver.py</strong> which we need for running the app locallly.</p>
+<p>Let's write some code now. Create a file main.py with following content</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">webapp2</span>
+
+<span class="k">class</span> <span class="nc">HelloWebapp2</span><span class="p">(</span><span class="n">webapp2</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Hello, webapp2!&#39;</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">webapp2</span><span class="o">.</span><span class="n">WSGIApplication</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">HelloWebapp2</span><span class="p">),</span>
+<span class="p">],</span> <span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">paste</span> <span class="kn">import</span> <span class="n">httpserver</span>
+    <span class="n">httpserver</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;8080&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+
+<p>We need a yaml file called app.yaml which tells to app engine about runtime environment and other provisioning information. Add a file app.yaml at same level as main.py with following content.</p>
+<div class="highlight"><pre><span></span><span class="n">runtime</span><span class="o">:</span> <span class="n">python27</span>
+<span class="n">api_version</span><span class="o">:</span> <span class="mi">1</span>
+<span class="n">threadsafe</span><span class="o">:</span> <span class="kc">true</span>
+
+<span class="n">handlers</span><span class="o">:</span>
+<span class="o">-</span> <span class="n">url</span><span class="o">:</span> <span class="o">/.**</span>
+  <span class="n">script</span><span class="o">:</span> <span class="n">main</span><span class="o">.</span><span class="na">app</span>
+</pre></div>
+
+
+<p>Start the dev server by issuing following command</p>
+<div class="highlight"><pre><span></span>./&lt;path-to-dev_appserver.py&gt; app.yaml
+</pre></div>
+
+
+<h3>Deploying to GAE</h3>
+<p>Create or choose an exisiting <strong>project</strong> on GCP console from <a href="https://console.cloud.google.com/start">here</a>.</p>
+<p>I have a project with id "the-pentameter-845". Using <code>gcloud config</code>, I set this as my current project so that I can deploy my code under this project.</p>
+<div class="highlight"><pre><span></span>gcloud config set account akshar@agiliq.com
+gcloud config set project the-pentameter-845
+</pre></div>
+
+
+<p>And then deploy your code using following command</p>
+<div class="highlight"><pre><span></span>gcloud app deploy
+</pre></div>
+
+
+<p>gcloud would prompt and ask you if you want to deploy to https://the-pentameter-845.appspot.com. Your url would be different depending on your project id.</p>
+<p>With this deployment should be done and you should be able to view your project at https://<your-project-id>.appspot.com.</p>
+<h3>Adding more routes</h3>
+<p>Add one more class.</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">NedStark</span><span class="p">(</span><span class="nx">webapp2</span><span class="p">.</span><span class="nx">RequestHandler</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">get</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hi! I am Ned. People considered me very brave.&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>And add it as a route so that this class gets used when someone accesses url /ned</p>
+<div class="highlight"><pre><span></span>app = webapp2.WSGIApplication([
+    (&#39;/&#39;, HelloWebapp2),
+    (&#39;/ned&#39;, NedStark),
+], debug=True)
+</pre></div>
+
+
+<p>After this you should be able to access localhost:8080/ned. No change is needed in app.yaml</p>
+<p>Deploy the app again.</p>
+<div class="highlight"><pre><span></span>gcloud app deploy app.yaml
+</pre></div>
+
+
+<p>Now you should be able to access https://<your-project-id>.appspot.com/ned</p>
+<h3>Installing libraries with pip</h3>
+<p>GAE runtime environment provides some third party libraries, so these need not be installed with pip. Similarly during development, dev_appserver.py provides these same libraries which need not be installed with pip. eg: One such library is webapp2 itself. You can see complete list of third party libraries available in runtime environment <a href="https://cloud.google.com/appengine/docs/standard/python/tools/built-in-libraries-27" target="_blank">here</a></p>
+<p>If you want to use a library which isn't provided by app engine runtime, you need to follow the steps mentioned <a href="https://cloud.google.com/appengine/docs/standard/python/tools/using-libraries-python-27#installing_a_third-party_library target="_blank">here</a></p>
+<p>Assuming you want to write a handler which has to fetch data from some database. Suppose you want to use SQLAlchemy for fethcing data, so we need SQLAlchemy in our application.</p>
+<p>Add line <code>import sqlalchemy</code> in main.py and try to access the url. Your development server wouldn't respond because you don't have sqlalchemy. To add SQLAlchemy do the following.</p>
+<div class="highlight"><pre><span></span>mkdir lib
+pip install -t lib/ SQLAlchemy
+</pre></div>
+
+
+<p>Add a file appengine_config.py with following content</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.appengine.ext</span> <span class="kn">import</span> <span class="n">vendor</span>
+
+<span class="n">vendor</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;lib&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Now access any url, and development server would again start serving the urls properly.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

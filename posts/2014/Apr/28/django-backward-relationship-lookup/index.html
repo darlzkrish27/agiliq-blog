@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Django backward relationship lookup</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/django-backward-relationship-lookup.html" rel="bookmark"
+           title="Permalink to Django backward relationship lookup">Django backward relationship lookup</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-04-28T00:00:01+05:30">
+                Published: Mon 28 April 2014
+        </abbr>
+		<br />
+        <abbr class="modified" title="2014-04-28T10:30:01+05:30">
+                Updated: Mon 28 April 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>I often limit the lookup to fields of the model and forget about backward relations. </p>
+<p>Consider the following relationship:</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Group</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="kr">class</span> <span class="nx">Student</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="nx">group</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">Group</span><span class="p">)</span>
+</pre></div>
+
+
+<p>A group can have many students.</p>
+<p>We want to get the groups based on certain conditions on model <code>Student</code>. An example is getting the groups which contain a student named 'stud1'. If you can get it using model <code>Group</code> and without using <code>Student</code>, you can skip this post.</p>
+<p>In such a scenario, we tend to use <code>Student</code> model. It's more intuitive because the Foreign Key relationship exists from Student to Group.</p>
+<p>Let's load the following data to test our queries:</p>
+<div class="highlight"><pre><span></span>group1 = Group.objects.create(name=&#39;Group 1&#39;)
+group1 = Group.objects.create(name=&#39;Group 2&#39;)
+Student.objects.create(name=&#39;stud1&#39;, group=group1)
+Student.objects.create(name=&#39;stud2&#39;, group=group1)
+Student.objects.create(name=&#39;stud3&#39;, group=group1)
+Student.objects.create(name=&#39;stud1&#39;, group=group2)
+</pre></div>
+
+
+<h3>Get the groups which contain student named <code>stud1</code>.</h3>
+<h4>Intuitive way:</h4>
+<p>We first try to get all the students which satisfy the criteria. Query for that would be:</p>
+<div class="highlight"><pre><span></span>Student.objects.filter(name=&#39;stud1&#39;)
+</pre></div>
+
+
+<p>And then we try to get the groups of those students. If we use the <code>Student</code> model, we can't get a queryset of <code>Group</code>. So our approach would be to first get the ids of desired groups and then get a queryset of Group using those ids.</p>
+<div class="highlight"><pre><span></span>group_ids = Student.objects.filter(name=&#39;stud1&#39;).values_list(&#39;group&#39;, flat=True)
+groups = Group.objects.filter(id__in=group_ids)
+</pre></div>
+
+
+<h4>Less obvious way:</h4>
+<p>What if we could use the <code>Group</code> model directly?</p>
+<div class="highlight"><pre><span></span>Group.objects.filter(student__name=&#39;stud1&#39;)
+</pre></div>
+
+
+<p>This gives the exact same result as given by the <em>Intuitive way</em>.</p>
+<p>So, even though there is no field called <code>student</code> on <code>Group</code> and we didn't specify any relationship to Student from Group, Django is smart enough to figure out the relationship for us.</p>
+<h3>Get the groups with name <code>Group1</code> which contain students named <code>stud1</code></h3>
+<h4>Intuitive way:</h4>
+<div class="highlight"><pre><span></span>group_ids = Student.objects.filter(name=&#39;stud1&#39;, group__name=&#39;Group1&#39;).values_list(&#39;group&#39;, flat=True)
+groups = Group.objects.filter(id__in=group_ids)
+</pre></div>
+
+
+<h4>Less obvious way:</h4>
+<div class="highlight"><pre><span></span>groups = Group.objects.filter(name=&#39;Group1&#39;, student__name=&#39;stud1&#39;)
+</pre></div>
+
+
+<p>Gives the exact same result as given by preceding two queries.</p>
+<p>I always missed the backward relationship while following Django tutorial or whenever I read the docs. I tried finding it while writing this post to see if the docs missed mentioning it. I was wrong yet again, there is a section which mentions it.</p>
+<div class="highlight"><pre><span></span>https://docs.djangoproject.com/en/dev/topics/db/queries/#lookups-that-span-relationships
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

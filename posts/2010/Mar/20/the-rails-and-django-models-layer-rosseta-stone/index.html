@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>The Rails and Django models layer Rosseta stone</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/the-rails-and-django-models-layer-rosseta-stone.html" rel="bookmark"
+           title="Permalink to The Rails and Django models layer Rosseta stone">The Rails and Django models layer Rosseta stone</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-03-20T05:42:50+05:30">
+                Published: Sat 20 March 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-03-20T16:12:50+05:30">
+                Updated: Sat 20 March 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/rails.html">rails</a> </p>
+</footer><!-- /.post-info -->      <p>Rails Active records and Django models are more similar than they are different. This is a quick guide to converting between Rails 3 and Django 1.2, and is available on github at <a href="http://github.com/uswaretech/Acts-as-Django">http://github.com/uswaretech/Acts-as-Django</a></p>
+<h4>Defining models</h4>
+<p>Both Django and Rails keep the canonical database representation in ruby or python.</p>
+<div class="highlight"><pre><span></span><span class="err">#</span><span class="nx">Django</span>
+
+<span class="kr">class</span> <span class="nx">Post</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="p">)</span>
+    <span class="nx">slug</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="p">)</span>
+    <span class="nx">body</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">()</span>
+
+<span class="kr">class</span> <span class="nx">Comments</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">post</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">Post</span><span class="p">)</span>
+    <span class="nx">username</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">CharField</span><span class="p">(</span><span class="nx">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="p">)</span>
+    <span class="nx">comment</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">()</span>
+
+
+
+<span class="err">#</span><span class="nx">Rails</span>
+
+<span class="err">#</span><span class="nx">db</span><span class="o">/</span><span class="nx">schema</span><span class="p">.</span><span class="nx">rb</span>
+<span class="nx">ActiveRecord</span><span class="o">::</span><span class="nx">Schema</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="o">:</span><span class="nx">version</span> <span class="o">=&gt;</span> <span class="mi">20100319195739</span><span class="p">)</span> <span class="k">do</span>
+
+  <span class="nx">create_table</span> <span class="s2">&quot;comments&quot;</span><span class="p">,</span> <span class="o">:</span><span class="nx">force</span> <span class="o">=&gt;</span> <span class="kc">true</span> <span class="k">do</span> <span class="o">|</span><span class="nx">t</span><span class="o">|</span>
+    <span class="nx">t</span><span class="p">.</span><span class="kt">string</span>   <span class="s2">&quot;username&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">text</span>     <span class="s2">&quot;comment&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">integer</span>  <span class="s2">&quot;post_id&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">datetime</span> <span class="s2">&quot;created_at&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">datetime</span> <span class="s2">&quot;updated_at&quot;</span>
+  <span class="nx">end</span>
+
+  <span class="nx">create_table</span> <span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="o">:</span><span class="nx">force</span> <span class="o">=&gt;</span> <span class="kc">true</span> <span class="k">do</span> <span class="o">|</span><span class="nx">t</span><span class="o">|</span>
+    <span class="nx">t</span><span class="p">.</span><span class="kt">string</span>   <span class="s2">&quot;name&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="kt">string</span>   <span class="s2">&quot;slug&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">text</span>     <span class="s2">&quot;body&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">datetime</span> <span class="s2">&quot;created_at&quot;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">datetime</span> <span class="s2">&quot;updated_at&quot;</span>
+  <span class="nx">end</span>
+
+<span class="nx">end</span>
+
+<span class="err">#</span><span class="nx">In</span> <span class="nx">apps</span> <span class="nx">models</span>
+<span class="kr">class</span> <span class="nx">Post</span> <span class="o">&lt;</span> <span class="nx">ActiveRecord</span><span class="o">::</span><span class="nx">Base</span>
+  <span class="nx">has_many</span> :<span class="kt">comments</span>
+<span class="nx">end</span>
+
+<span class="kr">class</span> <span class="nx">Comment</span> <span class="o">&lt;</span> <span class="nx">ActiveRecord</span><span class="o">::</span><span class="nx">Base</span>
+  <span class="nx">belongs_to</span> :<span class="kt">post</span>
+<span class="nx">end</span>
+</pre></div>
+
+
+<p>The main difference is that Django keeps it one file, while rails has it split over many files. In Django, the foreign key is specified only on the Child model
+via <code>models.ForeignKey</code> but in Rails both sides of relationship need to be specified via <code>has_many</code> and <code>belongs_to</code>.</p>
+<h4>Create a object without saving it</h4>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">blog.models</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="k">print</span> <span class="n">post</span><span class="o">.</span><span class="n">id</span>
+<span class="bp">None</span>
+
+
+
+<span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">001</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">new</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Post id: nil, name: nil, slug: nil, body: nil, created_at: nil, updated_at: nil&gt;</span>
+<span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">002</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">post</span><span class="o">.</span><span class="n">id</span>
+<span class="o">=&gt;</span> <span class="n">nil</span>
+</pre></div>
+
+
+<h4>Set values and save to the database</h4>
+<div class="highlight"><pre><span></span>In [4]: post.name = &quot;Hello&quot;
+
+In [5]: post.slug = &quot;hello&quot;
+
+In [6]: post.body = &quot;Hello, this is a post&quot;
+
+In [8]: post.save()
+
+In [9]: post.id
+Out[9]: 1
+
+
+irb(main):001:0&gt; post = Post.new
+=&gt; #&lt;Post id: nil, name: nil, slug: nil, body: nil, created_at: nil, updated_at: nil&gt;
+irb(main):002:0&gt; post.id
+=&gt; nil
+irb(main):003:0&gt; post.name = &quot;Hello&quot;
+=&gt; &quot;Hello&quot;
+irb(main):004:0&gt; post.slug = &quot;hello&quot;
+=&gt; &quot;hello&quot;
+irb(main):005:0&gt;  post.body = &quot;Hello, this is a post&quot;
+=&gt; &quot;Hello, this is a post&quot;
+irb(main):006:0&gt; post.save()
+=&gt; true
+irb(main):007:0&gt; post.id
+=&gt; 2
+</pre></div>
+
+
+<p>There is not much to see here, both DJango and Rails create the object in essentially the same way. Until you call save, the objects are not saved to the database.</p>
+<h4>Find object by the primary key.</h4>
+<div class="highlight"><pre><span></span>In [10]: Post.objects.get(id = 1)
+Out[10]: &lt;Post: Post object&gt;
+
+irb(main):008:0&gt; pst = Post.find(2)
+=&gt; #&lt;Post id: 2, name: &quot;Hello&quot;, slug: &quot;hello&quot;, body: &quot;Hello, this is a post&quot;, created_at: &quot;2010-03-19 20:11:34&quot;, updated_at: &quot;2010-03-19 20:11:34&quot;&gt;
+</pre></div>
+
+
+<p>What Rails calls <code>find</code>, Django calls <code>get</code>.</p>
+<h4>More create methods</h4>
+<div class="highlight"><pre><span></span>In [12]: Post.objects.create(name=&quot;Hi&quot;, slug=&quot;hi&quot;, body=&quot;Hi hi hi.&quot;)
+Out[12]: &lt;Post: Post object&gt;
+
+
+irb(main):012:0&gt; Post.create(:name=&gt;&quot;Hi&quot;, :slug=&gt;&quot;Hi&quot;, :body=&gt;&quot;Hi hi hi&quot;)
+=&gt; #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;
+
+
+In [14]: Post.objects.get_or_create(name=&quot;Hi&quot;)
+Out[14]: (&lt;Post: Post object&gt;, False)
+
+irb(main):015:0&gt; Post.find_or_create_by_name(&quot;Hi&quot;)
+=&gt; #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;
+</pre></div>
+
+
+<p>You can create in one step without calling <code>save</code> via a <code>create</code> in both Rails and Django.
+While rails has dynamically named methods, Django accepts named parameters in <code>filter</code> and <code>get_or_create</code>.</p>
+<h4>More find methods</h4>
+<div class="highlight"><pre><span></span>In [15]: Post.objects.filter(id__in = [1, 2, 3])
+Out[15]: [&lt;Post: Post object&gt;, &lt;Post: Post object&gt;]
+
+irb(main):017:0&gt; Post.find(1, 2, 3)
+=&gt; [#&lt;Post id: 1, name: nil, slug: nil, body: nil, created_at: &quot;2010-03-19 19:58:31&quot;, updated_at: &quot;2010-03-19 19:58:31&quot;&gt;, #&lt;Post id: 2, name: &quot;Hello&quot;, slug: &quot;hello&quot;, body: &quot;Hello, this is a post&quot;, created_at: &quot;2010-03-19 20:11:34&quot;, updated_at: &quot;2010-03-19 20:11:34&quot;&gt;, #&lt;Post id: 3, name: nil, slug: nil, body: nil, created_at: &quot;2010-03-19 20:16:04&quot;, updated_at: &quot;2010-03-19 20:16:04&quot;&gt;]
+
+In [16]: Post.objects.get(name=&quot;Hi&quot;)
+Out[16]: &lt;Post: Post object&gt;
+
+
+irb(main):023:0&gt; Post.find_by_name(&quot;Hi&quot;)
+=&gt; #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;
+
+
+In [17]: Post.objects.all()
+Out[17]: [&lt;Post: Post object&gt;, &lt;Post: Post object&gt;]
+
+
+irb(main):024:0&gt; Post.find(:all)
+=&gt; [#&lt;Post id: 1, name: nil, slug: nil, body: nil, created_at: &quot;2010-03-19 19:58:31&quot;, updated_at: &quot;2010-03-19 19:58:31&quot;&gt;, #&lt;Post id: 2, name: &quot;Hello&quot;, slug: &quot;hello&quot;, body: &quot;Hello, this is a post&quot;, created_at: &quot;2010-03-19 20:11:34&quot;, updated_at: &quot;2010-03-19 20:11:34&quot;&gt;, #&lt;Post id: 3, name: nil, slug: nil, body: nil, created_at: &quot;2010-03-19 20:16:04&quot;, updated_at: &quot;2010-03-19 20:16:04&quot;&gt;, #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;]
+
+In [18]: pp = Post.objects.filter(name=&quot;Hi&quot;)
+
+In [19]: pp
+Out[19]: [&lt;Post: Post object&gt;]
+In [20]: pp[0]
+Out[20]: &lt;Post: Post object&gt;
+
+
+irb(main):032:0&gt; pp = Post.where({:name=&gt;&quot;Hi&quot;})
+=&gt; #&lt;ActiveRecord::Relation:0xb6aedc04 @arel=nil, @select_values=[], @last=nil, @order_values=[], @group_values=[], ...
+irb(main):033:0&gt; pp[0]
+=&gt; #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;
+
+In [21]: Post.objects.filter(name__in = [&quot;Hi&quot;, &quot;Hello&quot;])
+Out[21]: [&lt;Post: Post object&gt;, &lt;Post: Post object&gt;]
+
+irb(main):034:0&gt; pp = Post.where({:name=&gt;[&quot;Hi&quot;, &quot;Hello&quot;]})
+=&gt; #&lt;ActiveRecord::Relation:0xb6ae4c6c @arel=nil, @select_values=
+....
+irb(main):035:0&gt; pp[0]
+=&gt; #&lt;Post id: 2, name: &quot;Hello&quot;, slug: &quot;hello&quot;, body: &quot;Hello, this is a post&quot;, created_at: &quot;2010-03-19 20:11:34&quot;, updated_at: &quot;2010-03-19 20:11:34&quot;&gt;
+irb(main):036:0&gt; pp[1]
+=&gt; #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;
+
+
+In [29]: p = Post.objects.filter(name__in = [&quot;Hi&quot;, &quot;Hello&quot;]).only(&quot;name&quot;)
+
+irb(main):041:0&gt; pp = Post.where({:name=&gt;[&quot;Hi&quot;, &quot;Hello&quot;]}).select(&quot;name&quot;)
+</pre></div>
+
+
+<p>The query capability and syntax are similar with major differences being,</p>
+<ol>
+<li>Rails has dynamically named finders, while Django accepts keyword arguments for same.</li>
+<li>SQL operators like <code>in</code> are fired by <code>__</code> in Django, while Rails infers it based on the data type.</li>
+</ol>
+<h4>Limit, offset and order</h4>
+<div class="highlight"><pre><span></span>In [30]: p = Post.objects.filter(name__in = [&quot;Hi&quot;, &quot;Hello&quot;])[:1]
+
+In [31]: p
+Out[31]: [&lt;Post: Post object&gt;]
+
+pp = Post.where({:name=&gt;[&quot;Hi&quot;, &quot;Hello&quot;]}).select(&quot;name&quot;).limit(1)
+
+irb(main):049:0&gt; pp[0]
+=&gt; #&lt;Post name: &quot;Hello&quot;&gt;
+irb(main):050:0&gt; pp[1]
+=&gt; nil
+
+=&gt; #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;
+irb(main):067:0&gt; pp = Post.where({:name=&gt;[&quot;Hi&quot;, &quot;Hello&quot;]}).limit(1).offset(1)
+
+irb(main):067:0&gt; pp[0]
+=&gt; #&lt;Post id: 4, name: &quot;Hi&quot;, slug: &quot;Hi&quot;, body: &quot;Hi hi hi&quot;, created_at: &quot;2010-03-19 20:17:31&quot;, updated_at: &quot;2010-03-19 20:17:31&quot;&gt;
+irb(main):068:0&gt; pp[1]
+=&gt; nil
+
+In [34]: p = Post.objects.filter(name__in = [&quot;Hi&quot;, &quot;Hello&quot;])[1:2]
+
+In [35]: p[0].name
+Out[35]: u&#39;Hi&#39;
+
+In [36]: p[1].name
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+
+/home/shabda/Code/Django/Weblog/&lt;ipython console&gt; in &lt;module&gt;()
+
+/usr/local/lib/python2.6/dist-packages/django/db/models/query.py in __getitem__(self, k)
+    185             qs = self._clone()
+    186             qs.query.set_limits(k, k + 1)
+--&gt; 187             return list(qs)[0]
+    188         except self.model.DoesNotExist, e:
+    189             raise IndexError(e.args)
+
+IndexError: list index out of range
+
+
+In [39]: p = Post.objects.order_by(&quot;name&quot;)[1:2]
+
+In [40]: p
+Out[40]: [&lt;Post: Post object&gt;]
+
+
+irb(main):069:0&gt; pp = Post.order(&quot;name&quot;).limit(1).offset(1)
+</pre></div>
+
+
+<p>Again fairly similar, both Django and rails provide ordering, offset and limits, while Django does
+this via array slicing, Rails does this via functions. Also both Django and Rails allow method chaining, and Sql is only
+evaluated lazily when needed.</p>
+<h4>Specifying Model associations.</h4>
+<p>Django: <code>models.ForeignKey</code><br>
+Rails: <code>belongs_to</code>  </p>
+<p>Django: <code>models.ManyToManyField</code><br>
+Rails: <code>has_and_belongs_to_many</code>  </p>
+<p>Django: <code>models.OneToOneField</code><br>
+Rails: <code>has_one</code>  </p>
+<p>Django: No needed<br>
+Rails: <code>has_many</code>  </p>
+<p>Again Rails and Django are similar with Django automatically inferring the reverse relationships.</p>
+<h4>Polymorphic Associations and Generic Relations</h4>
+<p>You possibly have pictures in your application which can be attached to any object. Both Django and Rails provide options for it via
+Polymorphic Associations and Generic Relations</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Picture</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">content_type</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="nx">ContentType</span><span class="p">)</span>
+    <span class="nx">object_id</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">PositiveIntegerField</span><span class="p">()</span>
+    <span class="nx">content_object</span> <span class="o">=</span> <span class="nx">generic</span><span class="p">.</span><span class="nx">GenericForeignKey</span><span class="p">()</span>
+
+<span class="kr">class</span> <span class="nx">Article</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">body</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">()</span>
+    <span class="nx">picture</span> <span class="o">=</span>  <span class="nx">generic</span><span class="p">.</span><span class="nx">GenericRelation</span><span class="p">(</span><span class="nx">Picture</span><span class="p">)</span>
+
+<span class="kr">class</span> <span class="nx">BioGraphy</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">bio</span>  <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">TextField</span><span class="p">()</span>
+    <span class="nx">picture</span> <span class="o">=</span> <span class="nx">generic</span><span class="p">.</span><span class="nx">GenericRelation</span><span class="p">(</span><span class="nx">Picture</span><span class="p">)</span>
+
+
+
+<span class="kr">class</span> <span class="nx">Picture</span> <span class="o">&lt;</span> <span class="nx">ActiveRecord</span><span class="o">::</span><span class="nx">Base</span>
+  <span class="nx">belongs_to</span> :<span class="kt">imageable</span><span class="p">,</span> <span class="o">:</span><span class="nx">polymorphic</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+<span class="nx">end</span>
+
+<span class="kr">class</span> <span class="nx">Employee</span> <span class="o">&lt;</span> <span class="nx">ActiveRecord</span><span class="o">::</span><span class="nx">Base</span>
+  <span class="nx">has_many</span> :<span class="kt">pictures</span><span class="p">,</span> <span class="o">:</span><span class="kr">as</span> <span class="o">=&gt;</span> <span class="o">:</span><span class="nx">imageable</span>
+<span class="nx">end</span>
+
+<span class="kr">class</span> <span class="nx">Product</span> <span class="o">&lt;</span> <span class="nx">ActiveRecord</span><span class="o">::</span><span class="nx">Base</span>
+  <span class="nx">has_many</span> :<span class="kt">pictures</span><span class="p">,</span> <span class="o">:</span><span class="kr">as</span> <span class="o">=&gt;</span> <span class="o">:</span><span class="nx">imageable</span>
+<span class="nx">end</span>
+</pre></div>
+
+
+<h4>Self Joins</h4>
+<p>Self joins are a special case of Foreign key where a Object has a relationship to itself. Both Django and Rails handle it normally via their FK mechanisms</p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Employee</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Model</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">manager</span> <span class="o">=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">ForeignKey</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">,</span> <span class="nx">related_name</span> <span class="o">=</span> <span class="s2">&quot;subordinates&quot;</span><span class="p">)</span>
+
+
+<span class="kr">class</span> <span class="nx">Employee</span> <span class="o">&lt;</span> <span class="nx">ActiveRecord</span><span class="o">::</span><span class="nx">Base</span>
+  <span class="nx">has_many</span> :<span class="kt">subordinates</span><span class="p">,</span> <span class="o">:</span><span class="nx">class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span><span class="p">,</span>
+    <span class="o">:</span><span class="nx">foreign_key</span> <span class="o">=&gt;</span> <span class="s2">&quot;manager_id&quot;</span>
+  <span class="nx">belongs_to</span> :<span class="kt">manager</span><span class="p">,</span> <span class="o">:</span><span class="nx">class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Employee&quot;</span>
+<span class="nx">end</span>
+</pre></div>
+
+
+<h2>References</h2>
+<p><a href="http://guides.rails.info/">guides.rails.info</a>
+<a href="http://djangoproject.com/documentation/">djangoproject.com/documentation/</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

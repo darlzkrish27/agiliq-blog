@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Generating a pdf from an image using PIL and django</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/generating-a-pdf-from-image-using-pil-and-django.html" rel="bookmark"
+           title="Permalink to Generating a pdf from an image using PIL and django">Generating a pdf from an image using PIL and django</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-02-16T05:45:00+05:30">
+                Published: Thu 16 February 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-02-16T17:15:00+05:30">
+                Updated: Thu 16 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->      <p>In this post we shall be performing small  image manipulation on the server side and allowing the user to download  the pdf. This might be found useful if you design a quiz app and want to generate a certificate for the users. The various methods which can be followed to generate the certificate are:</p>
+<ol>
+<li>Have an image file to serve as a template, use css to place the
+    username at the desired location. </li>
+<li>Have a pdf file, which can be edited to take the username of the current
+    user if he has passed certain test.</li>
+<li>Have an image template ready, upon which we could do some image
+    manipulation to add the user's name
+    at a specified location and render
+        it.</li>
+</ol>
+<p>You might think why not  to render the entire certificate from pure html/css but putting the signature and logo are tough that way, which is a pre-requisite for a certificate, hence choosing any of the above methods might be something that you want to go about. </p>
+<p>Initially we went for the first method, we used <a href="http://www.htmltopdf.org/">pisa</a> library, but the results were not satisfactory, when we tried to render html text over png image and then generate the pdf.</p>
+<p>If you want to choose the second method the relevant libraries which can be thought of are: <a href="http://pybrary.net/pyPdf/">pyPDF</a> and <a href="http://www.reportlab.com/software/opensource/">ReportLab</a>, but as per <a href="http://stackoverflow.com/questions/1180115/add-text-to-existing-pdf-using-python">this stackoverflow post</a> things can get trivial if we use this method eventually we went with the third approach, which helped us. The libraries which we used were <a href="http://www.pythonware.com/products/pil/">PIL</a> and <a href="http://www.imagemagick.org/script/index.php">imagemagick</a>. </p>
+<p>The code is pretty much self explanatory, inside your views use the following snippets:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">PIL</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">ImageFont</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">ImageDraw</span>
+<span class="c1"># subprocess will be used to run command line arguments</span>
+<span class="kn">import</span> <span class="nn">subpprocess</span>
+
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># set the path to the font and the font size    </span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s2">&quot;/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans-Bold.ttf&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Sample Text which you want to display&quot;</span>
+    <span class="c1"># the rgb value of the color    </span>
+    <span class="n">tcolor</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># the position of the image where you intend to print the stuff</span>
+    <span class="n">text_pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39;open the image file in RGB format, this is important if we miss </span>
+<span class="sd"> convert it wont take the color(RGB) parameter and error will be thrown &#39;&#39;&#39;</span> 
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;path_to_file/certificate.png&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">text_pos</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tcolor</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">draw</span>
+    <span class="c1"># save the manipulated image as the next file</span>
+    <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;path_to_image/test.png&quot;</span><span class="p">)</span>
+    <span class="c1"># we want to send a pdf </span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;application/pdf&#39;</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;certificate&quot;</span>
+    <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;attachment; filename=</span><span class="si">%s</span><span class="s1">.pdf&#39;</span> <span class="o">%</span> <span class="n">filename</span>
+    <span class="c1"># here we use imagemagick to convert png image to certificate</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s2">&quot;convert&quot;</span><span class="p">,</span> <span class="s2">&quot;path_to_file/test.png&quot;</span><span class="p">,</span> <span class="s2">&quot;path_to_file/certificate.pdf&quot;</span> <span class="p">],</span>\
+                                         <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="n">certi</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;path_to_file/certificate.pdf&quot;</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">certi</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">certi</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+
+
+<p>This seems to solve our problem, however there can be another better approach, readers are welcome to post their views/suggestions or a different/better methodology. </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>How Python generators are similar to iterators</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/how-python-generators-are-similar-iterators.html" rel="bookmark"
+           title="Permalink to How Python generators are similar to iterators">How Python generators are similar to iterators</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-11-01T00:59:47+05:30">
+                Published: Wed 01 November 2017
+        </abbr>
+		<br />
+        <abbr class="modified" title="2017-11-01T11:29:47+05:30">
+                Updated: Wed 01 November 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->      <p>This post assumes you have a solid understanding of iterables, iterators, __iter__(), next() and built in iter(). If not, read our <a href="http://agiliq.com/blog/2017/10/iterators-and-iterables/" target="_blank">previous post</a></p>
+<h3>Generators</h3>
+<p>Generators simplify creation of iterables. Anything that can be done with a generator can be done by implementing iterator protocol. Generators require lesser lines of code than solving the problem with iterators and iterables.</p>
+<p>Generators are <strong>functions</strong> having an <strong>yield</strong> keyword. Any function which has "yield" in it is a generator.</p>
+<p>Calling a generator function creates an iterable. Since it is an iterable so it can be used with iter() and with a for loop.</p>
+<p>Let's write a generator function</p>
+<div class="highlight"><pre><span></span>def func():
+    yield 1
+    yield 2
+</pre></div>
+
+
+<p>We can use this generator with a for loop:</p>
+<div class="highlight"><pre><span></span>In [2]: for each in func():
+   ...:     print each
+   ...:
+1
+2
+</pre></div>
+
+
+<p>In this case the numbers 1 and 2 were never stored in memory simultaneously. During first iteration of loop only 1 was stored in memory and during second iteration 2 was stored in memory.</p>
+<p>Same thing using iterators and iterables would need the following code:</p>
+<div class="highlight"><pre><span></span>In [15]: class Iterable(object):
+...:     def __init__(self):
+...:         self.current = 1
+...:     def __iter__(self):
+...:         return self
+...:     def next(self):
+...:         while self.current &lt; 3:
+...:             temp = self.current
+...:             self.current += 1
+...:             return temp
+...:         raise StopIteration()
+...:
+
+In [16]: for each in Iterable():
+    ...:     print each
+    ...:
+1
+2
+</pre></div>
+
+
+<h4>How generators are similar to iterables</h4>
+<ul>
+<li>A generator function, i.e func can be considered similar to an iterable class.</li>
+<li>Calling a generator function creates an iterable instance. This instance has an __iter__() method. So this instance can be used with built-in function iter().</li>
+<li>Since calling a generator function creates an iterable, so it can be used with a for-loop.</li>
+</ul>
+<p>Let's try it out step by step with the generator func:</p>
+<div class="highlight"><pre><span></span>In [10]: f_iterable = func()
+</pre></div>
+
+
+<p>Let's verify that it is an iterable. Check for iterables is they have an __iter__() on them.</p>
+<div class="highlight"><pre><span></span>In [11]: f_iterable.__iter__
+Out[11]: &lt;method-wrapper &#39;__iter__&#39; of generator object at 0x103fe5f50&gt;
+</pre></div>
+
+
+<p>Since it is an iterable, let's get the underlying iterator from it.</p>
+<div class="highlight"><pre><span></span>In [12]: f_iterator = iter(f_iterable)
+</pre></div>
+
+
+<p>Let's get the values from this iterator using next().</p>
+<div class="highlight"><pre><span></span>In [13]: next(f_iterator)
+Out[13]: 1
+
+In [14]: next(f_iterator)
+Out[14]: 2
+
+In [15]: next(f_iterator)
+---------------------------------------------------------------------------
+StopIteration                             Traceback (most recent call last)
+&lt;ipython-input-15-c130bb6b8eb9&gt; in &lt;module&gt;()
+----&gt; 1 next(f_iterator)
+
+StopIteration:
+</pre></div>
+
+
+<p>Generator takes care of creating the iterable. It also takes care of creating the underlying iterator. And next() of this iterator() is such that it returns each 'yield' value of generator one after the other. When there is no more 'yield' in the generator function then this iterator raises StopIteration.</p>
+<p>And we already know how iterables work with for-loop. To recap:</p>
+<ul>
+<li>Saying <code>for each in iterable</code> causes iter(iterable) to be called. This returns the underlying iterator.</li>
+<li>Then next() of iterator is repeatedly called until next() of iterator raises a StopIteration.</li>
+</ul>
+<p>That's why when we use the generator instance with for-loop the 'yield' values are returned one by one until there is nothing more to be 'yielded' and at that point <strong>StopIteration</strong> is raised and so for-loop stops.</p>
+<p>In last post we saw how to generate fibonacci number upto a maximum using iterators and iterables. Putting it here for reference:</p>
+<div class="highlight"><pre><span></span>In [16]: class Fibonacci(object):
+    ...:     def __init__(self, max):
+    ...:         self.max = max
+    ...:         self.loop = 1
+    ...:         self.first = 0
+    ...:         self.second = 1
+    ...:     def __iter__(self):
+    ...:         return self
+    ...:     def next(self):
+    ...:         if self.first + self.second &gt; self.max:
+    ...:             raise StopIteration()
+    ...:         if self.loop == 1:
+    ...:             temp = 0
+    ...:         elif self.loop == 2:
+    ...:             temp = 1
+    ...:         else:
+    ...:             temp = self.first + self.second
+    ...:             self.first, self.second = self.second, temp
+    ...:         self.loop += 1
+    ...:         return temp
+
+In [17]: for each in Fibonacci(20):
+    ...:     print each
+    ...:
+0
+1
+1
+2
+3
+5
+8
+13
+</pre></div>
+
+
+<p>The same fibonacci generator can be written using generators in the following way:</p>
+<div class="highlight"><pre><span></span>In [43]: def fibonacci(maximum):
+    ...:     first, second = 0, 1
+    ...:     yield first
+    ...:     yield second
+    ...:     while (first + second) &lt; maximum:
+    ...:         yield first + second
+    ...:         first, second = second, first+second
+    ...:
+
+In [44]: for each in fibonacci(20):
+    ...:     print each
+    ...:
+0
+1
+1
+2
+3
+5
+8
+13
+</pre></div>
+
+
+<p>We saved several lines of code by using generators instead of iterators and iterables.</p>
+<h4>Implementing xrange with generator.</h4>
+<p>In the <a href="http://agiliq.com/blog/2017/10/real-world-usage-iterators-and-iterables/" target="_blank">last post</a> we implemented Python built-in xrange() using iterators and iterables.</p>
+<p>We can implement xrange with generators in following way:</p>
+<div class="highlight"><pre><span></span>In [76]: def xrange(stop):
+    ...:     current = 0
+    ...:     while current &lt; stop:
+    ...:         yield current
+    ...:         current += 1
+    ...:
+</pre></div>
+
+
+<p>You should read <a href="https://stackoverflow.com/questions/2776829/difference-between-pythons-generators-and-iterators#answer-2776865" target="_blank">this SO answer</a> for difference between generators and iterators.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

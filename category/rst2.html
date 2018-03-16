@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - rst</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li class="active"><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/behind-the-scenes-from-html-form-to-storage.html" rel="bookmark"
+                           title="Permalink to Behind the Scenes: From HTML Form to Storage">Behind the Scenes: From HTML Form to Storage</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-09-21T17:00:00+05:30">
+                Published: Wed 21 September 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-09-21T11:54:11+05:30">
+                Updated: Wed 21 September 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/upload.html">upload</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">In this blog post, we are going to see what happens behind the scenes when a file is uploaded in django. .. image:: <a class="reference external" href="http://agiliq.com/dumps/images/20110921/file_storage.gif">http://agiliq.com/dumps/images/20110921/file_storage.gif</a> :align: center :target: <a class="reference external" href="http://agiliq.com/dumps/images/20110921/file_storage.gif">http://agiliq.com/dumps/images/20110921/file_storage.gif</a></p>
+
+                <a class="readmore" href="/behind-the-scenes-from-html-form-to-storage.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/writing-an-e-mail-application-with-lamson-ii.html" rel="bookmark"
+                           title="Permalink to Writing an e-mail application with Lamson - II">Writing an e-mail application with Lamson - II</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-04-05T03:14:10+05:30">
+                Published: Tue 05 April 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-04-05T13:44:10+05:30">
+                Updated: Tue 05 April 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/e-mail.html">e-mail</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">In the <a class="reference external" href="http://agiliq.com/blog/2011/04/writing-an-e-mail-application-with-lamson-i/">last post</a>, we saw how to create the skeleton of a basic email application using Lamson. In this part, we'll see how to write a handler (in the controller) to open a ticket in Unfuddle, the project management tool we use at Agiliq. If you look at the <tt class="docutils literal">config/settings.py</tt> file, you'll see a <tt class="docutils literal">handlers</tt> attribute that should be updated to match with the file that contains the rules for mail routing. In this case, let us create a <tt class="docutils literal">unfuddle.py</tt> under the <tt class="docutils literal">app/handlers</tt> directory and update the <tt class="docutils literal">config/settings.py</tt>:: handlers = [&quot;app.handlers.unfuddle&quot;] In the <tt class="docutils literal">app/handlers/unfuddle.py</tt>, the handler code would be</p>
+
+                <a class="readmore" href="/writing-an-e-mail-application-with-lamson-ii.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/writing-an-e-mail-application-with-lamson-i.html" rel="bookmark"
+                           title="Permalink to Writing an e-mail application with Lamson - I">Writing an e-mail application with Lamson - I</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-04-01T09:08:15+05:30">
+                Published: Fri 01 April 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-04-01T19:38:15+05:30">
+                Updated: Fri 01 April 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/e-mail.html">e-mail</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">Writing to deploying a Lamson app --------------------------------- Off late, we've been slightly busy with a 'lot' of new developments on our end and we've not been able to devote attention to the blog. In these busy periods, we tend to forget things faster. One such thing that Shabda recently pointed out that some of our applications (client and open source projects) were erroring. Because of the low frequency of these errors, they went unnoticed for quite a few days. We do check e-mail often but we are mostly drowned in our project management tool, <a class="reference external" href="http://www.unfuddle.com/">Unfuddle</a>. Shabda suggested we open a</p>
+
+                <a class="readmore" href="/writing-an-e-mail-application-with-lamson-i.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/jobs.html" rel="bookmark"
+                           title="Permalink to Jobs">Jobs</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-03-15T05:22:12+05:30">
+                Published: Tue 15 March 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-03-15T15:52:12+05:30">
+                Updated: Tue 15 March 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/jobs.html">jobs</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">We are a small software company building web facing applications for a number of clients. We work with Python, Django, Jquery, Mysql or Postgres. We <strong>“build amazing webapps”</strong>. You can learn more about us from * <a class="reference external" href="http://agiliq.com/">http://agiliq.com/</a> * <a class="reference external" href="http://agiliq.com/blog">http://agiliq.com/blog</a> * <a class="reference external" href="https://github.com/agiliq/">https://github.com/agiliq/</a>. * Are you a software engineer looking to work in a small team with smart people? * Do you know multiple programming languages, and have the ability to pick up new ones? * Can you prove why your IDE or editor is better than mine? * Do you know relational databases, when to use them, and when not to.</p>
+
+                <a class="readmore" href="/jobs.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/link-roundup-10.html" rel="bookmark"
+                           title="Permalink to Link roundup 10">Link roundup 10</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-01-21T04:55:19+05:30">
+                Published: Fri 21 January 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-01-21T16:25:19+05:30">
+                Updated: Fri 21 January 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/linkroundup.html">linkroundup</a> </p>
+</footer><!-- /.post-info -->                <ul class="first last simple">
+<li><p class="first"><a class="reference external" href="http://troy-sobotka.blogspot.com/2011/01/why-gimp-is-inadequate.html">Troy Sobotka</a> has a blog post on why GIMP is inadequate in the real world. Slightly worrying post. * <a class="reference external" href="http://bostinnovation.com/2011/01/15/who-is-using-node-js-and-why-yammer-bocoup-proxlet-and-yahoo/">Kevin McCarthy</a> has an article on &quot;How 3 companies (Yammer, Proxlet and Bocoup) use Node.js&quot; * <a class="reference external" href="http://royal.pingdom.com/2011/01/12/internet-2010-in-numbers/">Pingdom</a> has released a jaw-dropping article on &quot;The Internet in 2010&quot;. A whopping 107 trillion emails were sent in the year! * <a class="reference external" href="http://www.paperplanes.de/2011/1/5/the_virtues_of_monitoring.html">Mathias Meyer</a> has an exhaustive item on the different levels of monitoring with examples of services and software. * <a class="reference external" href="http://lincolnloop.com/blog/2011/jan/11/custom-filters-django-admin/">Yann Malet</a> has written a neat post on how to write custom filters integrated into the django admin with a few lines of</p>
+</li>
+</ul>
+
+                <a class="readmore" href="/link-roundup-10.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/link-roundup-9.html" rel="bookmark"
+                           title="Permalink to Link roundup 9">Link roundup 9</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-01-07T09:20:07+05:30">
+                Published: Fri 07 January 2011
+        </abbr>
+		<br />
+        <abbr class="modified" title="2011-01-07T20:50:07+05:30">
+                Updated: Fri 07 January 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/linkroundup.html">linkroundup</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">Welcome to the first post of 2011! * The Eldarion Team has launched &quot;<a class="reference external" href="http://gondor.io/">Gondor</a>: An effortless production django hosting&quot;. Currently, it is in private beta and going by the homepage sounds very exciting. * <a class="reference external" href="http://www.djangopro.com/2011/01/django-database-migration-tool-south-explained/">PK Shiu</a> has graphically explained the workflow of South, the most preferred migration tool for django. * <a class="reference external" href="http://www.agmweb.ca/blog/andy/2291/">Andy McKay</a> has written an article on how to integrate bleach, an HTML whitelist and sanitizer with django. Rather than escaping the user's input completely (like the innocuous formatting tags), it escapes only the risky tags like script tags. * * <a class="reference external" href="http://agiliq.com/blog/2010/12/book-review-the-principles-of-beautiful-web-design/">Sai Kiran</a>, our designer at Agiliq has written</p>
+
+                <a class="readmore" href="/link-roundup-9.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/link-roundup-8.html" rel="bookmark"
+                           title="Permalink to Link roundup 8">Link roundup 8</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-12-31T06:29:44+05:30">
+                Published: Fri 31 December 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-12-31T17:59:44+05:30">
+                Updated: Fri 31 December 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/linkroundup.html">linkroundup</a> </p>
+</footer><!-- /.post-info -->                <ul class="first last simple">
+<li><p class="first">Django Dose community catchup episode #32 is out. Listen to it <a class="reference external" href="http://djangodose.com/podcasts/community-catchup/episode/32/">here</a>. * <a class="reference external" href="http://lukeplant.me.uk/blog/posts/django-anonymizer-released/">Luke Plant</a> has released a django app called django-anonymizer. It anonymizes sensitive data like customer information while maintaining the structure intact. * <a class="reference external" href="http://lucumr.pocoo.org/2010/12/24/common-mistakes-as-web-developer/">Armin Ronacher</a> who contends that web development is dangerous (and rightly so!) blogs about the common mistakes made by a web developer. * <a class="reference external" href="http://sontek.net/tips-and-tricks-for-the-python-interpreter'">John Anderson</a> has a very interesting post on &quot;Tips and Tricks for the Python Interpreter&quot;. Must read! * <a class="reference external" href="http://charlesleifer.com/blog/autocompletion-for-django-models-using-solr-redis-or-sql/">Charles Leifer</a> has written a generic app to provide for auto-completion of django models. Currently, it supports the solr, redis and sql database</p>
+</li>
+</ul>
+
+                <a class="readmore" href="/link-roundup-8.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-emacs-setup.html" rel="bookmark"
+                           title="Permalink to Django emacs setup">Django emacs setup</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-12-26T23:11:25+05:30">
+                Published: Sun 26 December 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-12-27T10:41:25+05:30">
+                Updated: Mon 27 December 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/emacs.html">emacs</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">My colleague Javed had written an article a short while back on <a class="reference external" href="http://agiliq.com/blog/2010/11/seven-reasons-why-you-should-switch-to-vim-for-dja/">&quot;Seven reasons why you should switch to Vim&quot;</a>. One of the coolest things at Agiliq is that we are free to use the development tools we are comfortable with. As a case to explain the point, everyone at team agiliq uses a different editor and if someday a flame war would escalate to the third world war, I assure you it would start from Agiliq ;-) Though I have been using emacs for more than two years now, I still consider myself an amateur. In this post, I</p>
+
+                <a class="readmore" href="/django-emacs-setup.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/link-roundup-for-week-ending-24122010.html" rel="bookmark"
+                           title="Permalink to Link roundup for week ending 24/12/2010">Link roundup for week ending 24/12/2010</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-12-23T07:10:32+05:30">
+                Published: Thu 23 December 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-12-23T18:40:32+05:30">
+                Updated: Thu 23 December 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/thejaswi.html">thejaswi</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/linkroundup.html">linkroundup</a> </p>
+</footer><!-- /.post-info -->                <ul class="first last simple">
+<li><p class="first">In the <a class="reference internal" href="#second-part">second part</a> of the series the Open Source team at The Washington Times writes about &quot;App-centric django development&quot;. Here they discuss the files required for a complete app. * .. <span class="target" id="second-part">second part</span>: <a class="reference external" href="http://opensource.washingtontimes.com/blog/2010/nov/28/app-centric-django-development-part-2-app-factory/">http://opensource.washingtontimes.com/blog/2010/nov/28/app-centric-django-development-part-2-app-factory/</a></p>
+</li>
+</ul>
+
+                <a class="readmore" href="/link-roundup-for-week-ending-24122010.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/real-time-applications-with-django-xmpp-and-stroph.html" rel="bookmark"
+                           title="Permalink to Real time applications with Django, XMPP and StropheJS">Real time applications with Django, XMPP and StropheJS</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-12-22T02:00:47+05:30">
+                Published: Wed 22 December 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-12-22T13:30:47+05:30">
+                Updated: Wed 22 December 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/rst.html">rst</a>.</p>
+<p>tags: <a href="/tag/xmpp.html">xmpp</a> </p>
+</footer><!-- /.post-info -->                <p class="first last">Introduction: ============== I'll be discussing how to build real time applications using Django and XMPP. Twitter's homepage, Facebook notifications and gmail are just a few examples which have real time updates. Usually, you would want to use this when you require instant updates about things happening right now. A naive approach would be to have an intensive ajax poll every 'x' seconds. This works, but has a few obvious drawbacks such as scalability and resource wastage.</p>
+
+                <a class="readmore" href="/real-time-applications-with-django-xmpp-and-stroph.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+        <a href="/category/rst.html">&laquo;</a>
+    Page 2 / 3
+        <a href="/category/rst3.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

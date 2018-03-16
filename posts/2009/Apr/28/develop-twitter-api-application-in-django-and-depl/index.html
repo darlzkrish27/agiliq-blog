@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Develop Twitter API application in django and deploy on Google App Engine</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/develop-twitter-api-application-in-django-and-depl.html" rel="bookmark"
+           title="Permalink to Develop Twitter API application in django and deploy on Google App Engine">Develop Twitter API application in django and deploy on Google App Engine</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-04-28T16:44:01+05:30">
+                Published: Tue 28 April 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-04-29T03:14:01+05:30">
+                Updated: Wed 29 April 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lakshman.html">lakshman</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/django.html">django</a> </p>
+</footer><!-- /.post-info -->      <p>Twitter's robust <a href="http://apiwiki.twitter.com/Twitter-API-Documentation">REST API</a> enables building of good applications that leverage its increasingly large and real-time data.</p>
+<p><img class="alignright" title="Google App Engine" src="http://code.google.com/appengine/images/appengine_lowres.gif" alt="" width="142" height="109" /></p>
+<p>Google's cloud system <a href="http://code.google.com/appengine/">App Engine</a> not only provides a scalable platform for deploying applications, but also proves to be economically viable because of its pay per resource usage model and a large free quota.</p>
+<p>Little wonder then, there are increasingly large number of twitter apps being deployed on App Engine.</p>
+<p>In this post, I am going to examine how to create a simple application based on twitter's REST API and deploy it on Google App Engine. A deployed version can be found on <a href="http://twitter-follow.appspot.com/">Twitter-Follow</a>. The specification is simple. It finds if a twitter user is following another twitter user, given their user names.</p>
+<p><img class="alignright size-thumbnail wp-image-461" title="twitter-follow" src="http://uswaretech.com/blog/wp-content/uploads/2009/04/screenshot-150x150.png" alt="" width="150" height="150" />
+The application is developed using django and deployed on Appengine using the <a href="http://code.google.com/appengine/articles/app-engine-patch.html">app engine patch</a> project.</p>
+<p>The code is open sourced with GPL v3 and can be checked out from <a href="http://code.google.com/p/twitter-follow/">Google Code</a>.</p>
+<p>Lets get started building this application.</p>
+<h3>Create an application</h3>
+<p>Create a new application from <a href="http://appengine.google.com/">App Engine Dashboard</a> by registering an unique appspot.com sub-domain. This will be your application's unique identifier. You may have to register first.</p>
+<h3>Install App Engine SDK</h3>
+<p><a href="http://code.google.com/appengine/downloads.html#Google_App_Engine_SDK_for_Python">Download</a> and install the App Engine SDK. There is no <em>installation</em> for linux users, just place the folder in <code>/usr/local/google_appengine</code></p>
+<h3>Download app-engine-patch</h3>
+<p>Download the <a href="http://app-engine-patch.googlecode.com/files/app-engine-patch-sample-1.0.zip">sample project</a>. It comes bundled with all the essential django 1.0 files that are required.
+Since we do not need the sample application, you may remove the unnecessary sample application folders and correspondingly modify settings.py, but for this demo app, it doesn't matter even if you dont.</p>
+<h3>Modify <strong><code>app.yaml</code></strong>:</h3>
+<div class="highlight"><pre><span></span><span class="n">application</span><span class="o">:</span> <span class="n">twitter</span><span class="o">-</span><span class="n">follow</span>
+<span class="n">version</span><span class="o">:</span> <span class="mi">1</span>
+<span class="n">runtime</span><span class="o">:</span> <span class="n">python</span>
+<span class="n">api_version</span><span class="o">:</span> <span class="mi">1</span>
+
+<span class="n">default_expiration</span><span class="o">:</span> <span class="s1">&#39;3650d&#39;</span>
+
+<span class="n">handlers</span><span class="o">:</span>
+<span class="o">-</span> <span class="n">url</span><span class="o">:</span> <span class="o">/</span><span class="n">media</span>
+<span class="n">static_dir</span><span class="o">:</span> <span class="n">media</span>
+
+<span class="o">-</span> <span class="n">url</span><span class="o">:</span> <span class="o">/.*</span>
+<span class="n">script</span><span class="o">:</span> <span class="n">common</span><span class="sr">/appenginepatch/</span><span class="n">main</span><span class="o">.</span><span class="na">py</span>
+</pre></div>
+
+
+<p>The only thing you need to modify in this file is the unique application name- for which you registered, and the static files' folder.</p>
+<p>As we are using the patch, the handler script to run should always point to <code>main.py</code> of the appenginepatch folder. Leave it as it is.</p>
+<p>The <code>/media</code> maps to the static directory <code>./media</code>, in which you place the static JS and CSS files.</p>
+<h3>Modify <strong><code>urls.py</code></strong></h3>
+<div class="highlight"><pre><span></span>urlpatterns = auth_patterns + patterns(&#39;&#39;,
+    (r&#39;^$&#39;, &#39;views.disp&#39;),
+</pre></div>
+
+
+<p>Pretty much straight forward, we handle only 1 page and the request is directed to a specified view function ie <code>disp</code> in <code>views.py</code> file which we are going to create.</p>
+<p>There are some more imports in the file than django <code>urls.py</code> for the patch to work. Leave them as it is.</p>
+<h3>What about <strong><code>models.py</code></strong>?</h3>
+<p>For this application, we do not need any database. We just query twitter as and when user requests.</p>
+<p>What about session persistence? Oh, we achieve that using hidden input fields in the form, as we will see in the views.</p>
+<p>Hence we don't even need to create an application, just a view and a form in the root directory</p>
+<h3>Write <strong><code>forms.py</code></strong></h3>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">input_form</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">follower</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">error_messages</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;required&#39;</span><span class="p">:</span><span class="s1">&#39;Follower Name is required&#39;</span><span class="p">})</span>
+    <span class="n">following</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">error_messages</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;required&#39;</span><span class="p">:</span><span class="s1">&#39;Following Name is required&#39;</span><span class="p">})</span>
+</pre></div>
+
+
+<p>We need a simple form that we can create in our function, so that it is displayed in the template, by the framework.</p>
+<p>After all, the django forms framework is one big advantage of using django over the App Engine's builtin webapp framework, even for simple applications. With forms now done, we proceed to the views.</p>
+<h3>Write <strong><code>views.py</code></strong></h3>
+<h4>is_follows:</h4>
+<div class="highlight"><pre><span></span>def is_follows(follower, following):
+
+    url = &#39;http://twitter.com/friendships/exists.json?user_a=%s&amp;user_b=%s&#39; %(
+    follower, following)
+
+    password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    top_level_url = &quot;http://twitter.com/&quot;
+    password_mgr.add_password(None, top_level_url, settings.TWNAME, settings.TWPASSWORD)
+    handler = urllib2.HTTPBasicAuthHandler(password_mgr)
+    opener = urllib2.build_opener(urllib2.HTTPHandler, handler)
+    urllib2.install_opener(opener)
+
+    try:
+    return simplejson.load(urllib2.urlopen(url))
+    except IOError, e:
+    #print &quot;Something wrong. This shouldnt happen&quot;
+    print e,&quot;Protected user&#39;s details cant be found &quot;
+    return False
+</pre></div>
+
+
+<p>This function queries twitter and returns whether a <code>follower</code> is following <code>following</code>. Lot of boilerplate code, a standard way of adding authentication headers to all requests to the specified domain. Otherwise, the function just examines json returned by twitter and returns corresponding value.</p>
+<h4>disp and helper functions:</h4>
+<div class="highlight"><pre><span></span><span class="s s-Atom">def</span> <span class="nf">format_is_follows</span><span class="p">(</span><span class="s s-Atom">follower</span><span class="p">,</span> <span class="s s-Atom">following</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">fol</span> <span class="o">=</span> <span class="s s-Atom">&#39;YES&#39;</span> <span class="s s-Atom">if</span> <span class="nf">is_follows</span><span class="p">(</span><span class="s s-Atom">follower</span><span class="p">,</span><span class="s s-Atom">following</span><span class="p">)</span> <span class="s s-Atom">else</span> <span class="s s-Atom">&#39;NO&#39;</span>
+    <span class="s s-Atom">new_entry</span> <span class="o">=</span> <span class="p">(</span><span class="s s-Atom">fol</span><span class="p">,</span><span class="s s-Atom">follower</span><span class="p">,</span><span class="s s-Atom">following</span><span class="p">)</span>
+    <span class="s s-Atom">return</span> <span class="s2">&quot;%s:%s:%s&quot;</span> <span class="c1">%new_entry</span>
+
+<span class="s s-Atom">def</span> <span class="nf">get_entry_tuples</span><span class="p">(</span><span class="s s-Atom">str1=</span><span class="s2">&quot;YES:str1:str2;NO:str3:str4&quot;</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">list1</span> <span class="o">=</span> <span class="s s-Atom">str1</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s s-Atom">&#39;;&#39;</span><span class="p">)</span>
+    <span class="s s-Atom">list2</span> <span class="o">=</span> <span class="p">[</span><span class="nf">tuple</span><span class="p">(</span><span class="s s-Atom">i</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">))</span> <span class="s s-Atom">for</span> <span class="s s-Atom">i</span> <span class="s s-Atom">in</span> <span class="s s-Atom">list1</span><span class="p">]</span>
+    <span class="s s-Atom">return</span> <span class="s s-Atom">list2</span>
+
+
+<span class="s s-Atom">def</span> <span class="nf">disp</span><span class="p">(</span><span class="s s-Atom">req</span><span class="p">)</span><span class="s s-Atom">:</span>
+    <span class="s s-Atom">if</span> <span class="s s-Atom">req</span><span class="p">.</span><span class="s s-Atom">method</span> <span class="o">==</span> <span class="s s-Atom">&#39;POST&#39;:</span>
+    <span class="s s-Atom">form</span> <span class="o">=</span> <span class="s s-Atom">forms</span><span class="p">.</span><span class="nf">input_form</span><span class="p">(</span><span class="s s-Atom">req</span><span class="p">.</span><span class="nv">POST</span><span class="p">)</span>
+
+    <span class="s s-Atom">if</span> <span class="s s-Atom">form</span><span class="p">.</span><span class="nf">is_valid</span><span class="p">()</span><span class="s s-Atom">:</span>
+        <span class="s s-Atom">new_str</span> <span class="o">=</span> <span class="nf">format_is_follows</span><span class="p">(</span><span class="s s-Atom">form</span><span class="p">.</span><span class="s s-Atom">cleaned_data</span><span class="p">[</span><span class="s s-Atom">&#39;follower&#39;</span><span class="p">],</span>
+                    <span class="s s-Atom">form</span><span class="p">.</span><span class="s s-Atom">cleaned_data</span><span class="p">[</span><span class="s s-Atom">&#39;following&#39;</span><span class="p">])</span>
+        <span class="s s-Atom">old_str</span> <span class="o">=</span> <span class="s s-Atom">req</span><span class="p">.</span><span class="nv">POST</span><span class="p">[</span><span class="s s-Atom">&#39;old&#39;</span><span class="p">]</span>
+
+        <span class="s s-Atom">form_data</span> <span class="o">=</span> <span class="s2">&quot;%s;%s&quot;</span> <span class="c1">%(new_str,old_str)</span>
+        <span class="s s-Atom">entries</span> <span class="o">=</span> <span class="nf">get_entry_tuples</span><span class="p">(</span><span class="s s-Atom">form_data</span><span class="p">)[:-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="s s-Atom">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s s-Atom">&#39;entries&#39;:entries</span><span class="p">,</span>
+               <span class="s s-Atom">&#39;form&#39;:form</span><span class="p">,</span>
+               <span class="s s-Atom">&#39;disp&#39;:</span><span class="nv">True</span><span class="p">,</span>
+               <span class="s s-Atom">&#39;form_data&#39;:form_data</span><span class="p">}</span>
+    <span class="nn">else</span><span class="p">:</span>
+        <span class="s s-Atom">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s s-Atom">&#39;form&#39;:form</span><span class="p">,</span>
+               <span class="s s-Atom">&#39;disp&#39;:</span><span class="nv">True</span><span class="p">}</span>
+    <span class="nn">else</span><span class="p">:</span>
+    <span class="s s-Atom">form</span> <span class="o">=</span> <span class="s s-Atom">forms</span><span class="p">.</span><span class="nf">input_form</span><span class="p">()</span>
+    <span class="s s-Atom">payload</span> <span class="o">=</span>  <span class="p">{</span><span class="s s-Atom">&#39;form&#39;:form</span><span class="p">,</span><span class="s s-Atom">&#39;disp&#39;:</span><span class="nv">False</span><span class="p">}</span>
+    <span class="s s-Atom">return</span> <span class="nf">render_to_response</span><span class="p">(</span><span class="s s-Atom">&#39;page3.html&#39;</span><span class="p">,</span><span class="s s-Atom">payload</span><span class="p">,)</span>
+</pre></div>
+
+
+<p><code>disp</code> is the function called by the framework each time an HTTP request arises. Validates the form data and passes contextual variables for displaying. Some additional code, for examining the previously queried values from the hidden field in the form.</p>
+<p><code>format_is_follows</code> returns the follower following data in the format required by the template we are going to be using- a tuple of 3 values and <code>get_entry_tuples</code> returns the data
+that we are going to store in the hidden form. They are Separated into multiple functions here, just for clarity.</p>
+<h3><strong><code>template.html</code></strong></h3>
+<div class="highlight"><pre><span></span><span class="nt">&lt;html&gt;&lt;body&gt;</span>
+
+    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">fol</span> <span class="k">in</span> <span class="nv">entries</span> <span class="cp">%}</span> 
+        <span class="cp">{%</span> <span class="k">ifequal</span> <span class="nv">fol.0</span> <span class="s2">&quot;YES&quot;</span> <span class="cp">%}</span>
+            Yes. <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://twitter.com/</span><span class="cp">{{</span><span class="nv">fol.1</span><span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>@<span class="cp">{{</span><span class="nv">fol.1</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;</span> is following <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://twitter.com/</span><span class="cp">{{</span><span class="nv">fol.2</span><span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>@<span class="cp">{{</span><span class="nv">fol.2</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>  <span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span> 
+            No. <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://twitter.com/</span><span class="cp">{{</span><span class="nv">fol.1</span><span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>@<span class="cp">{{</span><span class="nv">fol.1</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;</span> is not following <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://twitter.com/</span><span class="cp">{{</span><span class="nv">fol.2</span><span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>@<span class="cp">{{</span><span class="nv">fol.2</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
+        <span class="cp">{%</span> <span class="k">endifequal</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;.&quot;</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span><span class="nt">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.following.errors</span> <span class="cp">}}</span> <span class="cp">{{</span> <span class="nv">form.follower.errors</span> <span class="cp">}}</span>
+    Is <span class="cp">{{</span> <span class="nv">form.follower</span> <span class="cp">}}</span> following <span class="cp">{{</span> <span class="nv">form.following</span> <span class="cp">}}</span> 
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;hidden&quot;</span> <span class="na">name=</span><span class="s">&quot;old&quot;</span> <span class="na">value=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">form_data</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">align=</span><span class="s">&quot;center&quot;</span> <span class="na">value=</span><span class="s">&quot;Find out!&quot;</span> <span class="nt">/&gt;</span> 
+<span class="nt">&lt;/form&gt;</span>
+
+<span class="nt">&lt;/body&gt;&lt;/html&gt;</span>
+</pre></div>
+
+
+<p>It contains, the result display part and the form. The form also has a hidden input field. Thanks to django form framework not adding the <code>&lt;form&gt;</code> tags and the <code>submit</code> button. This provides us the flexibility to be able to add the hidden field with the content to be displayed in the next post request.</p>
+<h3>Run the server</h3>
+<p>With all the necessary files ready, you are now ready to run the server. In the command prompt enter</p>
+<p><code>python manage.py runserver</code></p>
+<p>Yes, you run the django <code>manage.py</code>. The patch application has placed hooks around and starts the App Engine server. Verify the running application from <a href="http://localhost:8000/">localhost</a>.</p>
+<p>If you happen to have the latest version of Python, sorry. Use the python2.5 instead.</p>
+<h3>Upload the Application</h3>
+<p>Thats it. If you have got it working on the localhost, now throw the code at google's <em>scalable and no maintenance cloud</em> and it starts working.</p>
+<p><code>python manage.py update</code></p>
+<p>You don't bother about deployment, server maintenance or log files. Rather, check out the awesome <a href="http://appengine.google.com/dashboard?&amp;app_id=twitter-follow">application admin dashboard</a> and if you run out of the allocated free quota, buy some more resource time. Its costs $0.10/CPU hour and one cent for 100 emails sent!</p>
+<p>A lot is happening in the field of App Engine support for twitter API. There is even a new App Engine module for twitter <a href="http://github.com/tav/tweetapp/tree/master">oAuth authentication</a>, out of the box, as there is <a href="http://www.djangosnippets.org/snippets/1353/">one for django</a>.</p>
+<p>App Engine is a powerful platform. django is a high productive framework. Combining them is very powerful and there is also an <a href="http://code.djangoproject.com/wiki/AppEngine">ongoing project</a> for enhancing the the patch project and making it totally compatible with django.</p>
+<p>Resources:</p>
+<ul>
+<li><a href="http://code.google.com/appengine/articles/app-engine-patch.html">Jesaja Everling Tutorial</a></li>
+<li><a href="http://apiwiki.twitter.com/Twitter-API-Documentation">Twitter API Documentation</a></li>
+<li><a href="http://code.google.com/appengine/docs/python/gettingstarted/">App Engine Tutorial on Webapp Framework</a></li>
+<li><a href="http://code.google.com/p/app-engine-patch/wiki/GettingStarted">App Engine Patch - Getting Started</a></li>
+<li><a href="http://code.google.com/p/app-engine-patch/wiki/Documentation">App Engine Patch - Documentation</a></li>
+</ul>
+<p><hr />
+Want to develop an application based on twitter API? <a href="http://uswaretech.com/contact/">We can help</a>.</p>
+<p>.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

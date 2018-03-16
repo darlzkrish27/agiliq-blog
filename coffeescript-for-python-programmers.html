@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="shabda" />
+        <meta name="copyright" content="shabda" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="coffeescript, markdown, " />
+
+<meta property="og:title" content="Coffeescript for Python programmers "/>
+<meta property="og:url" content="/coffeescript-for-python-programmers.html" />
+<meta property="og:description" content="I just learnt Coffeescript, and as a Python programmer loved being able to write Javascript in a Python like language. Coffeescript is inspired by Python/Ruby and is very close to these languages. Writing Coffeescript and reading the compiled Javascript also improved my understanding of Javascript. Without much ado here is translation of some Python code to Coffeescript to get you started. Defining a variable Python a = 10 Coffeescript a = 10 Setting scope is done via whitespaces. Python if i == 10: foo() Coffeescript if i == 10 foo() No semicolons List comprehensions Python languages = [&#34;Python&#34;, &#34;Coffeescript&#34;, &#34;Java&#34;," />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="shabda" />
+<meta property="og:article:published_time" content="2011-12-24T00:24:11+05:30" />
+<meta property="" content="2011-12-24T11:54:11+05:30" />
+<meta name="twitter:title" content="Coffeescript for Python programmers ">
+<meta name="twitter:description" content="I just learnt Coffeescript, and as a Python programmer loved being able to write Javascript in a Python like language. Coffeescript is inspired by Python/Ruby and is very close to these languages. Writing Coffeescript and reading the compiled Javascript also improved my understanding of Javascript. Without much ado here is translation of some Python code to Coffeescript to get you started. Defining a variable Python a = 10 Coffeescript a = 10 Setting scope is done via whitespaces. Python if i == 10: foo() Coffeescript if i == 10 foo() No semicolons List comprehensions Python languages = [&#34;Python&#34;, &#34;Coffeescript&#34;, &#34;Java&#34;,">
+
+        <title>Coffeescript for Python programmers  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/coffeescript-for-python-programmers.html"> Coffeescript for Python programmers  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>I just learnt Coffeescript, and as a Python programmer loved being able to write Javascript in a Python like language. Coffeescript is inspired by 
+Python/Ruby and is very close to these languages. Writing Coffeescript and reading the compiled Javascript also improved my understanding of Javascript.
+Without much ado here is translation of some Python code to Coffeescript to get you started.</p>
+<p>Defining a variable</p>
+<div class="highlight"><pre><span></span>Python
+a = 10
+
+Coffeescript
+a = 10
+</pre></div>
+
+
+<p>Setting scope is done via whitespaces.</p>
+<div class="highlight"><pre><span></span>Python
+
+if i == 10:
+    foo()
+
+
+Coffeescript
+
+if i == 10
+    foo()
+</pre></div>
+
+
+<p>No semicolons</p>
+<p>List comprehensions</p>
+<div class="highlight"><pre><span></span>Python
+
+languages = [&quot;Python&quot;, &quot;Coffeescript&quot;, &quot;Java&quot;, &quot;Ruby&quot;, &quot;Haskell&quot;]
+languages = [lan.lower() for lan in languages]
+
+Coffeescript
+
+languages = [&quot;Python&quot;, &quot;Coffeescript&quot;, &quot;Java&quot;, &quot;Ruby&quot;, &quot;Haskell&quot;]
+languages = (lan.lowerCase for lan in languages)
+</pre></div>
+
+
+<p>Get a range</p>
+<div class="highlight"><pre><span></span>Python
+tillTen = range(1, 10)
+
+CoffeScript
+
+tillTen = [1...10]
+</pre></div>
+
+
+<p>String Interpolation</p>
+<div class="highlight"><pre><span></span>Python
+
+language = &quot;Python&quot;
+greet = &quot;I love %s&quot; % language
+
+Coffeescript
+
+language = &quot;Coffescript&quot;
+greet = &quot;I love #{language}&quot;
+</pre></div>
+
+
+<p>Multi Line String</p>
+<div class="highlight"><pre><span></span>Python
+
+&quot;&quot;&quot;
+The Quick Brown
+Fox, Jumps over
+The lazy Dog
+&quot;&quot;&quot;
+
+Coffeescript
+
+&quot;&quot;&quot;
+The Quick Brown
+Fox, Jumps over
+The lazy Dog
+&quot;&quot;&quot;
+</pre></div>
+
+
+<p>Defining a function</p>
+<div class="highlight"><pre><span></span>Python
+
+def double(x):
+    return 2 * x
+
+Coffeescript
+
+double = (x) -&gt; 
+    2 * x
+</pre></div>
+
+
+<p>Here is a larger <a href="https://github.com/shabda/humanhash-coffeescript/blob/master/humanhash.py">python script</a> converted to <a href="https://github.com/shabda/humanhash-coffeescript/blob/master/humanhash.coffee">Coffeescript</a>. </p>
+<p>You will see that they are very similar and if you know Python learning (and loving) Coffeescript won't take you a long time. Excited? 
+<a href="http://coffeescript.org/">Get started here</a>.</p>
+<hr>
+<h3>Resources</h3>
+<ul>
+<li><a href="http://pragprog.com/book/tbcoffee/coffeescript">CoffeeScript: Accelerated JavaScript Development</a>: This is the book I read Coffeescript from and I highly recommend it.</li>
+<li><a href="http://arcturo.github.com/library/coffeescript/">The Little book of Coffeescript</a></li>
+<li><a href="Http://coffeescript.org/">Official Coffeescript Site</a></li>
+<li><a href="http://blog.ssokolow.com/archives/2011/05/07/a-python-programmers-first-impression-of-coffeescript/">Another take on Coffeescript for Python people</a></li>
+</ul>
+<hr>
+<p>Can you believe that it has been only an year since the 1.0 release!</p>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2011-12-24T00:24:11+05:30">Dec 24, 2011</time>
+
+<h4>Last Updated</h4>
+<time datetime="2011-12-24T11:54:11+05:30">Dec 24, 2011</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#coffeescript-ref">coffeescript
+                    <span>2</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

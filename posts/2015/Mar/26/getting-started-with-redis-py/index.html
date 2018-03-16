@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Getting started with redis-py</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/getting-started-with-redis-py.html" rel="bookmark"
+           title="Permalink to Getting started with redis-py">Getting started with redis-py</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-26T07:13:25+05:30">
+                Published: Thu 26 March 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-03-26T17:43:25+05:30">
+                Updated: Thu 26 March 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/redis.html">redis</a> </p>
+</footer><!-- /.post-info -->      <p>This post explains how to interface with Redis from Python and how to use different Redis commands from Python using redis-py.</p>
+<p>What this post is not about</p>
+<ul>
+<li>Comparing relational and non-relational database</li>
+<li>Comparing MySQL and Redis</li>
+<li>Introduction to Redis</li>
+</ul>
+<p>I assume you know the following</p>
+<ul>
+<li>Basics of Redis</li>
+<li>Basic redis commands for working with Strings, Lists and Maps as described at <a href="http://redis.io/topics/data-types-intro" target="_blank">Redis docs</a>.</li>
+</ul>
+<p>I did not find enough examples of using redis-py provided methods and so wrote this blog post.</p>
+<h3>Getting started</h3>
+<p>Assuming you have Redis installed and your redis server is running.</p>
+<p>We will follow the same sequence as followed in Redis data-types-intro at <a href="http://redis.io/topics/data-types-intro" target="_blank">Redis docs</a></p>
+<p>Install redis-py</p>
+<div class="highlight"><pre><span></span>pip install redis
+</pre></div>
+
+
+<p>Start redis-cli on some shell, so we can relate our Python redis commands and plain redis command.</p>
+<h4>Redis strings</h4>
+<p>For setting a string value, we use the following from redis-cli</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; set mykey myvalue
+</pre></div>
+
+
+<p>And you can get it using</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; get mykey
+&quot;myvalue&quot;
+</pre></div>
+
+
+<p>Now we want to do the same from Python. Do the following from Python shell.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">redis</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">StrictRedis</span><span class="p">()</span>
+</pre></div>
+
+
+<p>We created an instance of <strong>StrictRedis</strong>. This is required for communication with redis-server.</p>
+<p>Try getting "mykey", which was set using redis-cli, from Python</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.get(&quot;mykey&quot;)
+&#39;myvalue&#39;   #output
+</pre></div>
+
+
+<p>So we are able to communicate properly with redis-server. Things which were inserted into redis using redis-cli can be read using Python.</p>
+<p>Try setting a value into Redis from Python shell.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.set(&quot;anotherkey&quot;, &quot;anothervalue&quot;)
+True       #output
+</pre></div>
+
+
+<p>Check from redis-cli if this key was set properly.</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; get anotherkey
+&quot;anothervalue&quot;
+</pre></div>
+
+
+<p>So it seems Python is able to insert values into Redis properly.</p>
+<p>You can read the same value using Python again.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.get(&quot;anotherkey&quot;)
+&#39;anothervalue&#39;
+</pre></div>
+
+
+<h4>INCR and INCRBY</h4>
+<p>Redis provides <strong>incr</strong> and <strong>incrby</strong> on integer values.</p>
+<p>So let's set an integer value first which we will try to increment.</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.set(&quot;num&quot;, 10)
+True
+
+&gt;&gt;&gt; r.get(&quot;num&quot;)
+&#39;10&#39;
+</pre></div>
+
+
+<p>redis-py's equivalent of Redis' <strong>incr</strong> is</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.incr(&quot;num&quot;)
+11
+</pre></div>
+
+
+<p>Get it to verify that num has been incremented</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.get(&quot;num&quot;)
+&#39;11&#39;
+</pre></div>
+
+
+<p>You should verify it using redis-cli too.</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; get num
+&quot;11&quot;
+</pre></div>
+
+
+<p>Python's equivalent of <strong>incrby</strong> is</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.incrby(&quot;num&quot;, 10)
+21
+</pre></div>
+
+
+<p>Verify again using redis-cli</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; get num
+&quot;21&quot;
+</pre></div>
+
+
+<h4>MSET and MGET</h4>
+<p>redis-cli's mset equivalent in Python</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.mset(first_num=1, second_num=2, third_num=3)
+True
+</pre></div>
+
+
+<p>Verify these keys are set from redis-cli</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; get first_num
+&quot;1&quot;
+127.0.0.1:6379&gt; get second_num
+&quot;2&quot;
+</pre></div>
+
+
+<p>reidis' mget equivalent</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.mget([&quot;first_num&quot;, &quot;second_num&quot;])
+[&#39;1&#39;, &#39;2&#39;]
+</pre></div>
+
+
+<h4>EXISTS</h4>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.exists(&quot;first_num&quot;)
+True
+&gt;&gt;&gt; r.exists(&quot;fourth_num&quot;)
+False
+</pre></div>
+
+
+<h4>DEL</h4>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.delete(&quot;first_num&quot;)
+1
+</pre></div>
+
+
+<p>As this key is deleted now, you will get "nil" and "None" if you try to retrieve it.</p>
+<p>From redis-cli</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; get first_num
+(nil)
+</pre></div>
+
+
+<p>From Python shell</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.get(&quot;first_num&quot;)
+</pre></div>
+
+
+<h4>EXPIRE</h4>
+<p>Mark key <strong>second_num</strong> to expire after 10 seconds</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.expire(&quot;second_num&quot;, 10)
+True
+</pre></div>
+
+
+<p>Check this immediately</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.get(&quot;second_num&quot;)
+&#39;2&#39;     #output
+</pre></div>
+
+
+<p>Check after 10 seconds</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.get(&quot;second_num&quot;)
+It returns None after 10 seconds meaning this key doesn&#39;t exist in redis anymore
+</pre></div>
+
+
+<h4>Redis Lists</h4>
+<p>reidis' lpush equivalent in Python</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.lpush(&quot;mylist&quot;, 1)
+1L
+</pre></div>
+
+
+<p>Verify from redis-cli that a list is created in redis</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; lrange mylist 0 -1
+1) &quot;1&quot;
+</pre></div>
+
+
+<p>Pushing multiple values to list</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.lpush(&quot;mylist&quot;, 2, 3)
+</pre></div>
+
+
+<p>Check the new list from redis-cli</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; lrange mylist 0 -1
+1) &quot;3&quot;
+2) &quot;2&quot;
+3) &quot;1&quot;
+</pre></div>
+
+
+<p>redis-cli's lrange equivalent in Python</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.lrange(&quot;mylist&quot;, 0, -1)
+[&#39;3&#39;, &#39;2&#39;, &#39;1&#39;]
+
+&gt;&gt;&gt; r.lrange(&quot;mylist&quot;, 0, 1)
+[&#39;3&#39;, &#39;2&#39;]
+</pre></div>
+
+
+<p>rpush</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.rpush(&quot;mylist&quot;, 4)
+</pre></div>
+
+
+<p>Check that element is pushed on right</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.lrange(&quot;mylist&quot;, 0, -1)
+[&#39;3&#39;, &#39;2&#39;, &#39;1&#39;, &#39;4&#39;]
+</pre></div>
+
+
+<h4>Redis hashes</h4>
+<p>hmset allows saving of dictionary as values. You should already be knowing this from redis docs.</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; hmset user name ned age 31
+OK
+
+127.0.0.1:6379&gt; hgetall user
+1) &quot;name&quot;
+2) &quot;ned&quot;
+3) &quot;age&quot;
+4) &quot;31&quot;
+</pre></div>
+
+
+<p>redis-py way of achieving the same would be</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.hmset(&quot;another_user&quot;, {&#39;name&#39;: &#39;robert&#39;, &#39;age&#39;: 32})
+True
+</pre></div>
+
+
+<p>Try reading this using redis-cli</p>
+<div class="highlight"><pre><span></span>127.0.0.1:6379&gt; hgetall another_user
+1) &quot;age&quot;
+2) &quot;32&quot;
+3) &quot;name&quot;
+4) &quot;robert&quot;
+</pre></div>
+
+
+<p>Try reading this using redis-py</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; r.hgetall(&quot;another_user&quot;)
+{&#39;age&#39;: &#39;32&#39;, &#39;name&#39;: &#39;robert&#39;}
+
+&gt;&gt;&gt; r.hget(&quot;another_user&quot;, &quot;name&quot;)
+&#39;robert&#39;
+
+&gt;&gt;&gt; r.hget(&quot;another_user&quot;, &quot;age&quot;)
+&#39;32&#39;
+
+&gt;&gt;&gt; r.hgetall(&quot;user&quot;)
+{&#39;age&#39;: &#39;31&#39;, &#39;name&#39;: &#39;ned&#39;}
+</pre></div>
+
+
+<p>There are several other methods provided by redis-py too and now you should be in a good position to related redis' commands with redis-py methods.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

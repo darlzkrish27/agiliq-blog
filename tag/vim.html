@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - vim</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/seven-reasons-why-you-should-switch-to-vim-for-dja.html">Seven reasons why you should switch to Vim</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2010-11-03T05:46:15+05:30">
+                Published: Wed 03 November 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-11-03T16:16:15+05:30">
+                Updated: Wed 03 November 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/javed.html">Javed</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/vim.html">vim</a> </p>
+</footer><!-- /.post-info --><p>So you want a better IDE for developing django, huh? Why not give good old vim a try?</p>
+<p>Use <a href="https://github.com/tpope/vim-pathogen">pathogen</a> to maintain your vim plugins (and sanity).
+Using this, you can clone the repositories listed here to <code>.vim/bundle/</code> and start using them
+right away.</p>
+<p>Also, consider adding your <code>.vimrc</code> and <code>.vim</code> to a repository. Include <code>.vimrc</code> inside <code>.vim</code> and
+symlink <code>.vim/.vimrc</code> to <code>~/.vimrc</code> to version control your <code>.vimrc</code>.</p>
+<p>My vim files can be found <a href="https://github.com/tuxcanfly/CalVIM">here</a>. Also, here's an <a href="http://imgur.com/a/MEYkV/1">imgur album</a> demonstrating
+these plugins in action.</p>
+<h2>1. Syntax highlighting for django templates</h2>
+<p>Starting from vim 7.1, syntax highlight for django templates works out
+of the box. (Check your vim version using <code>vim --version</code> or <code>:version</code> within vim)</p>
+<p>If you are on an older version, use <a href="http://www.vim.org/scripts/script.php?script_id=1487">this plugin</a></p>
+<h2>2. Django snippets with snipmate</h2>
+<p><a href="https://github.com/msanders/snipmate.vim">SnipMate</a> provides commonly used "snippets". This eliminates a lot of
+boiler plate code genreally required to start a django project from scratch.</p>
+<p>Django specific snippets can be found at <a href="https://github.com/robhudson/snipmate_for_django">robhudson's repository</a></p>
+<p>Its very easy to write custom snippets in case you need them.</p>
+<h2>3. On-the-fly error checking with pyflakes</h2>
+<p>This one is not django specific, but it can save a lot of time spent debugging typos or silly mistakes.</p>
+<p><a href="https://github.com/kevinw/pyflakes-vim">PyFlakes</a> detects errors in your python code and highlights the 
+offending lines so you can easily rectify them.</p>
+<h2>4. Git integration with fugitive</h2>
+<p><a href="https://github.com/tpope/vim-fugitive">Fugitive</a> is a git plugin for vim.</p>
+<p>This one integrates seamlessly with my workflow. You can add/reset files, commit them, view diff, blame, logs all 
+within vim!</p>
+<h2>5. Auto-completion using pysmell</h2>
+<p><a href="https://github.com/orestis/pysmell">Pysmell</a> is great for autocompleting your django project code.</p>
+<h2>6. Browse code with taglist</h2>
+<p><a href="https://github.com/mexpolk/vim-taglist">Taglist</a> allows you to view your code structure and jump between
+classes/functions.</p>
+<h2>7. Write faster html using sparkup</h2>
+<p><a href="https://github.com/bingaman/vim-sparkup">Sparkup</a> allows you write <a href="http://code.google.com/p/zen-coding/">zen code</a></p>
+<h2>Other tips:</h2>
+<ul>
+<li>
+<p>set <code>makeprg</code> to <code>python manage.py syncdb</code>. Run <code>:make</code> from your vim to start <code>syncdb</code></p>
+</li>
+<li>
+<p>use <a href="https://github.com/scrooloose/nerdtree">nerdtree</a>/<a href="https://github.com/vim-scripts/LustyExplorer">lusty explorer</a> for file
+management</p>
+</li>
+<li>
+<p>use <a href="https://github.com/tuxcanfly/ViMango">vimango</a> for navigating your django project</p>
+</li>
+</ul>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

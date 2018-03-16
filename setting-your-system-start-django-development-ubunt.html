@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="akshar" />
+        <meta name="copyright" content="akshar" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="mysql, markdown, " />
+
+<meta property="og:title" content="Setting up your system to start with Django development on Ubuntu: "/>
+<meta property="og:url" content="/setting-your-system-start-django-development-ubunt.html" />
+<meta property="og:description" content="1&gt;Being a Python web framework, Django requires Python. If you are on ubuntu, you probably have python installed on your system." />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="akshar" />
+<meta property="og:article:published_time" content="2011-07-14T14:44:10+05:30" />
+<meta property="" content="2011-07-01T22:30:00+05:30" />
+<meta name="twitter:title" content="Setting up your system to start with Django development on Ubuntu: ">
+<meta name="twitter:description" content="1&gt;Being a Python web framework, Django requires Python. If you are on ubuntu, you probably have python installed on your system.">
+
+        <title>Setting up your system to start with Django development on Ubuntu:  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/setting-your-system-start-django-development-ubunt.html"> Setting up your system to start with Django development on Ubuntu:  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>If you don't have it installed, give the following command from the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python
+</pre></div>
+
+
+<p>This will install Python on your machine.</p>
+<p>2&gt;If you will be developing a database driven web application, you need to have a database setup on your system. I feel mysql is good and will tell you about installing mysql. It is pretty easy to install and use. You need to issue the following command from terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install mysql-server
+</pre></div>
+
+
+<p>While installing mysql, you will be prompted to enter a password which you will require when you try to use mysql. Give a password.
+This should install mysql on your system. 
+To check whether mysql is properly installed or not, give this command from the terminal:</p>
+<div class="highlight"><pre><span></span>mysql -u root -p
+</pre></div>
+
+
+<p>This command would prompt you to enter the password. After entering the password you set earlier for mysql, you would be taken to mysql prompt.
+If you reach the mysql prompt, it means mysql is successfully installed onto your system.
+Now, give the command as "exit". This exits from mysql.</p>
+<p>3&gt;Installing mysqldb:
+To write Python scripts that connects to mysql, you need Python interface to mysql. MySQLdb is the python interface to mysql.
+Give the following command at the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python-mysqldb
+</pre></div>
+
+
+<p>If this command executes successfully, python can access the database server.If you want to test this, go to python interactive environment by typing "python" at the terminal:
+Inside python interactive environment, write the following statement:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">MySQLdb</span>
+</pre></div>
+
+
+<p>If this statement excutes without giving an ImportError then you have successfully installed mysqldb and now your python program can interact with mysql.</p>
+<p>4&gt;Installing Django
+Go to this link:
+    https://www.djangoproject.com/download/</p>
+<p>I suggest to use option 1 as it worked easily for me</p>
+<p>Now, you have django setup on your system and can start developing applications.
+1&gt;Being a Python web framework, Django requires Python. If you are on ubuntu, you probably have python installed on your system.
+If you don't have it installed, give the following command from the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python
+</pre></div>
+
+
+<p>This will install Python on your machine.</p>
+<p>2&gt;If you will be developing a database driven web application, you need to have a database setup on your system. I feel mysql is good and will tell you about installing mysql. It is pretty easy to install and use. You need to issue the following command from terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install mysql-server
+</pre></div>
+
+
+<p>While installing mysql, you will be prompted to enter a password which you will require when you try to use mysql. Give a password.
+This should install mysql on your system. 
+To check whether mysql is properly installed or not, give this command from the terminal:</p>
+<div class="highlight"><pre><span></span>mysql -u root -p
+</pre></div>
+
+
+<p>This command would prompt you to enter the password. After entering the password you set earlier for mysql, you would be taken to mysql prompt.
+If you reach the mysql prompt, it means mysql is successfully installed onto your system.
+Now, give the command as "exit". This exits from mysql.</p>
+<p>3&gt;Installing mysqldb:
+To write Python scripts that connects to mysql, you need Python interface to mysql. MySQLdb is the python interface to mysql.
+Give the following command at the terminal:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install python-mysqldb
+</pre></div>
+
+
+<p>If this command executes successfully, python can access the database server.If you want to test this, go to python interactive environment by typing "python" at the terminal:
+Inside python interactive environment, write the following statement:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">MySQLdb</span>
+</pre></div>
+
+
+<p>If this statement excutes without giving an ImportError then you have successfully installed mysqldb and now your python program can interact with mysql.</p>
+<p>4&gt;Installing Django
+Go to this link:
+    https://www.djangoproject.com/download/</p>
+<p>I suggest to use option 1 as it worked easily for me</p>
+<p>Now, you have django setup on your system and can start developing applications.</p>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2011-07-14T14:44:10+05:30">Jul 14, 2011</time>
+
+<h4>Last Updated</h4>
+<time datetime="2011-07-01T22:30:00+05:30">Jul 1, 2011</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#mysql-ref">mysql
+                    <span>3</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

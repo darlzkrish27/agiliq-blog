@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>agiliq_blog - middlewares</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/profiling-django-middlewares.html">Profiling Django Middlewares</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-07-17T04:49:47+05:30">
+                Published: Fri 17 July 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-07-17T15:19:47+05:30">
+                Updated: Fri 17 July 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/middlewares.html">middlewares</a> </p>
+</footer><!-- /.post-info --><p>I assume you have a basic understanding of Profiling, what it means and why we use it.</p>
+<h3>Why this post</h3>
+<p>Recently I had to profile a Django application which wasn't performing as fast as it should. This application had several custom middlewares too. So it was possible that custom middlewares were the cause of slow performance.</p>
+<p>There are some existing Django libraries to profile Django code. eg: Django Debug Toolbar, django-silk , django_cprofile etc. Most of them can profile view code well but they can't profile other middlewares.</p>
+<p>I wanted a way to profile middlewares too.</p>
+<h3>Problem with Django Debug Toolbar</h3>
+<p>I assume you understand middlewares and how the order in which middlewares are defined matter. If you want to get more idea about middlewares, <a href="http://agiliq.com/blog/2015/07/understanding-django-middlewares/" target="_blank">this post</a> might help.</p>
+<p>Django debug toolbar is probably designed for profiling the views. It uses process_view() and returns an HttpResponse instace from process_view(). process_request() of all middlewares run before any middleware's process_view(). So using Django debug toolbar, it's not possible to profile what's going on inside process_request() of different middlewares.</p>
+<p>And since process_view() of debug toolbar returns HttpResponse, process_view() of other middlewares is bypassed and so we can't profile process_view() of other middlewares.</p>
+<p>So I guess it is not possible to profile middleware code using Django debug toolbar.</p>
+<h3>django-silk</h3>
+<p>Django silk seemed better at profiling middlewares too. It looks promising and I will play more with it.</p>
+<p>But Django silk also tracks queries executed, inserts the results in db etc. In case you only wanted to know the time it takes to execute different functions and wanted to find out the most time consuming functions, you might not want the overhead of django silk.</p>
+<h3>Writing our own middleware</h3>
+<p>We want to write a simple middleware that just tells the most expensive functions/methods and time it took to execute those functions. We don't want to capture sql queries or anything fancy.</p>
+<p>We will use standard Python provided <strong>cProfile</strong> to achieve our goal. <a href="https://docs.python.org/2/library/profile.html" target="_blank">This official doc</a> can help you get familiar with cProfile in 10 mins.</p>
+<p>Add the following in any app's middleware.py. Supposing you have an app called books and you add this in books/middleware.py</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cProfile</span><span class="o">,</span> <span class="nn">pstats</span><span class="o">,</span> <span class="nn">StringIO</span>
+
+<span class="k">class</span> <span class="nc">ProfilerMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+        <span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">_pr</span> <span class="o">=</span> <span class="n">pr</span>
+
+    <span class="k">def</span> <span class="nf">process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">_pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+        <span class="n">sortby</span> <span class="o">=</span> <span class="s1">&#39;cumulative&#39;</span>
+        <span class="c1"># Sort the output by cumulative time it took in fuctions/methods.</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">_pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+        <span class="c1"># Print only 10 most time consuming functions</span>
+        <span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+
+
+<p>And add books.middleware.ProfileMiddleware at top of your MIDDLEWARE_CLASSES.</p>
+<div class="highlight"><pre><span></span>MIDDLEWARE_CLASSES = (
+    &#39;books.middleware.ProfilerMiddleware&#39;,
+    # Assuming you have some custom middlewares here, even they will be profiled
+    &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+    &#39;django.middleware.common.CommonMiddleware&#39;,
+    &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+    &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+    # This middleware will be profiled too.
+    # &#39;books.middleware.SomeCustomMiddleware&#39;,
+    &#39;django.contrib.messages.middleware.MessageMiddleware&#39;,
+    &#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;,
+)
+</pre></div>
+
+
+<p>Try any url and you should see the profiler output on the runserver console.</p>
+<h3>Explanation</h3>
+<ul>
+<li>We put our middleware at top of MIDDLEWARE_CLASSES.</li>
+<li>So this middleware's process_request() will be executed before any other middleware's process_request(). Also it will be executed before any other middleware's any other function like process_view() etc.</li>
+<li>We enable profiling in process_request() so everything hereafter will be profiled. So process_request() and process_view() of any other middleware will be profiled.</li>
+<li>We disable profiling in process_response() of our middleware. process_response() of this middleware will run at last, i.e after process_response() of all other middlewares have run.</li>
+<li>This way process_response() of all other middlewares get profiled too.</li>
+</ul>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/understanding-django-middlewares.html" rel="bookmark"
+                           title="Permalink to Understanding Django Middlewares">Understanding Django Middlewares</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-07-17T03:56:11+05:30">
+                Published: Fri 17 July 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-07-17T14:26:11+05:30">
+                Updated: Fri 17 July 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/akshar.html">akshar</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/middlewares.html">middlewares</a> </p>
+</footer><!-- /.post-info -->                <p>I assume you have read <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/" target="_blank">official Django docs on middleware</a>. I will elaborate on things mentioned in the documentation but I assume you are familiar with middleware. In this post we will discuss the following. * What is a middleware * When to use middleware * Things to remember when writing middleware * Writing some middlewares to understand how order of middleware matters ### What is a middleware Middlewares are hooks to modify Django <strong>request</strong> or <strong>response</strong> object. Putting the definition of middleware from Django <a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/">docs</a>. Middleware is a framework of hooks into Django’s request/response processing. It’s a</p>
+                <a class="readmore" href="/understanding-django-middlewares.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

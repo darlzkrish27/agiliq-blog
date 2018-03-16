@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Writing your own template loaders</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/writing-your-own-template-loaders.html" rel="bookmark"
+           title="Permalink to Writing your own template loaders">Writing your own template loaders</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-11-21T05:41:17+05:30">
+                Published: Sat 21 November 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-11-21T17:11:17+05:30">
+                Updated: Sat 21 November 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tutorial.html">tutorial</a> </p>
+</footer><!-- /.post-info -->      <p>Django has three builtin template loaders which are used to get the templates for rendering.</p>
+<div class="highlight"><pre><span></span>TEMPLATE_LOADERS = (
+    &#39;django.template.loaders.filesystem.load_template_source&#39;,
+    &#39;django.template.loaders.app_directories.load_template_source&#39;,
+#     &#39;django.template.loaders.eggs.load_template_source&#39;,
+)
+</pre></div>
+
+
+<p>Writing your template loader is a awfuly easy. It is a callable which</p>
+<ol>
+<li>Returns a tuple of (openfile, filename) if it can find the template.</li>
+<li>Raise TemplateDoesNotExist if the templates cannot be found.</li>
+</ol>
+<p>The simplest template loader can be</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">TemplateDoesNotExist</span>
+<span class="k">def</span> <span class="nf">load_template_source</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">template_dirs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">template_name</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">template_name</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TemplateDoesNotExist</span><span class="p">,</span> <span class="n">template_name</span>
+</pre></div>
+
+
+<p>if you put this to your template loaders directory,</p>
+<div class="highlight"><pre><span></span>TEMPLATE_LOADERS = (
+    &#39;django.template.loaders.filesystem.load_template_source&#39;,
+    &#39;django.template.loaders.app_directories.load_template_source&#39;,
+    &#39;dgrid.load_template_source&#39;
+#     &#39;django.template.loaders.eggs.load_template_source&#39;,
+</pre></div>
+
+
+<p>You can do access a template using an absolute path.</p>
+<div class="highlight"><pre><span></span>In [6]: get_template(&#39;/home/shabda/abc.txt&#39;)
+Out[6]: &lt;django.template.Template object at 0x91c860c&gt;
+
+In [7]: temp = get_template(&#39;/home/shabda/abc.txt&#39;)
+
+In [8]: temp
+Out[8]: &lt;django.template.Template object at 0x9358a0c&gt;
+
+In [9]: temp.render
+Out[9]: &lt;bound method Template.render of &lt;django.template.Template object at 0x9358a0c&gt;&gt;
+</pre></div>
+
+
+<hr>
+<p>This is the first in the series of <code>short and sweet</code> Django posts we are going to do. You are interested, right. Do follow us on <a href="http://twitter.com/uswaretech">twitter</a> or <a href="http://feeds.feedburner.com/uswarearticles">subscribe to our feed</a>.</p>
+<hr>
+<p>We build <em>Amazing We Apps</em>. <a href="http://uswaretech.com/contact/">Talk to us</a> or email us at sales@uswaretech.com .</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

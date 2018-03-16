@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="akshar" />
+        <meta name="copyright" content="akshar" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="python, markdown, " />
+
+<meta property="og:title" content="How not knowing encoding can trip you "/>
+<meta property="og:url" content="/how-not-knowing-encoding-can-trip-you.html" />
+<meta property="og:description" content="How not knowing encoding can trip you: A practical example" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="akshar" />
+<meta property="og:article:published_time" content="2014-12-08T17:17:52+05:30" />
+<meta property="" content="2014-12-08T16:47:52+05:30" />
+<meta name="twitter:title" content="How not knowing encoding can trip you ">
+<meta name="twitter:description" content="How not knowing encoding can trip you: A practical example">
+
+        <title>How not knowing encoding can trip you  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/how-not-knowing-encoding-can-trip-you.html"> How not knowing encoding can trip you  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <p>Our Scenario:</p>
+<ul>
+<li>You are provided with a link to a file on the internet.</li>
+<li>Download and read this file</li>
+<li>Insert read value into the database</li>
+</ul>
+<p>Make sure your terminal encoding is set to utf-8. Most probably that would be the default so you would not require any change.</p>
+<p>There could be other similar scenarios. Another collaborator on your project adds a file containing some data in version control. You have to read the file and insert this data in database.</p>
+<p>I have added one file to Dropbox. We will use this file in our example. Link for the file is <a href="https://www.dropbox.com/s/arcz0jsinipuixp/latin_encoded.txt?dl=0" target="_blank">https://www.dropbox.com/s/arcz0jsinipuixp/latin_encoded.txt?dl=0</a></p>
+<p>You can't read the contents of this file using 'urllib' or 'requests' because then you will get html page source for this link. So download the file on your machine.</p>
+<p>Read this file:</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; f = open(&#39;/Users/akshar/Downloads/latin_encoded.txt&#39;)
+&gt;&gt;&gt; read_value = f.read()
+&gt;&gt;&gt; type(read_value)
+&lt;type &#39;str&#39;&gt;
+&gt;&gt;&gt; print read_value
+�
+</pre></div>
+
+
+<p>As you are aware, reading a file gives a 'str' and doesn't give a 'unicode'. And remember, 'str' means encoded 'unicode'? We try to print it. It seems the file content was encoded using a encoding scheme which our terminal doesn't understand, that's why it shows question mark. Terminal understands 'utf-8' encoded content by default. Seems file content was encoded with an encoding other that 'utf-8'. And you don't know what encoding that was.</p>
+<p>Anyways without caring about it, let's try to write our read_value into PostgreSQL db.</p>
+<p>If you require help setting up the database, see <a href="#database-setup">database setup section</a> at bottom.</p>
+<p>Let's write the script to read from the file and insert in db.</p>
+<div class="highlight"><pre><span></span><span class="c1"># You can save it in psyco.py</span>
+<span class="kn">import</span> <span class="nn">psycopg2</span>
+
+<span class="n">conn_string</span> <span class="o">=</span> <span class="s2">&quot;host=&#39;localhost&#39; dbname=&#39;hack&#39; user=&#39;jack&#39; password=&#39;crack&#39;&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;Connecting to database</span><span class="se">\n</span><span class="s2"> -&gt;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">conn_string</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">conn_string</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="k">print</span> <span class="s2">&quot;Connected!</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="c1"># You need to change file path to your ~/Downloads folder</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/Users/akshar/Downloads/latin_encoded.txt&#39;</span><span class="p">)</span>
+<span class="n">read_value</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into names values (&#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">read_value</span><span class="p">,))</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="k">print</span> <span class="s2">&quot;Inserted</span><span class="se">\n</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>Run the script:</p>
+<div class="highlight"><pre><span></span>python psyco.py
+</pre></div>
+
+
+<p>Boom! You must have got an error:</p>
+<div class="highlight"><pre><span></span>(hack)/private/tmp $ python psyco.py
+Connecting to database
+ -&gt;host=&#39;localhost&#39; dbname=&#39;hack&#39; user=&#39;jack&#39; password=&#39;crack&#39;
+Connected!
+
+Traceback (most recent call last):
+  File &quot;psyco.py&quot;, line 15, in &lt;module&gt;
+    cursor.execute(&quot;insert into names values (&#39;%s&#39;)&quot; % (read_value,))
+psycopg2.DataError: invalid byte sequence for encoding &quot;UTF8&quot;: 0xe4 0x27 0x29
+</pre></div>
+
+
+<p>So Python tried to insert read_value to db. read_value was encoded using some encoding scheme which we don't know. Database's default encoding scheme is UTF8. So db tries to decode whatever you are trying to insert with utf8. But in utf8 the byte sequence we are trying to insert doesn't correspond to any codepoint and so decoding fails. And hence an error was raised.</p>
+<p>So we must know what is the encoding of read_value. After reading from file, read_value should be decoded using the known encoding scheme and then encoded back to utf8. It should be encoded back to utf8 because our db works with utf8.</p>
+<p>Now I tell you, the file which you have downloaded is encoded with encoding scheme '8859'.</p>
+<p>So we will have to make following change:</p>
+<div class="highlight"><pre><span></span>decoded_read_value = read_value.decode(&#39;8859&#39;)
+read_value = decoded_read_value.encode(&#39;utf-8&#39;)
+</pre></div>
+
+
+<p>So final script becomes:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">psycopg2</span>
+
+<span class="n">conn_string</span> <span class="o">=</span> <span class="s2">&quot;host=&#39;localhost&#39; dbname=&#39;hack&#39; user=&#39;jack&#39; password=&#39;crack&#39;&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;Connecting to database</span><span class="se">\n</span><span class="s2"> -&gt;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">conn_string</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">conn_string</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="k">print</span> <span class="s2">&quot;Connected!</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/Users/akshar/Downloads/latin_encoded.txt&#39;</span><span class="p">)</span>
+<span class="n">read_value</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">decoded_read_value</span> <span class="o">=</span> <span class="n">read_value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;8859&#39;</span><span class="p">)</span>
+<span class="n">read_value</span> <span class="o">=</span> <span class="n">decoded_read_value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into names values (&#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">read_value</span><span class="p">,))</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="k">print</span> <span class="s2">&quot;Inserted</span><span class="se">\n</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>Run the script:</p>
+<div class="highlight"><pre><span></span>(hack)/private/tmp $ python psyco.py
+Connecting to database
+ -&gt;host=&#39;localhost&#39; dbname=&#39;hack&#39; user=&#39;jack&#39; password=&#39;crack&#39;
+Connected!
+
+Inserted
+</pre></div>
+
+
+<p>Seems insert operation worked properly.</p>
+<p>Check db content now:</p>
+<div class="highlight"><pre><span></span>hack=&gt; select * from names;
+ name
+------
+ ä
+(1 row)
+</pre></div>
+
+
+<p>So you had to know the encoding of file to make it work. Unless you knew the encoding of file you wouldn't have been able to decode it.</p>
+<h3><a name="database-setup">Setting up the database.</a></h3>
+
+<div class="highlight"><pre><span></span>/private/tmp $ psql
+
+akshar=# create database hack;
+CREATE DATABASE
+
+akshar=# create user jack with password &#39;crack&#39;;
+CREATE ROLE
+
+akshar=# grant all privileges on database hack to jack;
+GRANT
+</pre></div>
+
+
+<p>Close db connection.</p>
+<p>Connect to this db as 'jack' and create a table. You should create the table as user 'jack' otherwise you'll not be able to insert into the table when connected as jack.</p>
+<div class="highlight"><pre><span></span>/private/tmp $ psql hack --username=jack -W
+Password for user jack: crack
+
+hack=&gt; create table names(name varchar(10));
+CREATE TABLE
+</pre></div>
+
+
+<p>Close db connection.</p>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2014-12-08T17:17:52+05:30">Dec 8, 2014</time>
+
+<h4>Last Updated</h4>
+<time datetime="2014-12-08T16:47:52+05:30">Dec 8, 2014</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#python-ref">python
+                    <span>22</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>

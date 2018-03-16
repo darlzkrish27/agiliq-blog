@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Github in github</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/github-in-github.html" rel="bookmark"
+           title="Permalink to Github in github">Github in github</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-11-11T09:49:20+05:30">
+                Published: Thu 11 November 2010
+        </abbr>
+		<br />
+        <abbr class="modified" title="2010-11-11T21:19:20+05:30">
+                Updated: Thu 11 November 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agiliq.html">agiliq</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+
+</footer><!-- /.post-info -->      <p>We have a (semi) new app. This takes your Github account and creates Github pages from it. 
+It displays a summary of your account, and of all your apps. <a href="https://github.com/agiliq/github-in-github">Get it at github</a></p>
+<hr>
+<h3>Readme</h3>
+<p>Takes a github account, creates html pages for it, 
+and puts it on Github pages.</p>
+<p>How it proceeds.</p>
+<ol>
+<li>Get data for specified account from Github API</li>
+<li>Uses Jinja2 to write ReST docs.</li>
+<li>Build html from the ReST docs.</li>
+<li>Pushes the html to a Git repo from which you build github pages.</li>
+</ol>
+<p>tl;dr: Yo dawg, I heard you like github, so I put a github in your github,
+so you can github while you github.</p>
+<h2>Installation</h2>
+<ol>
+<li>Git clone</li>
+<li>Create sercrets.py from secrets.example.py</li>
+<li>edit settings.py</li>
+<li>(optional) Edit build/conf_override.py to edit sphinx settings.</li>
+<li>./github_in_github.py</li>
+<li>Here be magic.</li>
+</ol>
+<h2>Example</h2>
+<p>Example page generated.</p>
+<ul>
+<li><a href="http://agiliq.github.com/">agiliq.github.com</a></li>
+<li><a href="http://shabda.github.com/">shabda.github.com</a></li>
+</ul>
+<hr>
+<p><a href="https://github.com/agiliq/github-in-github">Get it at github</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

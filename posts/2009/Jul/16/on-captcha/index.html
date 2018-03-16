@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>On Captcha</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/on-captcha.html" rel="bookmark"
+           title="Permalink to On Captcha">On Captcha</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2009-07-16T03:35:35+05:30">
+                Published: Thu 16 July 2009
+        </abbr>
+		<br />
+        <abbr class="modified" title="2009-07-16T14:05:35+05:30">
+                Updated: Thu 16 July 2009
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/shabda.html">shabda</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/tips.html">tips</a> </p>
+</footer><!-- /.post-info -->      <p>When building public facing websites, spam is a real problem. Captcha has been teated as the first line of defence aginst this problem. If you must use captcha, here are some best practices working with them.</p>
+<h3>Can you do without one?</h3>
+<p>A lot of places captcha's are put to filter spam in user generated comment. One of the largest sources of UGC is comments on wordpress blogs. They do not use a captcha, and instead pass all comments through Akismet to verify which comments are spam, and reject the spams. In many cases, such a system would work for you.</p>
+<h3>Can you use a simpler alternative?</h3>
+<p>Unless you run a site with millions of monthly users, the spammers are not going to write a bot specifically for youur site. So if you have a text question asking "what is 2 + 2", the bots are not going to get past that, as the question is unique to your site. Of course, gmail/yahoo can not use this approach, as bots get written for them specifically, but for you site it might.</p>
+<p>This proposed approach has been called <a href="http://dmytry.pandromeda.com/texts/captcha_and_saptcha.html">SAPTCHA</a> and anecdotal evidence suggests that it works very well in practice.</p>
+<h3>Prefer recaptcha</h3>
+<p><a href="http://recaptcha.net/">Recaptcha</a> is an existing implementation of captcha, which allows you to plug in a captcha system, to your existing pages. Using this over home grown captcha's offers advantages like</p>
+<ol>
+<li>Its is battle tested, in being both secure against bots and having a level of usability.</li>
+<li>It automatically provides and alternate means of validation. Which brings us to our third point.</li>
+</ol>
+<h3>Provide alternate means of validation to visually impaired people.</h3>
+<p>This might be in the form of an audio captcha, an option to email the administrator.</p>
+<h3>Do captcha validation only once</h3>
+<p>This seems so obvious, and yet many sites require you to complete captcha multiple times, in case of any error in the form. Once an user has completed captcha, the form must be displayed without captcha in case of errors.</p>
+<hr>
+<p>If you use Django, these are already very easy to use with existing apps.</p>
+<ol>
+<li><a href="http://www.djangosnippets.org/snippets/433/">Django recaotcha</a></li>
+<li><a href="http://www.djangosnippets.org/snippets/1255/">Django akismet</a></li>
+<li><a href="http://defensio.com/downloads/python/">Python defensio</a></li>
+</ol>
+<hr>
+<p>You should follow me on twitter <a href="http://twitter.com/uswaretech">here</a><a href="http://dustincurtis.com/you_should_follow_me_on_twitter.html">.</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

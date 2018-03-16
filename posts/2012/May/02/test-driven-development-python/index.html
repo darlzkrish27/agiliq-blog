@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Test Driven Development in Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">agiliq_blog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/html.html">html</a></li>
+                    <li class="active"><a href="/category/markdown.html">markdown</a></li>
+                    <li><a href="/category/rst.html">rst</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/test-driven-development-python.html" rel="bookmark"
+           title="Permalink to Test Driven Development in Python">Test Driven Development in Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-05-02T10:11:12+05:30">
+                Published: Wed 02 May 2012
+        </abbr>
+		<br />
+        <abbr class="modified" title="2012-05-02T20:41:12+05:30">
+                Updated: Wed 02 May 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/anoop.html">anoop</a>
+        </address>
+<p>In <a href="/category/markdown.html">markdown</a>.</p>
+<p>tags: <a href="/tag/development.html">Development</a> </p>
+</footer><!-- /.post-info -->      <blockquote>
+<p>We can either prevent bad things from
+happening or fix it, once it is
+detected.</p>
+</blockquote>
+<p>It is your choice to select any of these methodology, while developing a software. You can either develop based on a test driven process or the recover from a fiasco with tests.</p>
+<p>Test driven development, as the name suggests, is development based on tests. Tests for core features are written prior to the implementation for the expected output, and then necessary modules are written to satisfy the needs define the </p>
+<hr>
+<p><strong>Advantages of Test Driven Development</strong></p>
+<ul>
+<li>application is determined by using it</li>
+<li>written minimal amount of application code</li>
+<li>total application + tests is probably more smaller</li>
+<li>simpler, stand-alone, minimal dependencies</li>
+<li>tends to result in extensible architectures</li>
+<li>instant feedback</li>
+<li>future development won't break existing features.</li>
+</ul>
+<hr>
+<p><strong>About Test Driven Development</strong></p>
+<ul>
+<li>Write tests for the use case Run it</li>
+<li>(make sure it fails and fails</li>
+<li>miserably) Write code and implement</li>
+<li>the required functionality with relevant level of detail </li>
+<li>Run the test</li>
+<li>Write test for addition features </li>
+<li>Run all test Watch it succeed. Have a cup of coffee !</li>
+</ul>
+<p><strong>Basic Unittest</strong></p>
+<hr>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="k">class</span> <span class="nc">MyTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">testMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">hello</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Hello din&#39;t return 5.&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+
+<p>To write a basic unittest in python, is pretty straight forward. The code above is self explainatory. It is trying out hello function, and expected output is given as 5. If somehow, hello() din't return 5, then the error message is printed to the console.</p>
+<p>Now, let's try writing the function hello to satisfy the test.</p>
+<div class="highlight"><pre><span></span>def hello(value):
+    return 5
+</pre></div>
+
+
+<p>or</p>
+<div class="highlight"><pre><span></span>def hello(value):
+    return value
+</pre></div>
+
+
+<p><strong>This is a problem!</strong></p>
+<p>The problem is, how to select the best. Solution is, to get the tests more detailed and covering more test cases to satisfy the requiements of the function. As we have more precise requirements in the tests, we can easily rule out either the more complex solutions or the more simpler solutions, and get the perfect balance between development and requirement.</p>
+<p>One thing to keep in mind while doing Test Driven Development is, <strong><em>Don't Overkill</em></strong>. Just write tests for the core features expected, and write it expecting all the complete range. For example, if it is a multiplication function, make sure that you need make sure that you handle strings as you need it.</p>
+<p>Another Example</p>
+<p>An example for doing test driven development for greater than function is given below.</p>
+<p>The requirement is crazy, to compare the <em>ascii sum of the text string</em> if argument is a string.</p>
+<p><strong>The Test</strong></p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">demo</span> <span class="kn">import</span> <span class="n">Greater</span>
+<span class="k">class</span> <span class="nc">DemoTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">comparator</span> <span class="o">=</span> <span class="n">Greater</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">comparator</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_char</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">comparator</span> <span class="o">=</span> <span class="n">Greater</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">comparator</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="s1">&#39;ABCabcxyz&#39;</span><span class="p">,</span> <span class="s1">&#39;ABa&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_char_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">comparator</span> <span class="o">=</span> <span class="n">Greater</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">comparator</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+
+<p><strong>Now the Code</strong></p>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Greater</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">def</span> <span class="nx">greater</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">val1</span><span class="p">,</span> <span class="nx">val2</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">if</span> <span class="nx">type</span><span class="p">(</span><span class="nx">val1</span><span class="p">)</span> <span class="o">==</span><span class="nx">str</span> <span class="nx">or</span> <span class="nx">type</span><span class="p">(</span><span class="nx">val2</span><span class="p">)</span> <span class="o">==</span> <span class="nx">str</span>:
+           <span class="kt">val1</span> <span class="o">=</span> <span class="nx">str</span><span class="p">(</span><span class="nx">val1</span><span class="p">)</span>
+           <span class="nx">val2</span> <span class="o">=</span> <span class="nx">str</span><span class="p">(</span><span class="nx">val2</span><span class="p">)</span>
+           <span class="nx">sum1</span> <span class="o">=</span> <span class="nx">sum</span><span class="p">([</span><span class="nx">ord</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">val1</span><span class="p">])</span>
+           <span class="nx">sum2</span> <span class="o">=</span> <span class="nx">sum</span><span class="p">([</span><span class="nx">ord</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">val2</span><span class="p">])</span>
+           <span class="k">if</span> <span class="nx">sum1</span> <span class="o">&gt;</span> <span class="nx">sum2</span>:
+               <span class="kt">return</span> <span class="nx">True</span>
+           <span class="k">else</span><span class="o">:</span>
+               <span class="k">return</span> <span class="nx">False</span>
+        <span class="k">if</span> <span class="nx">val1</span><span class="o">&gt;</span><span class="nx">val2</span>:
+            <span class="kt">return</span> <span class="nx">True</span>
+        <span class="k">else</span><span class="o">:</span>
+            <span class="k">return</span> <span class="nx">False</span>
+</pre></div>
+
+
+<p>The function returns True or False, based on the ascii values if any of the argument is  string, else give the greater.</p>
+<p>Note: A presentation on the topic is available <a href="http://www.slideshare.net/atmb4u/test-driven-development-in-python">http://www.slideshare.net/atmb4u/test-driven-development-in-python</a></p>
+<blockquote>
+<p><strong>TL; DR:  Write tests to satisfy requirements, then write code. Have a peaceful life !</strong></p>
+</blockquote>
+<p>Have a happy Test Driven Development!!!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

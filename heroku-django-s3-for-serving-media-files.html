@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="manjunath" />
+        <meta name="copyright" content="manjunath" />
+
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary">
+
+<meta name="keywords" content="heroku, markdown, " />
+
+<meta property="og:title" content="Heroku Django S3 for serving Media files "/>
+<meta property="og:url" content="/heroku-django-s3-for-serving-media-files.html" />
+<meta property="og:description" content="Why should i store my media files on AWS S3?\r\n\r\nHeroku dynos have limited life span, and when they die and get replaced, the files within them are lost. So you should set up Django media handler to put the files somewhere permanent.\r\n\r\n\r\n### Let\&#39;s begin:\r\n\r\n1) Install dependencies:\r\n\r\n $ pip install django-storages boto\r\n \r\n(Update your requirements.txt using pip freeze &gt; requirements.txt)\r\n\r\n2) Update INSTALLED_APPS in your settings.py\r\n\r\n INSTALLED_APPS += (\&#39;storages\&#39;,)\r\n\r\n\r\n \r\n3) Sign in to AWS Console, select S3 under Storage &amp; Content Delivery and create a bucket.\r\n\r\n\r\n\r\n4) Don\&#39;t forget to generate AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.\r\n\r\n\r\n\r\n5) Add the below to your settings file:\r\n\r\n\r\n AWS_QUERYSTRING_AUTH" />
+<meta property="og:site_name" content="agiliq_blog" />
+<meta property="og:article:author" content="manjunath" />
+<meta property="og:article:published_time" content="2014-06-04T21:47:35+05:30" />
+<meta property="" content="2014-06-05T08:17:35+05:30" />
+<meta name="twitter:title" content="Heroku Django S3 for serving Media files ">
+<meta name="twitter:description" content="Why should i store my media files on AWS S3?\r\n\r\nHeroku dynos have limited life span, and when they die and get replaced, the files within them are lost. So you should set up Django media handler to put the files somewhere permanent.\r\n\r\n\r\n### Let\&#39;s begin:\r\n\r\n1) Install dependencies:\r\n\r\n $ pip install django-storages boto\r\n \r\n(Update your requirements.txt using pip freeze &gt; requirements.txt)\r\n\r\n2) Update INSTALLED_APPS in your settings.py\r\n\r\n INSTALLED_APPS += (\&#39;storages\&#39;,)\r\n\r\n\r\n \r\n3) Sign in to AWS Console, select S3 under Storage &amp; Content Delivery and create a bucket.\r\n\r\n\r\n\r\n4) Don\&#39;t forget to generate AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.\r\n\r\n\r\n\r\n5) Add the below to your settings file:\r\n\r\n\r\n AWS_QUERYSTRING_AUTH">
+
+        <title>Heroku Django S3 for serving Media files  · agiliq_blog
+</title>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/tipuesearch/tipuesearch.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/elegant.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/theme/css/custom.css" media="screen">
+    </head>
+    <body>
+        <div id="content-sans-footer">
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/"><span class=site-name>agiliq_blog</span></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right top-menu">
+                            <li ><a href="">Home</a></li>
+                            <li ><a href="/categories.html">Categories</a></li>
+                            <li ><a href="/tags.html">Tags</a></li>
+                            <li ><a href="/archives.html">Archives</a></li>
+                            <li><form class="navbar-search" action="/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span1"></div>
+                <div class="span10">
+<article>
+<div class="row-fluid">
+    <header class="page-header span10 offset2">
+    <h1><a href="/heroku-django-s3-for-serving-media-files.html"> Heroku Django S3 for serving Media files  </a></h1>
+    </header>
+</div>
+
+<div class="row-fluid">
+        <div class="span8 offset2 article-content">
+
+            
+            <h3>Why should i store my media files on AWS S3?</h3>
+<p>Heroku dynos have limited life span, and when they die and get replaced, the files within them are lost. So you should set up Django media handler to put the files somewhere permanent.</p>
+<h3>Let's begin:</h3>
+<p>1) Install dependencies:</p>
+<div class="highlight"><pre><span></span>$ pip install django-storages boto
+</pre></div>
+
+
+<p>(Update your <code>requirements.txt using <code>pip freeze &gt; requirements.txt</code>)</p>
+<p>2) Update <code>INSTALLED_APPS</code> in your settings.py:</p>
+<div class="highlight"><pre><span></span>INSTALLED_APPS += (&#39;storages&#39;,)
+</pre></div>
+
+
+<p>3) Sign in to <a href="http://aws.amazon.com/console/">AWS Console</a>, select <code>S3</code> under <code>Storage &amp; Content Delivery</code> and create a bucket.</p>
+<p>4) Don't forget to generate <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>.</p>
+<p>5) Add the below to your settings file:</p>
+<div class="highlight"><pre><span></span>AWS_QUERYSTRING_AUTH = False
+AWS_ACCESS_KEY_ID = os.environ[&#39;AWS_ACCESS_KEY_ID&#39;]
+AWS_SECRET_ACCESS_KEY = os.environ[&#39;AWS_SECRET_ACCESS_KEY&#39;]
+AWS_STORAGE_BUCKET_NAME = os.environ[&#39;S3_BUCKET_NAME&#39;]
+MEDIA_URL = &#39;http://%s.s3.amazonaws.com/your-folder/&#39; % AWS_STORAGE_BUCKET_NAME
+DEFAULT_FILE_STORAGE = &quot;storages.backends.s3boto.S3BotoStorage&quot;
+</pre></div>
+
+
+<p>Note: You should never expose your <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> there is some reason why they are called SECRET.</p>
+<p>6) Install <a href="http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html">AWS CLI</a> on your machine.</p>
+<p>7) Its time to move your files to AWS S3 bucket.</p>
+<div class="highlight"><pre><span></span>$ aws s3 cp myfolder s3://mybucket/myfolder --recursive
+</pre></div>
+
+
+<p>8) After the previous step you can use the following command to view the contents of your bucket.</p>
+<div class="highlight"><pre><span></span>$ aws s3 ls s3://mybucket
+</pre></div>
+
+
+<p>9) Grant public-read permission to everyone, add the below to your S3 bucket policy.</p>
+<div class="highlight"><pre><span></span>{
+  &quot;Version&quot;:&quot;2008-10-17&quot;,
+  &quot;Statement&quot;:[{
+    &quot;Sid&quot;:&quot;AllowPublicRead&quot;,
+        &quot;Effect&quot;:&quot;Allow&quot;,
+      &quot;Principal&quot;: {
+            &quot;AWS&quot;: &quot;*&quot;
+         },
+      &quot;Action&quot;:[&quot;s3:GetObject&quot;],
+      &quot;Resource&quot;:[&quot;arn:aws:s3:::bucket/*&quot;
+      ]
+    }
+  ]
+}
+</pre></div>
+
+
+<p>You can also grant full access to specific IP addresses check this <a href="http://s3browser.com/working-with-amazon-s3-bucket-policies.php">Bucket Policies</a></p>
+<p>Thats it now your django app should be able to serve your media files.If not please check your bucket policy, you can check the url link under S3 Management Console-&gt;Properties.</p>
+<p>Any problem or feedback? feel free to leave your comments below.</p>
+            
+            
+            <hr/>
+        </div>
+        <section>
+        <div class="span2" style="float:right;font-size:0.9em;">
+            <h4>Published</h4>
+            <time pubdate="pubdate" datetime="2014-06-04T21:47:35+05:30">Jun 4, 2014</time>
+
+<h4>Last Updated</h4>
+<time datetime="2014-06-05T08:17:35+05:30">Jun 5, 2014</time>
+
+            <h4>Category</h4>
+            <a class="category-link" href="/categories.html#markdown-ref">markdown</a>
+            <h4>Tags</h4>
+            <ul class="list-of-tags tags-in-article">
+                <li><a href="/tags.html#heroku-ref">heroku
+                    <span>1</span>
+</a></li>
+            </ul>
+<h4>Contact</h4>
+    <a href="#" title="My You can add links in your config file Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-you can add links in your config file sidebar-social-links"></i></a>
+    <a href="#" title="My Another social link Profile" class="sidebar-social-links" target="_blank">
+    <i class="fa fa-another social link sidebar-social-links"></i></a>
+        </div>
+        </section>
+</div>
+</article>
+                </div>
+                <div class="span1"></div>
+            </div>
+        </div>
+        <div id="push"></div>
+    </div>
+<footer>
+<div id="footer">
+    <ul class="footer-content">
+        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
+    </ul>
+</div>
+</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+            function validateForm(query)
+            {
+                return (query.length > 0);
+            }
+        </script>
+
+    
+    </body>
+    <!-- Theme: Elegant built for Pelican
+    License : http://oncrashreboot.com/pelican-elegant -->
+</html>
